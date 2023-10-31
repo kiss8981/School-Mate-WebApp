@@ -1,12 +1,12 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth";
+import { authOptions } from "@/app/auth";
 import { redirect } from "next/navigation";
 import { NextPage } from "next";
 
 const Home: NextPage = async () => {
-  // const auth = await getServerSession(authOptions);
+  const auth = await getServerSession(authOptions);
 
-  // if (!auth) return redirect("/intro");
+  if (!auth) return redirect("/intro");
 
   return (
     <div>

@@ -9,7 +9,7 @@ interface Props {
 }
 
 const Layout: NextPage<Props> = async ({ children, modal }) => {
-  return <></>;
+  return <>{children}</>;
 };
 
 export default Layout;

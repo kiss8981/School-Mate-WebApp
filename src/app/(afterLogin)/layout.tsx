@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import { auth, authOptions } from "../auth";
 import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
+import BottomNavbar from "./_component/BottomNavbar";
 
 interface Props {
   children: React.ReactNode;
@@ -9,9 +10,12 @@ interface Props {
 }
 
 const Layout: NextPage<Props> = async ({ children, modal }) => {
-  const auth = await getServerSession(authOptions);
-  if (!auth) return <></>;
-  return <></>;
+  return (
+    <>
+      {children}
+      <BottomNavbar />
+    </>
+  );
 };
 
 export default Layout;
