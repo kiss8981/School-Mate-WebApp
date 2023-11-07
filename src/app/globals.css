@@ -6,3 +6,14 @@ html {
   -ms-content-zooming: none;
   -ms-touch-action: pan-x pan-y;
 }
+
+.slick-track {
+  margin: auto;
+}
+
+.slick-track div {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

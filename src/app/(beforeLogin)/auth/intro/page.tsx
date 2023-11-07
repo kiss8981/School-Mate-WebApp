@@ -9,6 +9,9 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { stackRouterPush } from "@/lib/stackRouter";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -25,19 +28,44 @@ const RegisterIntroPage = () => {
     [key: number]: {
       text: string;
       onClick: () => void;
+      image: React.ReactNode;
     };
   } = {
     0: {
       text: "다음",
       onClick: () => setStep(1),
+      image: (
+        <Image
+          width={340}
+          height={340}
+          alt="items"
+          src="/images/auth/items.png"
+        />
+      ),
     },
     1: {
       text: "다음",
       onClick: () => setStep(2),
+      image: (
+        <Image
+          width={250}
+          height={250}
+          alt="calendar"
+          src="/images/auth/calendar.png"
+        />
+      ),
     },
     2: {
       text: "완료",
       onClick: () => stackRouterPush(router, "/auth/register", "reset"),
+      image: (
+        <Image
+          width={270}
+          height={270}
+          alt="chat"
+          src="/images/auth/chat.png"
+        />
+      ),
     },
   };
 
@@ -48,29 +76,9 @@ const RegisterIntroPage = () => {
   return (
     <>
       <div className="h-[100vh] px-8 flex flex-col justify-center">
-        <Slider>
-          <Image
-            src="/images/auth/ch.png"
-            alt="landing"
-            width={300}
-            height={300}
-            className="my-7 m-auto"
-          />
-          <Image
-            src="/images/auth/landing.png"
-            alt="landing"
-            width={300}
-            height={300}
-            className="my-7 m-auto"
-          />
-          <Image
-            src="/images/auth/landing.png"
-            alt="landing"
-            width={300}
-            height={300}
-            className="my-7 m-auto"
-          />
-        </Slider>
+        <div className="w-full h-[400px] text-center flex items-center justify-center">
+          {pageOfButton[step].image}
+        </div>
         <Button
           className={classNames(
             "w-full py-4 font-semibold text-lg rounded-[30px] mt-auto mb-10",

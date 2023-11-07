@@ -12,7 +12,7 @@ interface Props {
 const Layout: NextPage<Props> = async ({ children, modal }) => {
   return (
     <>
-      <div className="min-w-[320px] max-w-[540px] m-auto min-h-screen">
+      <div className="min-w-[280px] max-w-[540px] m-auto min-h-screen">
         {children}
         <BottomNavbar />
       </div>
