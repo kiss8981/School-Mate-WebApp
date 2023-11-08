@@ -32,7 +32,7 @@ const LoginLandingPage = () => {
             roboto.className
           )}
         >
-          <span>간편로그인 후</span>
+          <span className="underline underline-offset-[-4px] decoration-[#2545ED]/20 decoration-[10px]">간편로그인 후</span>
           <span>이용이</span>
           <span>가능합니다</span>
         </div>
@@ -45,7 +45,7 @@ const LoginLandingPage = () => {
         />
         <Button
           className={classNames(
-            "w-full py-4 font-semibold text-lg rounded-[30px] mt-auto", 
+            "w-full py-4 font-semibold text-lg rounded-full mt-auto", 
             robotoMono.className
           )}
           onClick={() => stackRouterPush(router, "/auth/intro", "reset")}
@@ -54,7 +54,7 @@ const LoginLandingPage = () => {
         </Button>
         <button
           className={classNames(
-            "w-full font-bold text-base mt-4",
+            "w-full font-bold text-base mt-4 text-primary-500",
             roboto.className
           )}
           onClick={() => stackRouterPush(router, "/auth/login", "reset")}
