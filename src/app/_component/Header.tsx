@@ -1,13 +1,8 @@
+import { inter } from "@/lib/fonts";
 import { stackRouterBack } from "@/lib/stackRouter";
 import { classNames } from "@/lib/uitls";
-import { Inter } from "next/font/google";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "500", "700"],
-});
 
 const Header = ({
   title = "",
@@ -24,12 +19,13 @@ const Header = ({
   return (
     <header
       className={classNames(
-        "flex justify-between items-center px-9 text-2xl font-bold relative bg-white py-2 h-16",
+        "flex justify-between items-center px-9 text-2xl font-bold relative bg-white ",
         className
       )}
       {...props}
       style={{
-        marginTop: "calc(env(safe-area-inset-top) - 0.5rem)",
+        paddingTop: "calc(env(safe-area-inset-top) + 1.7rem)",
+        paddingBottom: "calc(env(safe-area-inset-bottom) + 1.7rem)",
       }}
     >
       {backIcon && (
@@ -43,7 +39,7 @@ const Header = ({
         </button>
       )}
       <span
-        className={classNames("mx-auto font-bold text-[24px]", inter.className)}
+        className={classNames("mx-auto font-bold text-[22px]", inter.className)}
       >
         {title}
       </span>

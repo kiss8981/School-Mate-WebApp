@@ -2,24 +2,11 @@
 
 import Button from "@/app/_component/Button";
 import { classNames } from "@/lib/uitls";
-import { Roboto, Roboto_Mono } from "next/font/google";
-import Slider from "react-slick";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { stackRouterPush } from "@/lib/stackRouter";
-
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "500", "700", "900"],
-});
-const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "500", "700"],
-});
+import { roboto, robotoMono } from "@/lib/fonts";
 
 const RegisterIntroPage = () => {
   const router = useRouter();
@@ -115,7 +102,7 @@ const RegisterIntroPage = () => {
           {pageOfButton[step].subTitle}
         </div>
         <div className="flex flex-row my-10 items-center justify-center space-x-5">
-          {[0, 1, 2].map((v) => (
+          {[0, 1, 2].map(v => (
             <span
               key={v}
               className={classNames(

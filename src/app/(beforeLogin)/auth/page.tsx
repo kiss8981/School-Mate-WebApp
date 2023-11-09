@@ -1,24 +1,11 @@
 "use client";
 
 import Button from "@/app/_component/Button";
+import { inter, roboto, robotoMono } from "@/lib/fonts";
 import { stackRouterPush } from "@/lib/stackRouter";
 import { classNames } from "@/lib/uitls";
-import { Inter, Roboto, Roboto_Mono } from "next/font/google";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "500", "700", "900"],
-});
-const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "500", "700"],
-});
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "500", "700"],
-});
 
 const LoginLandingPage = () => {
   const router = useRouter();
@@ -72,7 +59,7 @@ const LoginLandingPage = () => {
         </button>
         <button
           className={classNames(
-            "w-full mt-4 text-[14px] text-[#B6B6B6] underline-offset-4 underline pb-10",
+            "w-full mt-4 text-[14px] text-[#B6B6B6] underline-offset-4 underline pb-14",
             inter.className
           )}
           onClick={() => stackRouterPush(router, "/auth/login", "stack", false)}

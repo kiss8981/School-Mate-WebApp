@@ -1,13 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Nanum_Gothic } from "next/font/google";
 import AuthSession from "./_component/AuthSession";
 import { classNames } from "@/lib/uitls";
-
-const NanumGothic = Nanum_Gothic({
-  subsets: ["latin"],
-  weight: "400",
-});
+import { NanumGothic } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,7 +20,7 @@ export default function RootLayout({
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
-        />  
+        />
       </head>
       <body className={classNames(NanumGothic.className)}>
         <AuthSession>{children}</AuthSession>
