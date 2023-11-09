@@ -18,31 +18,32 @@ const Header = ({
 
   return (
     <header
-      className={classNames(
-        "flex justify-between items-center px-9 text-2xl font-bold relative bg-white ",
-        className
-      )}
+      className={classNames("text-2xl bg-white", className)}
       {...props}
       style={{
-        paddingTop: "calc(env(safe-area-inset-top) + 1.7rem)",
-        paddingBottom: "calc(env(safe-area-inset-bottom) + 1.7rem)",
+        paddingTop: "calc(env(safe-area-inset-top))",
       }}
     >
-      {backIcon && (
-        <button
-          className="absolute left-4"
-          onClick={() => {
-            stackRouterBack(router);
-          }}
+      <div className="font-bold relative flex justify-between items-center h-16">
+        {backIcon && (
+          <button
+            className="absolute left-4"
+            onClick={() => {
+              stackRouterBack(router);
+            }}
+          >
+            <Image src="/icons/Back.svg" alt="back" width={15} height={15} />
+          </button>
+        )}
+        <span
+          className={classNames(
+            "mx-auto font-bold text-[22px]",
+            inter.className
+          )}
         >
-          <Image src="/icons/back.svg" alt="back" width={15} height={15} />
-        </button>
-      )}
-      <span
-        className={classNames("mx-auto font-bold text-[22px]", inter.className)}
-      >
-        {title}
-      </span>
+          {title}
+        </span>
+      </div>
     </header>
   );
 };

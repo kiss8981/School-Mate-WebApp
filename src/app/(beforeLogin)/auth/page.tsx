@@ -59,7 +59,7 @@ const LoginLandingPage = () => {
         </button>
         <button
           className={classNames(
-            "w-full mt-4 text-[14px] text-[#B6B6B6] underline-offset-4 underline pb-14",
+            "w-full mt-4 text-[14px] text-[#B6B6B6] underline-offset-4 underline pb-20",
             inter.className
           )}
           onClick={() => stackRouterPush(router, "/auth/login", "stack", false)}

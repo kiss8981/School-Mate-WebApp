@@ -8,17 +8,10 @@ import { sendWebviewEvent } from "@/lib/webviewHandler";
 import Image from "next/image";
 import { useState } from "react";
 
-const LoginPage = () => {
+const LoginPage = async() => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-  const requestAppleLogin = () => {
-    sendWebviewEvent("LOGIN_EVENT", {
-      type: "request",
-      loginType: "apple",
-    });
-  };
 
   return (
     <>
@@ -31,7 +24,7 @@ const LoginPage = () => {
             alt="register"
             width={100}
             height={50}
-            className="my-2"
+            className="mb-2 mt-10"
           />
           <div className={classNames("font-light w-full space-y-14 mt-16")}>
             <input
@@ -88,7 +81,7 @@ const LoginPage = () => {
           <Button className="w-full py-4 font-semibold text-[14px] rounded-full mt-10">
             로그인
           </Button>
-          <div className="flex flex-row items-center justify-center font-semibold text-[10px] my-6">
+          {/* <div className="flex flex-row items-center justify-center font-semibold text-[10px] my-6">
             <hr className="w-full h-1 border-[#B6B6B6]" />
             <span className="w-40 text-[#B6B6B6] mx-4">SNS LOGIN</span>
             <hr className="w-full h-1 border-[#B6B6B6]" />
@@ -118,7 +111,7 @@ const LoginPage = () => {
               />
               Apple로 계속하기
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
