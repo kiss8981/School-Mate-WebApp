@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Nanum_Gothic } from "next/font/google";
 import AuthSession from "./_component/AuthSession";
+import { classNames } from "@/lib/uitls";
 
 const NanumGothic = Nanum_Gothic({
   subsets: ["latin"],
@@ -23,10 +24,10 @@ export default function RootLayout({
       <head>
         <meta
           name="viewport"
-          content="width=device-width,initial-scale=1, maximum-scale=1.0, user-scalable=no"
-        />
+          content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
+        />  
       </head>
-      <body className={NanumGothic.className}>
+      <body className={classNames(NanumGothic.className)}>
         <AuthSession>{children}</AuthSession>
       </body>
     </html>

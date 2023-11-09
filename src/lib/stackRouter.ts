@@ -13,13 +13,18 @@ const isApp = () => {
 };
 
 // ReactNative Webview에 postMessage 요청
-const sendRouterEvent = (path: string, type?: "stack" | "reset"): void => {
+const sendRouterEvent = (
+  path: string,
+  type?: "stack" | "reset",
+  scroll?: boolean
+): void => {
   window.ReactNativeWebView.postMessage(
     JSON.stringify({
       type: "ROUTER_EVENT",
       data: {
         path: path,
         type: type ?? "stack",
+        scroll: scroll ?? true,
       },
     })
   );
@@ -38,10 +43,11 @@ export const stackRouterBack = (router: AppRouterInstance) => {
 export const stackRouterPush = (
   router: AppRouterInstance,
   url: string,
-  type?: "stack" | "reset"
+  type?: "stack" | "reset",
+  scroll?: boolean
 ) => {
   if (isApp()) {
-    sendRouterEvent(url, type);
+    sendRouterEvent(url, type, scroll);
   } else {
     router.push(url);
   }

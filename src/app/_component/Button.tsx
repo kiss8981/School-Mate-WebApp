@@ -18,7 +18,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
       type="button"
       disabled={buttonDisabled}
       className={classNames(
-        className,
         buttonDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
         ...[
           variant === "primary" && [
@@ -31,7 +30,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
             "border border-gray-500 hover:border-gray-600 hover:bg-gray-100 text-black ring-0",
           ],
         ],
-        "rounded-md px-2 py-1 border"
+        "px-2 py-1 border",
+        className
       )}
       {...rest}
     >

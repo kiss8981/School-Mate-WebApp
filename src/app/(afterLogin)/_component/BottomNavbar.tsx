@@ -10,7 +10,12 @@ export default function BottomNavbar() {
 
   return (
     <>
-      <div className="fixed bottom-0 h-[79px] bg-white min-w-[280px] max-w-[540px] drop-shadow-2xl flex items-center w-full">
+      <div
+        className="fixed bottom-0 h-[79px] bg-white min-w-[280px] max-w-[540px] drop-shadow-2xl flex items-center w-full"
+        style={{
+          paddingBottom: "env(safe-area-inset-bottom)",
+        }}
+      >
         <div className="flex flex-row px-5 justify-between items-center w-full">
           <Link
             className="h-[45px] flex flex-col justify-between items-center"

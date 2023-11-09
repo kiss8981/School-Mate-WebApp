@@ -28,11 +28,16 @@ const LoginLandingPage = () => {
       <div className="h-[100vh] px-8 flex flex-col justify-center">
         <div
           className={classNames(
-            "flex flex-col text-2xl font-bold mb-auto pt-16",
+            "flex flex-col text-2xl font-bold mb-auto",
             roboto.className
           )}
+          style={{
+            paddingTop: "calc(env(safe-area-inset-bottom) + 4rem)",
+          }}
         >
-          <span className="underline underline-offset-[-4px] decoration-[#2545ED]/20 decoration-[10px]">간편로그인 후</span>
+          <span className="underline underline-offset-[-4px] decoration-[#2545ED]/20 decoration-[10px]">
+            간편로그인 후
+          </span>
           <span>이용이</span>
           <span>가능합니다</span>
         </div>
@@ -45,10 +50,12 @@ const LoginLandingPage = () => {
         />
         <Button
           className={classNames(
-            "w-full py-4 font-semibold text-lg rounded-full mt-auto", 
+            "w-full py-4 font-semibold text-lg rounded-full mt-auto",
             robotoMono.className
           )}
-          onClick={() => stackRouterPush(router, "/auth/intro", "reset")}
+          onClick={() =>
+            stackRouterPush(router, "/auth/register", "stack", false)
+          }
         >
           회원가입
         </Button>
@@ -57,7 +64,9 @@ const LoginLandingPage = () => {
             "w-full font-bold text-base mt-4 text-primary-500",
             roboto.className
           )}
-          onClick={() => stackRouterPush(router, "/auth/login", "reset")}
+          onClick={() =>
+            stackRouterPush(router, "/auth/register", "stack", false)
+          }
         >
           15초 간편 가입하기
         </button>
@@ -66,7 +75,7 @@ const LoginLandingPage = () => {
             "w-full mt-4 text-[14px] text-[#B6B6B6] underline-offset-4 underline pb-10",
             inter.className
           )}
-          onClick={() => stackRouterPush(router, "/auth/login", "reset")}
+          onClick={() => stackRouterPush(router, "/auth/login", "stack", false)}
         >
           로그인이 안되셨나요? 로그인 하기
         </button>
