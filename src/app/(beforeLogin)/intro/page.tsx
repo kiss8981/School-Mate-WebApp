@@ -123,7 +123,7 @@ const RegisterIntroPage = () => {
         </Button>
         <button
           className={classNames(
-            "w-full font-bold text-base pb-10 text-[#B6B6B6] ",
+            "w-full font-bold text-base pb-14 text-[#B6B6B6] ",
             roboto.className
           )}
           onClick={() => stackRouterPush(router, "/auth", "reset", false)}

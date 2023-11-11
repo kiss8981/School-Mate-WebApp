@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const fetch = axios.create({
+const fetcher = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
-export default fetch;
+export default fetcher;

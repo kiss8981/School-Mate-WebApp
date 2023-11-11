@@ -3,25 +3,34 @@
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function BottomNavbar() {
   const router = useRouter();
   const pathname = usePathname();
+  const [useAgent, setUseAgent] = useState("");
+
+  useEffect(() => {
+    setUseAgent(navigator.userAgent);
+  }, []);
 
   return (
     <>
       <div
-        className="fixed bottom-0 h-[79px] bg-white min-w-[280px] max-w-[540px] drop-shadow-2xl flex items-center w-full"
+        className="fixed bottom-0 bg-whtie min-w-[280px] max-w-[540px] pt-2 flex items-center w-full z-50"
         style={{
-          paddingBottom: "env(safe-area-inset-bottom)",
+          paddingBottom: useAgent.includes("ios")
+            ? "calc(env(safe-area-inset-bottom) - 0.2rem)"
+            : "0.5rem",
+          boxShadow: "0px -4px 30px rgba(0, 0, 0, 0.04)",
         }}
       >
         <div className="flex flex-row px-5 justify-between items-center w-full">
           <Link
             className="h-[45px] flex flex-col justify-between items-center"
-            href="/"
+            href="/main"
           >
-            {pathname === "/" ? (
+            {pathname === "/main" ? (
               <>
                 <Image
                   src="/icons/Home.svg"

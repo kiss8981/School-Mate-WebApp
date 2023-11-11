@@ -14,6 +14,7 @@
     "dayjs": "^1.11.10",
     "next": "latest",
     "next-auth": "^4.24.3",
+    "nextjs-progressbar": "^0.0.16",
     "react": "latest",
     "react-dom": "latest",
     "react-slick": "^0.29.0",

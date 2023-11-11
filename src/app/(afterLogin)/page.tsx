@@ -4,16 +4,11 @@ import { redirect } from "next/navigation";
 import { NextPage } from "next";
 
 const Home: NextPage = async () => {
-  // const auth = await getServerSession(authOptions);
+  const auth = await getServerSession(authOptions);
 
-  // if (!auth) return redirect("/intro");
+  if (!auth) return redirect("/intro");
 
-  return (
-    <div>
-      <h1>After Login Page</h1>
-      <h2></h2>
-    </div>
-  );
+  return redirect("/main");
 };
 
 export default Home;

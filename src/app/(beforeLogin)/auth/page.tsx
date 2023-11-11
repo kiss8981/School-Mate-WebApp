@@ -41,7 +41,7 @@ const LoginLandingPage = () => {
             robotoMono.className
           )}
           onClick={() =>
-            stackRouterPush(router, "/auth/register", "stack", false)
+            stackRouterPush(router, "/auth/register", "stack")
           }
         >
           회원가입
@@ -52,7 +52,7 @@ const LoginLandingPage = () => {
             roboto.className
           )}
           onClick={() =>
-            stackRouterPush(router, "/auth/register", "stack", false)
+            stackRouterPush(router, "/auth/register", "stack")
           }
         >
           15초 간편 가입하기
