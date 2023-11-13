@@ -1,8 +1,12 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import AuthSession from "./_component/AuthSession";
 import { classNames } from "@/lib/uitls";
 import { NanumGothic } from "@/lib/fonts";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+import "swiper/css";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,6 +28,7 @@ export default function RootLayout({
       </head>
       <body className={classNames(NanumGothic.className)}>
         <AuthSession>{children}</AuthSession>
+        <ToastContainer />
       </body>
     </html>
   );

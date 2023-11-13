@@ -5,6 +5,7 @@ import Header from "@/app/_component/Header";
 import HeaderContainer from "@/app/_component/HeaderContainer";
 import Input from "@/app/_component/Input";
 import Modal from "@/app/_component/Modal";
+import useFetch from "@/hooks/useFetch";
 import fetcher from "@/lib/fetch";
 import { inter } from "@/lib/fonts";
 import { stackRouterPush } from "@/lib/stackRouter";
@@ -30,43 +31,39 @@ const RegisterPage = () => {
   const [useCustomEmail, setUseCustomEmail] = useState(false);
   const [successRegisterModalOpen, setSuccessRegisterModalOpen] =
     useState(false);
-
-  const requestVerfiyPhone = async () => {
-    setIsVerifyModalOpen(true);
-
-    try {
-      const { data: verifyToken } = await fetcher.post<{
-        data: string;
-      }>("/auth/verify/phonemessage", {
-        phone: phone.replace(/[^0-9]/g, ""),
-      });
-
-      toast("success", "인증번호가 전송되었습니다.");
-      setPhoneVerifyToken(verifyToken.data);
-    } catch (e: any | AxiosError) {
-      toast("error", e.response?.data?.message || "인증에 실패했습니다.");
-      return;
+  const { triggerFetch: requestVerfiyPhoneFetch } = useFetch(
+    "/auth/verify/phonemessage",
+    "POST",
+    {
+      successToast: {
+        message: "인증번호가 전송되었습니다.",
+      },
+      onError: (status, message) => {
+        toast("error", message || "인증번호 전송에 실패했습니다.");
+      },
+      onSuccess: (stauts, statusCode, verifyToken) => {
+        setIsVerifyModalOpen(true);
+        setPhoneVerifyToken(verifyToken);
+      },
     }
-  };
+  );
 
-  const requestVerfiyPhoneToken = async () => {
-    try {
-      await fetcher.post<{
-        data: string;
-      }>("/auth/verify/phone", {
-        phone: phone.replace(/[^0-9]/g, ""),
-        token: phoneVerifyToken,
-        code: phoneVerifyNumber,
-      });
-
-      toast("success", "인증에 성공했습니다.");
-      setPhoneVerifyed(true);
-      setIsVerifyModalOpen(false);
-    } catch (e: any | AxiosError) {
-      toast("error", e.response?.data?.message || "인증에 실패했습니다.");
-      return;
+  const { triggerFetch: requestVerfiyPhoneTokenFetch } = useFetch(
+    "/auth/verify/phone",
+    "POST",
+    {
+      successToast: {
+        message: "인증에 성공했습니다.",
+      },
+      onError: (status, message) => {
+        toast("error", message || "인증에 실패했습니다.");
+      },
+      onSuccess: () => {
+        setPhoneVerifyed(true);
+        setIsVerifyModalOpen(false);
+      },
     }
-  };
+  );
 
   const requestRegister = async () => {
     try {
@@ -124,7 +121,15 @@ const RegisterPage = () => {
                 }}
               />
               <Button
-                onClick={requestVerfiyPhone}
+                onClick={async () => {
+                  await requestVerfiyPhoneFetch({
+                    fetchInit: {
+                      data: {
+                        phone: phone.replace(/[^0-9]/g, ""),
+                      },
+                    },
+                  });
+                }}
                 disabled={!(phone.length > 3) || phoneVerifyed}
                 className={classNames(
                   "rounded-[10px] text-[14px] font-bold h-full w-40 whitespace-nowrap px-3.5 ml-3"
@@ -285,7 +290,15 @@ const RegisterPage = () => {
         <div className={classNames("px-7 py-6 font-light", inter.className)}>
           <span>문자메세지로 전송된 인증번호를 입력해주세요</span>
           <Button
-            onClick={requestVerfiyPhone}
+            onClick={async () => {
+              await requestVerfiyPhoneFetch({
+                fetchInit: {
+                  data: {
+                    phone: phone.replace(/[^0-9]/g, ""),
+                  },
+                },
+              });
+            }}
             variant="outline"
             className="mt-4 w-full font-semibold rounded-[6px] h-11 border-[#7C7C7C] text-[#7C7C7C]"
           >
@@ -325,7 +338,17 @@ const RegisterPage = () => {
             닫기
           </Button>
           <Button
-            onClick={requestVerfiyPhoneToken}
+            onClick={async () => {
+              await requestVerfiyPhoneTokenFetch({
+                fetchInit: {
+                  data: {
+                    phone: phone.replace(/[^0-9]/g, ""),
+                    token: phoneVerifyToken,
+                    code: phoneVerifyNumber,
+                  },
+                },
+              });
+            }}
             className="w-full rounded-br-[20px] border-none"
           >
             인증

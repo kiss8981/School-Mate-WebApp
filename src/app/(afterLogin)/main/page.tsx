@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { NextPage } from "next";
 import SchoolHeaderContainer from "./_component/SchoolHeadetContainer";
 import HeaderBadage from "./_component/HeaderBadage";
+import Advertisement from "./_component/Advertisement";
 
 const Main: NextPage = async () => {
   const auth = await getServerSession(authOptions);
@@ -21,7 +22,20 @@ const Main: NextPage = async () => {
             link="/timetable"
           />
         }
-      ></SchoolHeaderContainer>
+      >
+        <Advertisement
+          advertisement={[
+            {
+              image: "https://via.placeholder.com/350x200.png?text=350x200",
+              link: "https://via.placeholder.com/728x90.png?text=728x90",
+            },
+            {
+              image: "https://via.placeholder.com/350x200.png?text=350x200",
+              link: "https://via.placeholder.com/728x90.png?text=728x90",
+            },
+          ]}
+        />
+      </SchoolHeaderContainer>
     </>
   );
 };

@@ -39,7 +39,9 @@ const SchoolHeaderContainer = ({
         <SchoolHeader badge={badage} title={title} />
         <div
           style={{
-            paddingTop: "calc(env(safe-area-inset-top) + 64px)",
+            paddingTop: `calc(env(safe-area-inset-top) + ${
+              badage ? "85.5px + 64px" : "64px"
+            })`,
           }}
         >
           {children}
