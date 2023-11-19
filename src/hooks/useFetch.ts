@@ -43,8 +43,8 @@ export default function useFetch(
     }: UseFetchParams): Promise<{ response?: AxiosResponse; body: any }> {
       oOnPending ? oOnPending() : onPending && onPending();
       const successToastObject = oSuccessToast ?? successToast;
-
-      return client(url, {
+      const requestEndpoint = oFetchInit?.url ? oFetchInit.url : url;
+      return client(requestEndpoint, {
         method: type,
         ...oFetchInit,
         ...fetchInit,
@@ -53,7 +53,7 @@ export default function useFetch(
           if (successToastObject) {
             toast("success", successToastObject.message);
           }
-          
+
           if (oOnSuccess || onSuccess) {
             oOnSuccess
               ? oOnSuccess(

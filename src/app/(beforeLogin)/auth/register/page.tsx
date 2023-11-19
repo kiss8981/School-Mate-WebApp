@@ -1,7 +1,6 @@
 "use client";
 
 import Button from "@/app/_component/Button";
-import Header from "@/app/_component/Header";
 import HeaderContainer from "@/app/_component/HeaderContainer";
 import Input from "@/app/_component/Input";
 import Modal from "@/app/_component/Modal";
@@ -10,7 +9,7 @@ import fetcher from "@/lib/fetch";
 import { inter } from "@/lib/fonts";
 import { stackRouterPush } from "@/lib/stackRouter";
 import { classNames, passwordCheck as passwordCheckr } from "@/lib/uitls";
-import { sendWebviewEvent, toast } from "@/lib/webviewHandler";
+import { toast } from "@/lib/webviewHandler";
 import { AxiosError } from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -29,6 +28,11 @@ const RegisterPage = () => {
   const [phoneVerifyNumber, setPhoneVerifyNumber] = useState("");
   const [phoneVerifyed, setPhoneVerifyed] = useState(false);
   const [useCustomEmail, setUseCustomEmail] = useState(false);
+  const [agreementModalOpen, setAgreementModalOpen] = useState(true);
+  const [agreementMarketing, setAgreementMarketing] = useState(false);
+  const [agreementTerms, setAgreementTerms] = useState(false);
+  const [agreementPrivacy, setAgreementPrivacy] = useState(false);
+  const [agreementAge, setAgreementAge] = useState(false);
   const [successRegisterModalOpen, setSuccessRegisterModalOpen] =
     useState(false);
   const { triggerFetch: requestVerfiyPhoneFetch } = useFetch(
@@ -367,6 +371,7 @@ const RegisterPage = () => {
             "py-6 font-bold w-full px-4 flex flex-col",
             inter.className
           )}
+          onDragEnd={(e) => {}}
         >
           <Image
             src="/icons/Check.svg"
