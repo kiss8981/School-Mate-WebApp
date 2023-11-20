@@ -32,7 +32,11 @@ const VerifyPage = async () => {
 
   return (
     <>
-      <HeaderContainer backIcon={false} title="학교인증" className="relative h-[100vh] w-[100vw]">
+      <HeaderContainer
+        backIcon={false}
+        title="학교인증"
+        className="relative h-[100vh]"
+      >
         <VerifyRequest verifys={verifyList} auth={auth} />
       </HeaderContainer>
     </>

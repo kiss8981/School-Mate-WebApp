@@ -2361,10 +2361,10 @@ scheduler@^0.23.0:
   dependencies:
     loose-envify "^1.1.0"
 
-schoolmate-types@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/schoolmate-types/-/schoolmate-types-1.0.3.tgz#bde7600583d11d7c846cafffeb780af43bc507fc"
-  integrity sha512-4zePRVvzP7xnfFqN/ypbW8qDSsKyBnPxiVYjyvw2GWDKufNFUb/ph9yz2wZkh0DblpScii5zrCK6tvyMUjiT2A==
+schoolmate-types@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/schoolmate-types/-/schoolmate-types-1.0.4.tgz#6d627101dc6c85a9c12393eec7c10e0753a3eda7"
+  integrity sha512-bCoLX3EFfVCUYrxMyCXx/+nF6L30VQ6JMm1NK5m11is0H5Qxj+8KfJIdNtQm4Wxy/k4feOMQhHusW0dWy7+DWw==
 
 semver@^6.3.0, semver@^6.3.1:
   version "6.3.1"

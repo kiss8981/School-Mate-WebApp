@@ -7,6 +7,7 @@ declare module "next-auth" {
       user: UserWithSchool;
       token: {
         accessToken: string;
+        refreshToken: string;
         expiresIn: number;
       };
       registered: boolean;

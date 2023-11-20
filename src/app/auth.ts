@@ -8,7 +8,7 @@ import client from "@/lib/fetch";
 interface Credentials {
   phone?: string;
   password?: string;
-  provider: "id" | "kakao" | "google";
+  provider: "id" | "kakao" | "google" | "app";
   code?: string;
 }
 
@@ -36,6 +36,15 @@ export const authOptions: AuthOptions = {
               phone: phone?.replace(/-/g, ""),
               password,
             });
+            return loginData.data;
+          } catch (e) {
+            return null;
+          }
+        } else if (provider === "app") {
+          try {
+            const { data: loginData } = await client.get<Response<any>>(
+              `/auth/applogin?code=${code}`
+            );
             return loginData.data;
           } catch (e) {
             return null;

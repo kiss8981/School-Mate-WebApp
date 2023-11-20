@@ -37,7 +37,7 @@
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
-    "schoolmate-types": "^1.0.3",
+    "schoolmate-types": "1.0.4",
     "tailwindcss": "latest",
     "typescript": "latest"
   }

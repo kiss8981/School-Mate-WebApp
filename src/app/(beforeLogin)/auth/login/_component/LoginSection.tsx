@@ -1,11 +1,11 @@
 "use client";
 
 import { classNames } from "@/lib/uitls";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";
 import Button from "@/app/_component/Button";
-import { toast } from "@/lib/webviewHandler";
+import { sendWebviewEvent, toast } from "@/lib/webviewHandler";
 import { useRouter } from "next/navigation";
 import { stackRouterPush } from "@/lib/stackRouter";
 
@@ -26,7 +26,25 @@ const LoginSection = () => {
     if (!res?.ok) {
       toast("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
     } else {
-      stackRouterPush(router, "/", "reset");
+      const session = await getSession();
+
+      if (!session?.user) {
+        toast("error", "로그인에 실패하였습니다.");
+        return;
+      }
+
+      if (window.ReactNativeWebView) {
+        sendWebviewEvent("LOGIN_EVENT", {
+          type: "callback",
+          loginType: "phone",
+          token: {
+            accessToken: session?.user.token.accessToken,
+            refreshToken: session?.user.token.refreshToken,
+          },
+        });
+      } else {
+        stackRouterPush(router, "/", "reset");
+      }
     }
   };
 
@@ -41,7 +59,7 @@ const LoginSection = () => {
             phone.length > 3 && "border-primary-500"
           )}
           value={phone}
-          onChange={(e) =>
+          onChange={e =>
             setPhone(
               e.target.value
                 ?.replace(/[^0-9]/g, "")
@@ -54,7 +72,7 @@ const LoginSection = () => {
           <input
             type={isPasswordVisible ? "text" : "password"}
             placeholder="비밀번호"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             className={classNames(
               "border-b rounded-none pb-2 w-full px-1 hover:border-primary-500 focus:border-primary-500 ring-0 outline-none",
               password.length > 3 && "border-primary-500"
