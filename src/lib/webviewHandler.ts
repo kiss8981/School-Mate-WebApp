@@ -1,7 +1,7 @@
 import { toast as WebToast } from "react-toastify";
 
 export const sendWebviewEvent = (
-  type: "ROUTER_EVENT" | "LOGIN_EVENT" | "TOAST_EVENT",
+  type: "ROUTER_EVENT" | "LOGIN_EVENT" | "TOAST_EVENT" | "PERMISSION_EVENT",
   data: any
 ): void => {
   window.ReactNativeWebView.postMessage(

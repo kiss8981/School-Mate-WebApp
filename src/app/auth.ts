@@ -42,7 +42,7 @@ export const authOptions: AuthOptions = {
           }
         } else if (provider === "app") {
           try {
-            const { data: loginData } = await client.get<Response<any>>(
+            const { data: loginData } = await client.post<Response<any>>(
               `/auth/applogin?code=${code}`
             );
             return loginData.data;

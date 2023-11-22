@@ -8,7 +8,6 @@ import Advertisement from "./_component/Advertisement";
 
 const Main: NextPage = async () => {
   const auth = await getServerSession(authOptions);
-  console.log(auth);
 
   if (!auth || !auth.user.registered) return redirect("/intro");
   if (!auth.user.user.userSchool) return redirect("/verify");

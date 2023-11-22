@@ -1,6 +1,8 @@
 "use client";
 
+import BottomSheet from "@/app/_component/BottomSheet";
 import Button from "@/app/_component/Button";
+import Checkbox from "@/app/_component/Checkbox";
 import HeaderContainer from "@/app/_component/HeaderContainer";
 import Input from "@/app/_component/Input";
 import Modal from "@/app/_component/Modal";
@@ -13,7 +15,7 @@ import { toast } from "@/lib/webviewHandler";
 import { AxiosError } from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -388,6 +390,187 @@ const RegisterPage = () => {
           </span>
         </div>
       </Modal>
+
+      <BottomSheet
+        className={classNames(inter.className)}
+        canClose={false}
+        height="50vh"
+        isOpened={agreementModalOpen}
+      >
+        <button
+          onClick={() => {
+            setAgreementPrivacy(true);
+            setAgreementTerms(true);
+            setAgreementAge(true);
+            setAgreementMarketing(true);
+
+            if (
+              agreementPrivacy &&
+              agreementTerms &&
+              agreementAge &&
+              agreementMarketing
+            ) {
+              setAgreementPrivacy(false);
+              setAgreementTerms(false);
+              setAgreementAge(false);
+              setAgreementMarketing(false);
+            }
+          }}
+          className="w-full bg-[#F9F9F9] h-16 flex flex-row items-center px-4 rounded-[10px]"
+        >
+          <Checkbox
+            checked={
+              agreementPrivacy &&
+              agreementTerms &&
+              agreementAge &&
+              agreementMarketing
+            }
+            className="h-5 w-5 mr-3"
+          />
+          <span className="font-bold text-lg">약관 전체 동의</span>
+        </button>
+
+        <div className="w-full h-10 mt-4 flex flex-row justify-between items-center px-4">
+          <button
+            className="flex items-center justify-center"
+            onClick={() => {
+              setAgreementTerms(!agreementTerms);
+            }}
+          >
+            <Checkbox className="h-5 w-5 mr-3" checked={agreementTerms} />
+            <span className="font-bold text-lg">
+              스쿨메이트 이용 약관
+              <span className="text-sm font-normal ml-1 text-[#7c7c7c]">
+                (필수)
+              </span>
+            </span>
+          </button>
+          <button
+            onClick={() => {
+              stackRouterPush(router, "/tos", "stack");
+            }}
+          >
+            <Image
+              src="/icons/Back.svg"
+              alt="arrow"
+              width={12}
+              height={12}
+              className="ml-auto rotate-180"
+              style={{
+                filter:
+                  "invert(80%) sepia(2%) saturate(31%) hue-rotate(325deg) brightness(91%) contrast(93%)",
+              }}
+            />
+          </button>
+        </div>
+        <div className="w-full h-10 mt-4 flex flex-row justify-between items-center px-4">
+          <button
+            className="flex items-center justify-center"
+            onClick={() => {
+              setAgreementPrivacy(!agreementPrivacy);
+            }}
+          >
+            <Checkbox
+              className="h-5 w-5 mr-3"
+              checked={agreementPrivacy}
+              onChange={(e) => {
+                setAgreementPrivacy(e.target.checked);
+              }}
+            />
+            <span className="font-bold text-lg">
+              개인정보 수집 및 이용
+              <span className="text-sm font-normal ml-1 text-[#7c7c7c]">
+                (필수)
+              </span>
+            </span>
+          </button>
+          <button
+            onClick={() => {
+              stackRouterPush(router, "/privacy", "stack");
+            }}
+          >
+            <Image
+              src="/icons/Back.svg"
+              alt="arrow"
+              width={12}
+              height={12}
+              className="ml-auto rotate-180"
+              style={{
+                filter:
+                  "invert(80%) sepia(2%) saturate(31%) hue-rotate(325deg) brightness(91%) contrast(93%)",
+              }}
+            />
+          </button>
+        </div>
+        <div className="w-full h-10 mt-4 flex flex-row justify-between items-center px-4">
+          <button
+            className="flex items-center justify-center"
+            onClick={() => {
+              setAgreementAge(!agreementAge);
+            }}
+          >
+            <Checkbox
+              className="h-5 w-5 mr-3"
+              checked={agreementAge}
+              onChange={(e) => {
+                setAgreementAge(e.target.checked);
+              }}
+            />
+            <span className="font-bold text-lg">
+              만 12세 이상입니다.
+              <span className="text-sm font-normal ml-1 text-[#7c7c7c]">
+                (필수)
+              </span>
+            </span>
+          </button>
+        </div>
+        <div className="w-full h-10 mt-4 flex flex-row justify-between items-center px-4">
+          <button
+            onClick={() => {
+              setAgreementMarketing(!agreementMarketing);
+            }}
+            className="flex items-center justify-center"
+          >
+            <Checkbox
+              className="h-5 w-5 mr-3"
+              checked={agreementMarketing}
+              onChange={(e) => {
+                setAgreementMarketing(e.target.checked);
+              }}
+            />
+            <span className="font-bold text-lg">
+              광고성 정보 수신 동의
+              <span className="text-sm font-normal ml-1 text-[#7c7c7c]">
+                (선택)
+              </span>
+            </span>
+          </button>
+        </div>
+        <Button
+          className="w-full rounded-full h-14 mt-5"
+          onClick={() => {
+            if (agreementAge && agreementPrivacy && agreementTerms) {
+              setAgreementModalOpen(false);
+            } else {
+              if (
+                !agreementPrivacy ||
+                !agreementTerms ||
+                !agreementAge ||
+                !agreementMarketing
+              ) {
+                setAgreementPrivacy(true);
+                setAgreementTerms(true);
+                setAgreementAge(true);
+                setAgreementMarketing(true);
+              }
+            }
+          }}
+        >
+          {agreementAge && agreementPrivacy && agreementTerms
+            ? "동의하고 가입하기"
+            : "전체 동의하기"}
+        </Button>
+      </BottomSheet>
     </>
   );
 };

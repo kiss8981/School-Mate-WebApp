@@ -1,11 +1,11 @@
 import { Session, getServerSession } from "next-auth";
-import { authOptions } from "../auth";
+import { authOptions } from "@/app/auth";
 import { redirect } from "next/navigation";
 import fetcher from "@/lib/fetch";
 import { UserSchoolVerify } from "schoolmate-types";
-import Error from "../_component/Error";
+import Error from "@/app/_component/Error";
 import VerifyRequest from "./_component/verfiyRequest";
-import HeaderContainer from "../_component/HeaderContainer";
+import HeaderContainer from "@/app/_component/HeaderContainer";
 
 async function getVerifyList(
   auth: Session

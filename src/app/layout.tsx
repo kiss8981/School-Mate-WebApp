@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
 import "./globals.css";
+import "github-markdown-css/github-markdown.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",

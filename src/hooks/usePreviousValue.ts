@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
-const usePreviousValue = (value: boolean) => {
-  const previousValueRef = useRef<boolean>();
+const usePreviousValue = (value: any) => {
+  const previousValueRef = useRef();
 
   useEffect(() => {
     previousValueRef.current = value;
