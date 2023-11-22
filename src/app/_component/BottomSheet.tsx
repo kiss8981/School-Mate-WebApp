@@ -66,7 +66,6 @@ const BottomSheet = ({
   canClose?: boolean;
   isOpened: boolean;
   className?: string;
-  height?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(isOpened);
   const controls = useAnimation();
@@ -97,6 +96,10 @@ const BottomSheet = ({
   useEffect(() => {
     if (prevIsOpen && !isOpen) {
       controls.start("hidden");
+
+      setTimeout(() => {
+        controls.set("closed");
+      }, 300);
     } else if (!prevIsOpen && isOpen) {
       controls.start("visible");
     }
@@ -112,7 +115,7 @@ const BottomSheet = ({
         initial="hidden"
         animate={controls}
         style={{
-          paddingBottom: "env(safe-area-inset-bottom)",
+          paddingBottom: "calc(env(safe-area-inset-bottom) + 15px)",
         }}
         transition={{
           type: "spring",
@@ -120,8 +123,9 @@ const BottomSheet = ({
           stiffness: 400,
         }}
         variants={{
-          visible: { y: 0 },
+          visible: { y: 0, visibility: "visible" },
           hidden: { y: "100vh" },
+          closed: { visibility: "hidden" },
         }}
         dragConstraints={{ top: 0 }}
         dragElastic={0.2}

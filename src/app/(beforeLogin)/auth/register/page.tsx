@@ -117,7 +117,7 @@ const RegisterPage = () => {
                 value={phone}
                 disabled={phoneVerifyed}
                 autoFocus
-                onChange={(e) => {
+                onChange={e => {
                   setPhone(
                     e.target.value
                       ?.replace(/[^0-9]/g, "")
@@ -156,7 +156,7 @@ const RegisterPage = () => {
               placeholder="이름을 입력하세요"
               className="w-full py-3.5 h-[50px] mt-1"
               value={name}
-              onChange={(e) => {
+              onChange={e => {
                 setName(e.target.value);
               }}
             />
@@ -174,7 +174,7 @@ const RegisterPage = () => {
                 className="w-full py-3.5 h-full pr-24"
                 value={password}
                 type="password"
-                onChange={(e) => {
+                onChange={e => {
                   setPassword(e.target.value);
                 }}
               />
@@ -197,7 +197,7 @@ const RegisterPage = () => {
                 className="w-full py-3.5 h-full pr-36"
                 type="password"
                 value={passwordCheck}
-                onChange={(e) => {
+                onChange={e => {
                   setPasswordCheck(e.target.value);
                 }}
               />
@@ -224,7 +224,7 @@ const RegisterPage = () => {
                 placeholder="이메일"
                 className="w-full py-3.5 h-full"
                 value={email}
-                onChange={(e) => {
+                onChange={e => {
                   setEmail(e.target.value);
                 }}
               />
@@ -233,7 +233,7 @@ const RegisterPage = () => {
                 <Input
                   className="w-full py-3.5 h-full"
                   value={emailDomain}
-                  onChange={(e) => {
+                  onChange={e => {
                     setEmailDomain(e.target.value);
                   }}
                 />
@@ -242,7 +242,7 @@ const RegisterPage = () => {
                   <select
                     className="w-full h-full text-[14px] font-bold rounded-[10px] px-2 bg-[#f9f9f9]"
                     defaultValue="선택"
-                    onChange={(e) => {
+                    onChange={e => {
                       if (e.target.value === "직접입력") {
                         setUseCustomEmail(true);
                         return;
@@ -323,7 +323,7 @@ const RegisterPage = () => {
               type="number"
               placeholder="인증번호 입력"
               className="w-full bg-white border-b-2 pr-2 pl-9 rounded-none py-3"
-              onChange={(e) => {
+              onChange={e => {
                 setPhoneVerifyNumber(e.target.value);
               }}
               autoFocus
@@ -373,7 +373,7 @@ const RegisterPage = () => {
             "py-6 font-bold w-full px-4 flex flex-col",
             inter.className
           )}
-          onDragEnd={(e) => {}}
+          onDragEnd={e => {}}
         >
           <Image
             src="/icons/Check.svg"
@@ -394,7 +394,6 @@ const RegisterPage = () => {
       <BottomSheet
         className={classNames(inter.className)}
         canClose={false}
-        height="50vh"
         isOpened={agreementModalOpen}
       >
         <button
@@ -473,7 +472,7 @@ const RegisterPage = () => {
             <Checkbox
               className="h-5 w-5 mr-3"
               checked={agreementPrivacy}
-              onChange={(e) => {
+              onChange={e => {
                 setAgreementPrivacy(e.target.checked);
               }}
             />
@@ -512,7 +511,7 @@ const RegisterPage = () => {
             <Checkbox
               className="h-5 w-5 mr-3"
               checked={agreementAge}
-              onChange={(e) => {
+              onChange={e => {
                 setAgreementAge(e.target.checked);
               }}
             />
@@ -534,7 +533,7 @@ const RegisterPage = () => {
             <Checkbox
               className="h-5 w-5 mr-3"
               checked={agreementMarketing}
-              onChange={(e) => {
+              onChange={e => {
                 setAgreementMarketing(e.target.checked);
               }}
             />

@@ -13,6 +13,7 @@ import { Collapse } from "react-collapse";
 import { toast } from "@/lib/webviewHandler";
 import Button from "@/app/_component/Button";
 import { LoadingFullPage } from "@/app/_component/Loading";
+import { useRouter } from "next/navigation";
 
 const VerifyRequest: React.FC<{
   verifys: UserSchoolVerify[];
@@ -21,6 +22,7 @@ const VerifyRequest: React.FC<{
   const [requestVerify, setRequestVerify] = useState<boolean>(
     verifys.length === 0
   );
+  const router = useRouter();
   const imageRef = React.useRef<HTMLInputElement>(null);
   const [schoolName, setSchoolName] = useState<string>("");
   const [schoolList, setSchoolList] = useState<SchoolInfoRow[]>();
@@ -117,6 +119,7 @@ const VerifyRequest: React.FC<{
           "success",
           "인증 요청이 완료되었습니다. 인증까지 최대 3일이 소요됩니다."
         );
+        router.refresh();
       },
       onError: (code, message) => {
         setLoadingSchool(false);
@@ -137,7 +140,7 @@ const VerifyRequest: React.FC<{
           <span className="font-bold mt-1 text-xl">학교를 찾아보세요!</span>
           <form
             className="w-full relative mt-2"
-            onSubmit={(e) => {
+            onSubmit={e => {
               e.preventDefault();
 
               findSchools({
@@ -152,7 +155,7 @@ const VerifyRequest: React.FC<{
             <Input
               placeholder="학교명을 입력해주세요."
               className="w-full px-4 pr-12 h-12"
-              onChange={(e) => setSchoolName(e.target.value)}
+              onChange={e => setSchoolName(e.target.value)}
               disabled={loadingSchoolList}
             />
             <button className="absolute right-3 top-3.5">
@@ -190,7 +193,7 @@ const VerifyRequest: React.FC<{
           <Collapse isOpened={schoolList ? true : false}>
             <div className="mt-2 relative">
               <select
-                onChange={(e) => {
+                onChange={e => {
                   findSchool({
                     fetchInit: {
                       url: `/school/${e.target.value}/class`,
@@ -198,7 +201,7 @@ const VerifyRequest: React.FC<{
                   });
                   setSchool(
                     schoolList?.find(
-                      (school) => school.SD_SCHUL_CODE === e.target.value
+                      school => school.SD_SCHUL_CODE === e.target.value
                     )
                   );
                 }}
@@ -207,7 +210,7 @@ const VerifyRequest: React.FC<{
                 <option value="">학교를 선택해주세요.</option>
                 {schoolList && (
                   <>
-                    {schoolList.map((school) => (
+                    {schoolList.map(school => (
                       <option
                         key={school.SD_SCHUL_CODE}
                         value={school.SD_SCHUL_CODE}
@@ -281,7 +284,7 @@ const VerifyRequest: React.FC<{
               반과 학과를 선택해주세요
             </span>
             <select
-              onChange={(e) => {
+              onChange={e => {
                 setClassNum(e.target.value);
               }}
               value={classNum}
@@ -289,7 +292,7 @@ const VerifyRequest: React.FC<{
             >
               <option value="choose">반을 선택해주세요</option>
               {selectSchool
-                ?.filter((school) => school.GRADE === grade)
+                ?.filter(school => school.GRADE === grade)
                 .reduce(function (acc: ClassInfoRow[], current) {
                   if (
                     acc.findIndex(
@@ -311,14 +314,14 @@ const VerifyRequest: React.FC<{
             </select>
             {selectSchool &&
             !selectSchool
-              .filter((school) => school.GRADE === grade)
-              .filter((school) => school.CLASS_NM === classNum)[0]?.DDDEP_NM ? (
+              .filter(school => school.GRADE === grade)
+              .filter(school => school.CLASS_NM === classNum)[0]?.DDDEP_NM ? (
               <></>
             ) : (
               <>
                 <Collapse isOpened={classNum ? true : false}>
                   <select
-                    onChange={(e) => {
+                    onChange={e => {
                       setDepartment(e.target.value);
                     }}
                     value={department}
@@ -326,8 +329,8 @@ const VerifyRequest: React.FC<{
                   >
                     <option value="choose">학과를 선택해주세요</option>
                     {selectSchool
-                      ?.filter((school) => school.GRADE === grade)
-                      .filter((school) => school.CLASS_NM === classNum)
+                      ?.filter(school => school.GRADE === grade)
+                      .filter(school => school.CLASS_NM === classNum)
                       .map((school, index) => (
                         <option key={index} value={school.DDDEP_NM}>
                           {school.DDDEP_NM}
@@ -341,8 +344,8 @@ const VerifyRequest: React.FC<{
         </Collapse>
         {(selectSchool &&
           !selectSchool
-            .filter((school) => school.GRADE === grade)
-            .filter((school) => school.CLASS_NM === classNum)[0]?.DDDEP_NM &&
+            .filter(school => school.GRADE === grade)
+            .filter(school => school.CLASS_NM === classNum)[0]?.DDDEP_NM &&
           classNum) ||
         classNum ? (
           <div className="fixed bottom-8 px-5 w-full">
@@ -356,8 +359,8 @@ const VerifyRequest: React.FC<{
                 }
                 if (
                   (selectSchool
-                    ?.filter((school) => school.GRADE === grade)
-                    .filter((school) => school.CLASS_NM === classNum)[0]
+                    ?.filter(school => school.GRADE === grade)
+                    .filter(school => school.CLASS_NM === classNum)[0]
                     ?.DDDEP_NM &&
                     department === "choose") ||
                   !department
@@ -408,7 +411,7 @@ const VerifyRequest: React.FC<{
             accept="image/*"
             className="hidden"
             ref={imageRef}
-            onChange={(e) => {
+            onChange={e => {
               if (e.target.files) {
                 const file = e.target.files[0];
                 setVerifyImage(file);
@@ -450,7 +453,7 @@ const VerifyRequest: React.FC<{
             )}
           </div>
 
-          <div className="flex flex-col mt-10 text-[#7c7c7c] text-sm">
+          <div className="flex flex-col mt-10 text-[#7c7c7c] text-sm pb-32">
             <div className="flex flex-row">
               <span className="mr-2">1.</span>
               <span>
@@ -504,6 +507,30 @@ const VerifyRequest: React.FC<{
 
   return (
     <>
+      <div className="flex flex-col px-4">
+        {verifys.map((verify, index) => (
+          <>
+            <div key={index} className="w-full bg-gray-500 rounded-[10px]">
+              <div>
+                <div className="flex flex-row items-center justify-between px-2">
+                  <div className="flex flex-row items-center">
+                    <span className="rounded-full bg-primary-500 flex items-center justify-center text-white w-5 h-5 text-sm font-bold">
+                      {index + 1}
+                    </span>
+                    <span className="ml-2 font-bold text-xl">
+                      {verify.schoolName}
+                    </span>
+
+                    <span className="ml-2 text-sm text-[#7c7c7c]">
+                      {verify.dept}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        ))}
+      </div>
       <div className="fixed bottom-8 px-5 w-full">
         <Button
           className="rounded-full mt-auto w-full h-14 backdrop-blur-md drop-shadow-xl"
