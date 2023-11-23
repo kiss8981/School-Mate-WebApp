@@ -27,6 +27,41 @@ const config: Config = {
           900: "#192FA1",
         },
       },
+      keyframes: ({ theme }) => ({
+        loading: {
+          "0%": {
+            opacity: ".2",
+          },
+          "20%": {
+            opacity: "1",
+            transform: "translateX(1px)",
+          },
+          to: {
+            opacity: ".2",
+          },
+        },
+        shimmer: {
+          "100%": {
+            transform: "translateX(100%)",
+          },
+        },
+        translateXReset: {
+          "100%": {
+            transform: "translateX(0)",
+          },
+        },
+        fadeToTransparent: {
+          "0%": {
+            opacity: "1",
+          },
+          "40%": {
+            opacity: "1",
+          },
+          "100%": {
+            opacity: "0",
+          },
+        },
+      }),
     },
   },
   plugins: [],

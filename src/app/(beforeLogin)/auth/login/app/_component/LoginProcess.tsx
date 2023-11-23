@@ -23,7 +23,6 @@ const LoginProcess: React.FC<{
         stackRouterPush(router, "/auth/login", "reset");
       } else {
         const session = await getSession();
-        console.log(session);
         if (!session?.user) {
           toast("error", "로그인에 실패하였습니다.");
           return;

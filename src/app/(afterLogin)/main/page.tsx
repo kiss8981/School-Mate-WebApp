@@ -5,6 +5,16 @@ import { NextPage } from "next";
 import SchoolHeaderContainer from "./_component/SchoolHeadetContainer";
 import HeaderBadage from "./_component/HeaderBadage";
 import Advertisement from "./_component/Advertisement";
+import { Suspense } from "react";
+import {
+  RecommnedArticleSkeleton,
+  RecommentArticle,
+} from "./_component/RecommnedArticle";
+import fetcher from "@/lib/fetch";
+import { classNames } from "@/lib/uitls";
+import { inter } from "@/lib/fonts";
+import Image from "next/image";
+import SectionTitle from "./_component/SectionTitle";
 
 const Main: NextPage = async () => {
   const auth = await getServerSession(authOptions);
@@ -36,6 +46,19 @@ const Main: NextPage = async () => {
             },
           ]}
         />
+
+        <div className={classNames("px-5 pt-4", inter.className)}>
+          <SectionTitle title="인기 게시물" subTitle="즐겨찾는 게시판" path="/suggest" />
+          <Suspense fallback={<RecommnedArticleSkeleton />}>
+            <RecommentArticle
+              data={fetcher(`/board/suggest`, {
+                headers: {
+                  Authorization: `Bearer ${auth.user.token.accessToken}`,
+                },
+              })}
+            />
+          </Suspense>
+        </div>
       </SchoolHeaderContainer>
     </>
   );

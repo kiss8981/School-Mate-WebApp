@@ -16,11 +16,12 @@ const Advertisement: React.FC<{
   const [avtivePage, setActivePage] = useState(0);
   return (
     <>
-      <section className="py-4 px-5 relative">
+      <section className="pt-4 px-5 relative">
         <div
-          className="absolute right-7 bottom-6 z-10 items-center flex justify-center rounded-[10px]"
+          className="absolute right-8 bottom-3 items-center flex justify-center rounded-[10px]"
           style={{
             background: "rgba(0, 0, 0, 0.32)",
+            zIndex: 5
           }}
         >
           <span className="text-white text-xs px-2 py-1 rounded-full">
@@ -28,7 +29,7 @@ const Advertisement: React.FC<{
           </span>
         </div>
         <Swiper
-          className="w-full relative rounded-xl overflow-hidden h-[200px]"
+          className="w-full relative rounded-[20px] overflow-hidden h-[200px]"
           onSlideChange={(swiper) => setActivePage(swiper.activeIndex)}
         >
           {advertisement.map((ad, index) => (

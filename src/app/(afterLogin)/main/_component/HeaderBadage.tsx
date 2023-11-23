@@ -19,7 +19,7 @@ const HeaderBadage: React.FC<{
         onClick={() => {
           stackRouterPush(router, link, "stack");
         }}
-        className="w-full rounded-[14px] bg-[#f3f4f8] justify-between items-center pl-4 pr-5 flex flex-row py-4"
+        className="w-full rounded-[14px] bg-[#f3f4f8] justify-between items-center pl-4 pr-5 flex flex-row py-4 z-50"
       >
         <div className="flex flex-col items-start">
           <span

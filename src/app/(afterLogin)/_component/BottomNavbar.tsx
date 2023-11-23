@@ -17,7 +17,7 @@ export default function BottomNavbar() {
   return (
     <>
       <div
-        className="fixed bottom-0 bg-whtie min-w-[280px] max-w-[540px] pt-2 flex items-center w-full z-50"
+        className="fixed bottom-0 bg-whtie min-w-[280px] max-w-[540px] pt-2 flex items-center w-full z-50 bg-white"
         style={{
           paddingBottom: useAgent.includes("ios")
             ? "calc(env(safe-area-inset-bottom) - 0.2rem)"
@@ -25,7 +25,7 @@ export default function BottomNavbar() {
           boxShadow: "0px -4px 30px rgba(0, 0, 0, 0.04)",
         }}
       >
-        <div className="flex flex-row px-5 justify-between items-center w-full">
+        <div className="flex flex-row px-10 justify-between items-center w-full py-2">
           <Link
             className="h-[45px] flex flex-col justify-between items-center"
             href="/main"
@@ -90,41 +90,6 @@ export default function BottomNavbar() {
                   width={30}
                   height={30}
                   className="cursor-pointer"
-                />
-              </>
-            )}
-          </Link>
-          <Link
-            className="h-[62px] flex flex-col justify-between items-center"
-            href="/dashboard"
-          >
-            {pathname === "/dashboard" ? (
-              <>
-                <Image
-                  src="/icons/Plus.svg"
-                  alt="plus"
-                  width={45}
-                  height={45}
-                  className="cursor-pointer"
-                  onClick={() => router.push("/")}
-                />
-                <Image
-                  src="/icons/DotPlus.svg"
-                  alt="dotPlus"
-                  width={6}
-                  height={6}
-                  className="cursor-pointer"
-                />
-              </>
-            ) : (
-              <>
-                <Image
-                  src="/icons/Plus.svg"
-                  alt="plus"
-                  width={45}
-                  height={45}
-                  className="cursor-pointer"
-                  onClick={() => router.push("/")}
                 />
               </>
             )}
