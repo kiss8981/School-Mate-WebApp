@@ -7,13 +7,15 @@ import { useEffect } from "react";
 import LoginProcess from "./_component/LoginProcess";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/auth";
+import { cookies } from "next/headers";
 
 const requestLogin = async (token: string) => {
   const loginData = await getServerSession(authOptions);
+  if (!loginData) return null;
 
   return {
     token,
-    isLogged: loginData?.user ? true : false,
+    isLogged: loginData?.user.user.userSchool ? true : false,
   };
 };
 
