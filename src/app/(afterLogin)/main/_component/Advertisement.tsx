@@ -1,9 +1,9 @@
 "use client";
 
+import { sendWebviewEvent } from "@/lib/webviewHandler";
 import Image from "next/image";
-import { useRef, useState } from "react";
-import swiper from "swiper";
-import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
+import { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 interface Props {
   image: string;
@@ -21,19 +21,27 @@ const Advertisement: React.FC<{
           className="absolute right-8 bottom-3 items-center flex justify-center rounded-[10px]"
           style={{
             background: "rgba(0, 0, 0, 0.32)",
-            zIndex: 5
+            zIndex: 5,
           }}
         >
           <span className="text-white text-xs px-2 py-1 rounded-full">
-            {avtivePage + 1}{" "}/{" "}{advertisement.length}
+            {avtivePage + 1} / {advertisement.length}
           </span>
         </div>
         <Swiper
           className="w-full relative rounded-[20px] overflow-hidden h-[200px]"
-          onSlideChange={(swiper) => setActivePage(swiper.activeIndex)}
+          onSlideChange={swiper => setActivePage(swiper.activeIndex)}
         >
           {advertisement.map((ad, index) => (
-            <SwiperSlide key={index} className="relative">
+            <SwiperSlide
+              key={index}
+              className="relative"
+              onClick={() => {
+                sendWebviewEvent("OPEN_BROWSER_EVENT", {
+                  url: ad.link,
+                });
+              }}
+            >
               <Image alt="ad" src={ad.image} objectFit="cover" layout="fill" />
             </SwiperSlide>
           ))}

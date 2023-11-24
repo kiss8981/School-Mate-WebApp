@@ -1,15 +1,26 @@
 import { toast as WebToast } from "react-toastify";
 
 export const sendWebviewEvent = (
-  type: "ROUTER_EVENT" | "LOGIN_EVENT" | "TOAST_EVENT" | "PERMISSION_EVENT",
+  type:
+    | "ROUTER_EVENT"
+    | "LOGIN_EVENT"
+    | "TOAST_EVENT"
+    | "PERMISSION_EVENT"
+    | "OPEN_BROWSER_EVENT",
   data: any
 ): void => {
-  window.ReactNativeWebView.postMessage(
-    JSON.stringify({
-      type: type,
-      data: data,
-    })
-  );
+  if (!window || !window.ReactNativeWebView) {
+    if (type === "OPEN_BROWSER_EVENT") {
+      window.open(data.url, "_blank");
+    }
+  } else {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        type: type,
+        data: data,
+      })
+    );
+  }
 };
 
 export const toast = (type: "success" | "error", message: string): void => {

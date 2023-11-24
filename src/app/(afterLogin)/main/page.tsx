@@ -14,7 +14,9 @@ import fetcher from "@/lib/fetch";
 import { classNames } from "@/lib/uitls";
 import { inter } from "@/lib/fonts";
 import Image from "next/image";
-import SectionTitle from "./_component/SectionTitle";
+import SectionContainer from "./_component/SectionContainer";
+import TipsSection from "./_component/TipsSection";
+import { Asked, AskedSkeleton } from "./_component/Asked";
 
 const Main: NextPage = async () => {
   const auth = await getServerSession(authOptions);
@@ -25,7 +27,11 @@ const Main: NextPage = async () => {
   return (
     <>
       <SchoolHeaderContainer
-        title="가천고등학교"
+        title={
+          auth.user.user.userSchool.school.name
+            ? auth.user.user.userSchool.school.name
+            : auth.user.user.userSchool.school.defaultName
+        }
         badage={
           <HeaderBadage
             title="👀 스쿨메이트를 잘 사용하고 계신가요?"
@@ -46,9 +52,11 @@ const Main: NextPage = async () => {
             },
           ]}
         />
-
-        <div className={classNames("px-5 pt-4", inter.className)}>
-          <SectionTitle title="인기 게시물" subTitle="즐겨찾는 게시판" path="/suggest" />
+        <SectionContainer
+          title="즐겨찾는 게시판"
+          subTitle="인기 게시물"
+          path="/suggest"
+        >
           <Suspense fallback={<RecommnedArticleSkeleton />}>
             <RecommentArticle
               data={fetcher(`/board/suggest`, {
@@ -58,7 +66,27 @@ const Main: NextPage = async () => {
               })}
             />
           </Suspense>
-        </div>
+        </SectionContainer>
+        <TipsSection
+          title="가이드 보러가기"
+          description="스쿨메이트가 처음이세요?"
+          link="/tips"
+        />
+        <SectionContainer
+          title="교내 친구들 찾기"
+          subTitle="에스크 기능을 통해"
+          path="/ask"
+        >
+          <Suspense fallback={<AskedSkeleton />}>
+            <Asked
+              data={fetcher(`/asked`, {
+                headers: {
+                  Authorization: `Bearer ${auth.user.token.accessToken}`,
+                },
+              })}
+            />
+          </Suspense>
+        </SectionContainer>
       </SchoolHeaderContainer>
     </>
   );

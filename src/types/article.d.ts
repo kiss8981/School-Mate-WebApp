@@ -1,4 +1,4 @@
-import { Article } from "schoolmate-types";
+import { Article, Board } from "schoolmate-types";
 
 export interface ArticleWithImage extends Article {
   keyOfImages: string[];
@@ -10,4 +10,5 @@ export interface ArticleWithImage extends Article {
     id: string;
     name: string;
   };
+  board: Board;
 }
