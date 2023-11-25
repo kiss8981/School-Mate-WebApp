@@ -27,7 +27,7 @@ export default function BottomNavbar() {
       >
         <div className="flex flex-row px-10 justify-between items-center w-full py-2">
           <Link
-            className="h-[45px] flex flex-col justify-between items-center"
+            className="h-[40px] flex flex-col justify-between items-center"
             href="/main"
           >
             {pathname === "/main" ? (
@@ -35,8 +35,8 @@ export default function BottomNavbar() {
                 <Image
                   src="/icons/Home.svg"
                   alt="home"
-                  width={30}
-                  height={30}
+                  width={27}
+                  height={27}
                   className="cursor-pointer"
                   onClick={() => router.push("/")}
                 />
@@ -53,15 +53,15 @@ export default function BottomNavbar() {
                 <Image
                   src="/icons/HomeLight.svg"
                   alt="home"
-                  width={30}
-                  height={30}
+                  width={27}
+                  height={27}
                   className="cursor-pointer"
                 />
               </>
             )}
           </Link>
           <Link
-            className="h-[45px] flex flex-col justify-between items-center"
+            className="h-[40px] flex flex-col justify-between items-center"
             href="/timetable"
           >
             {pathname === "/timetable" ? (
@@ -69,8 +69,8 @@ export default function BottomNavbar() {
                 <Image
                   src="/icons/Board.svg"
                   alt="home"
-                  width={30}
-                  height={30}
+                  width={27}
+                  height={27}
                   className="cursor-pointer"
                   onClick={() => router.push("/")}
                 />
@@ -87,15 +87,15 @@ export default function BottomNavbar() {
                 <Image
                   src="/icons/BoardLight.svg"
                   alt="home"
-                  width={30}
-                  height={30}
+                  width={27}
+                  height={27}
                   className="cursor-pointer"
                 />
               </>
             )}
           </Link>
           <Link
-            className="h-[45px] flex flex-col justify-between items-center"
+            className="h-[40px] flex flex-col justify-between items-center"
             href="/message"
           >
             {pathname === "/message" ? (
@@ -103,8 +103,8 @@ export default function BottomNavbar() {
                 <Image
                   src="/icons/Message.svg"
                   alt="home"
-                  width={30}
-                  height={30}
+                  width={27}
+                  height={27}
                   className="cursor-pointer"
                 />
                 <Image
@@ -120,15 +120,15 @@ export default function BottomNavbar() {
                 <Image
                   src="/icons/MessageLight.svg"
                   alt="home"
-                  width={30}
-                  height={30}
+                  width={27}
+                  height={27}
                   className="cursor-pointer"
                 />
               </>
             )}
           </Link>
           <Link
-            className="h-[45px] flex flex-col justify-between items-center"
+            className="h-[40px] flex flex-col justify-between items-center"
             href="/me"
           >
             {pathname === "/me" ? (
@@ -136,8 +136,8 @@ export default function BottomNavbar() {
                 <Image
                   src="/icons/User.svg"
                   alt="home"
-                  width={30}
-                  height={30}
+                  width={27}
+                  height={27}
                   className="cursor-pointer"
                 />
                 <Image

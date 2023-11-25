@@ -41,15 +41,11 @@ const Header = ({
         >
           {title}
         </span>
-        <div className="flex flex-row space-x-2">
+        <button className="flex flex-row space-x-2">
           <Image src="/icons/Search.svg" alt="search" width={24} height={24} />
-        </div>
+        </button>
       </div>
-      {badge && (
-        <div className="w-full px-5 pb-4">
-          {badge}
-        </div>
-      )}
+      {badge && <div className="w-full px-5 pb-4">{badge}</div>}
     </header>
   );
 };

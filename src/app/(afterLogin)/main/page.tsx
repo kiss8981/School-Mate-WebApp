@@ -6,17 +6,28 @@ import SchoolHeaderContainer from "./_component/SchoolHeadetContainer";
 import HeaderBadage from "./_component/HeaderBadage";
 import Advertisement from "./_component/Advertisement";
 import { Suspense } from "react";
-import {
-  RecommnedArticleSkeleton,
-  RecommentArticle,
-} from "./_component/RecommnedArticle";
+import { RecommnedArticleSkeleton } from "./_component/RecommnedArticle";
 import fetcher from "@/lib/fetch";
 import { classNames } from "@/lib/uitls";
 import { inter } from "@/lib/fonts";
 import Image from "next/image";
 import SectionContainer from "./_component/SectionContainer";
 import TipsSection from "./_component/TipsSection";
-import { Asked, AskedSkeleton } from "./_component/Asked";
+import { AskedSkeleton } from "./_component/Asked";
+import dynamic from "next/dynamic";
+
+const Asked = dynamic(() => import("./_component/Asked"), {
+  loading: () => <AskedSkeleton />,
+  ssr: false,
+});
+
+const RecommentArticle = dynamic(
+  () => import("./_component/RecommnedArticle"),
+  {
+    loading: () => <RecommnedArticleSkeleton />,
+    ssr: false,
+  }
+);
 
 const Main: NextPage = async () => {
   const auth = await getServerSession(authOptions);
@@ -55,7 +66,7 @@ const Main: NextPage = async () => {
         <SectionContainer
           title="인기 게시물"
           subTitle="즐겨찾는 게시판"
-          path="/suggest"
+          path="/board"
         >
           <Suspense fallback={<RecommnedArticleSkeleton />}>
             <RecommentArticle
@@ -75,7 +86,7 @@ const Main: NextPage = async () => {
         <SectionContainer
           title="교내 친구들 찾기"
           subTitle="에스크 기능을 통해"
-          path="/ask"
+          path="/asked"
         >
           <Suspense fallback={<AskedSkeleton />}>
             <Asked

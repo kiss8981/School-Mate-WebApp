@@ -8,11 +8,13 @@ const Header = ({
   title = "",
   className = "",
   backIcon = true,
+  rightIcon = null,
   ...props
 }: {
   title?: string;
   className?: string;
   backIcon?: boolean;
+  rightIcon?: React.ReactNode;
 } & React.ComponentPropsWithRef<"header">) => {
   const router = useRouter();
 
@@ -32,7 +34,7 @@ const Header = ({
               stackRouterBack(router);
             }}
           >
-            <Image src="/icons/Back.svg" alt="back" width={15} height={15} />
+            <Image src="/icons/Back.svg" alt="back" width={12} height={12} />
           </button>
         )}
         <span
@@ -43,6 +45,7 @@ const Header = ({
         >
           {title}
         </span>
+        {rightIcon && <div className="absolute right-4">{rightIcon}</div>}
       </div>
     </header>
   );

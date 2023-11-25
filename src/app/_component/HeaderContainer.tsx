@@ -8,11 +8,13 @@ const HeaderContainer = ({
   backIcon = true,
   children,
   className = "",
+  rightIcon,
 }: {
   title?: string;
   backIcon?: boolean;
   children?: React.ReactNode;
   className?: string;
+  rightIcon?: React.ReactNode;
 }) => {
   useEffect(() => {
     function handleVerticalResize() {
@@ -36,7 +38,7 @@ const HeaderContainer = ({
   return (
     <>
       <div className={className}>
-        <Header title={title} backIcon={backIcon} />
+        <Header title={title} backIcon={backIcon} rightIcon={rightIcon} />
         <div
           style={{
             paddingTop: "calc(env(safe-area-inset-top) + 64px)",

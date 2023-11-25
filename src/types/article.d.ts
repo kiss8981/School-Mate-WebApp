@@ -9,6 +9,7 @@ export interface ArticleWithImage extends Article {
   user: {
     id: string;
     name: string;
+    profile: string;
   };
   board: Board;
 }
