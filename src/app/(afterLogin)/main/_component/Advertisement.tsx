@@ -29,7 +29,7 @@ const Advertisement: React.FC<{
           </span>
         </div>
         <Swiper
-          className="w-full relative rounded-[20px] overflow-hidden h-[200px]"
+          className="w-full relative rounded-[20px] overflow-hidden h-[100px] border"
           onSlideChange={swiper => setActivePage(swiper.activeIndex)}
         >
           {advertisement.map((ad, index) => (

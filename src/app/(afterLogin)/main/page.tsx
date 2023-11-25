@@ -32,29 +32,29 @@ const Main: NextPage = async () => {
             ? auth.user.user.userSchool.school.name
             : auth.user.user.userSchool.school.defaultName
         }
-        badage={
-          <HeaderBadage
-            title="👀 스쿨메이트를 잘 사용하고 계신가요?"
-            description="캘린더를 확인 해 오늘 할 일들을 체크하세요!"
-            link="/timetable"
-          />
-        }
+        // badage={
+        //   <HeaderBadage
+        //     title="👀 스쿨메이트를 잘 사용하고 계신가요?"
+        //     description="캘린더를 확인 해 오늘 할 일들을 체크하세요!"
+        //     link="/timetable"
+        //   />
+        // }
       >
         <Advertisement
           advertisement={[
             {
-              image: "https://via.placeholder.com/350x200.png?text=350x200",
+              image: "https://via.placeholder.com/350x200.png?text=350x100",
               link: "https://via.placeholder.com/728x90.png?text=728x90",
             },
             {
-              image: "https://via.placeholder.com/350x200.png?text=350x200",
+              image: "https://via.placeholder.com/350x200.png?text=350x100",
               link: "https://via.placeholder.com/728x90.png?text=728x90",
             },
           ]}
         />
         <SectionContainer
-          title="즐겨찾는 게시판"
-          subTitle="인기 게시물"
+          title="인기 게시물"
+          subTitle="즐겨찾는 게시판"
           path="/suggest"
         >
           <Suspense fallback={<RecommnedArticleSkeleton />}>

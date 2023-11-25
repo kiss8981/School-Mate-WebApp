@@ -42,7 +42,7 @@ const SchoolHeaderContainer = ({
             paddingTop: `calc(env(safe-area-inset-top) + ${
               badage ? "85.5px + 64px" : "64px"
             })`,
-            paddingBottom: `6rem`,
+            paddingBottom: `calc(env(safe-area-inset-bottom) + 6rem)`,
           }}
         >
           {children}

@@ -38,14 +38,14 @@ const SectionTitle = ({
   return (
     <div className="flex flex-row">
       <div className="flex flex-col w-full">
-        <span className="text-[#b6b6b6] text-sm">{title}</span>
+        <span className="text-[#b6b6b6] text-sm">{subTitle}</span>
         <button
           onClick={() => {
             stackRouterPush(router, path, "stack");
           }}
           className="flex items-center justify-between w-full"
         >
-          <span className="text-xl font-bold">{subTitle}</span>
+          <span className="text-xl font-bold">{title}</span>
           <div className="ml-auto">
             <Image
               src="/icons/Back.svg"
