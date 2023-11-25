@@ -5,10 +5,9 @@ import { getServerSession } from "next-auth/next";
 
 interface Props {
   children: React.ReactNode;
-  modal: React.ReactNode;
 }
 
-const Layout: NextPage<Props> = async ({ children, modal }) => {
+const Layout: NextPage<Props> = async ({ children }) => {
   return <>{children}</>;
 };
 
