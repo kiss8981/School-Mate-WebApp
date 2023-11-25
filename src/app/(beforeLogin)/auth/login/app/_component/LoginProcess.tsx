@@ -17,7 +17,7 @@ const LoginProcess: React.FC<{
       redirect: false,
       code: loginData.token,
       provider: "app",
-    }).then(async (res) => {
+    }).then(async res => {
       if (!res?.ok) {
         toast("error", "로그인 세션이 만료되었습니다.");
         stackRouterPush(router, "/auth/login", "reset");
@@ -42,6 +42,7 @@ const LoginProcess: React.FC<{
         }
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <></>;
 };
