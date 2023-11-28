@@ -5,6 +5,7 @@ import Button from "@/app/_component/Button";
 import Checkbox from "@/app/_component/Checkbox";
 import HeaderContainer from "@/app/_component/HeaderContainer";
 import Input from "@/app/_component/Input";
+import { LoadingFullPage } from "@/app/_component/Loading";
 import Modal from "@/app/_component/Modal";
 import useFetch from "@/hooks/useFetch";
 import fetcher from "@/lib/fetch";
@@ -26,6 +27,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [emailDomain, setEmailDomain] = useState("");
   const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
+  const [loadingPhoneVerify, setLoadingPhoneVerify] = useState(false);
   const [phoneVerifyToken, setPhoneVerifyToken] = useState("");
   const [phoneVerifyNumber, setPhoneVerifyNumber] = useState("");
   const [phoneVerifyed, setPhoneVerifyed] = useState(false);
@@ -45,12 +47,15 @@ const RegisterPage = () => {
         message: "인증번호가 전송되었습니다.",
       },
       onError: (status, message) => {
+        setLoadingPhoneVerify(false);
         toast("error", message || "인증번호 전송에 실패했습니다.");
       },
       onSuccess: (stauts, statusCode, verifyToken) => {
+        setLoadingPhoneVerify(false);
         setIsVerifyModalOpen(true);
         setPhoneVerifyToken(verifyToken);
       },
+      onPending: () => setLoadingPhoneVerify(true),
     }
   );
 
@@ -96,6 +101,7 @@ const RegisterPage = () => {
 
   return (
     <>
+      {loadingPhoneVerify && <LoadingFullPage />}
       <HeaderContainer title="회원가입">
         <div
           className={classNames(
