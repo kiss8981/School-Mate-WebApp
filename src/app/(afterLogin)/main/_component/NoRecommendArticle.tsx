@@ -11,7 +11,7 @@ const NoRecommendArticle = () => {
   return (
     <>
       <div className="w-full h-32 flex flex-col items-center justify-center mt-3">
-        <span className="text-lg">아직 등록된 글이 없어요!</span>
+        <span className="text-lg">아직 인기 게시물이 없어요!</span>
         <Button
           onClick={() => {
             stackRouterPush(router, "/write", "stack");

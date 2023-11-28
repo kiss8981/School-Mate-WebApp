@@ -16,19 +16,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <html lang="ko">
       <head>
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, viewport-fit=cover, maximum-scale=1.0"
         />
       </head>
       <body className={classNames(NanumGothic.className)}>
-        <AuthSession>{children}</AuthSession>
+        <AuthSession>
+          {children}
+          {modal}
+        </AuthSession>
         <ToastContainer />
       </body>
     </html>

@@ -1,14 +1,6 @@
-import Button from "@/app/_component/Button";
-import { inter } from "@/lib/fonts";
-import { stackRouterPush } from "@/lib/stackRouter";
-import { classNames, timeForToday } from "@/lib/uitls";
 import { ArticleWithImage } from "@/types/article";
 import { AxiosResponse } from "axios";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import NoRecommendArticle from "./NoRecommendArticle";
-import dayjs from "dayjs";
-import dynamic from "next/dynamic";
 import { ArticleCard, RecommentButton } from "./RecommnedArticleCard";
 
 export const RecommentArticle = async ({
@@ -17,7 +9,7 @@ export const RecommentArticle = async ({
   data: Promise<AxiosResponse>;
 }) => {
   const articles = (await data.then(
-    res => res.data.data
+    res => res.data.data.articles
   )) as ArticleWithImage[];
 
   return (

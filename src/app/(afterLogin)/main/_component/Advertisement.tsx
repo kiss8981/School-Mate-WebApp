@@ -1,54 +1,43 @@
-"use client";
-
-import { sendWebviewEvent } from "@/lib/webviewHandler";
-import Image from "next/image";
-import { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { AxiosResponse } from "axios";
+import { Advertise } from "schoolmate-types";
+import AdvertisementSlider from "./AdvertisementSlider";
+import { classNames } from "@/lib/uitls";
 
 interface Props {
-  image: string;
-  link: string;
+  data: Promise<
+    AxiosResponse<{
+      data: Advertise[];
+    }>
+  >;
 }
 
-const Advertisement: React.FC<{
-  advertisement: Props[];
-}> = ({ advertisement }) => {
-  const [avtivePage, setActivePage] = useState(0);
+const Advertisement = async ({ data }: Props) => {
+  const advertisement = await data.then(res => res.data.data);
+
+  return (
+    <>
+      <AdvertisementSlider advertisement={advertisement} />
+    </>
+  );
+};
+
+const AdvertisementSkeleton = () => {
+  const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent`;
+
   return (
     <>
       <section className="pt-4 px-5 relative">
         <div
-          className="absolute right-8 bottom-3 items-center flex justify-center rounded-[10px]"
-          style={{
-            background: "rgba(0, 0, 0, 0.32)",
-            zIndex: 5,
-          }}
-        >
-          <span className="text-white text-xs px-2 py-1 rounded-full">
-            {avtivePage + 1} / {advertisement.length}
-          </span>
-        </div>
-        <Swiper
-          className="w-full relative rounded-[20px] overflow-hidden h-[100px] border"
-          onSlideChange={swiper => setActivePage(swiper.activeIndex)}
-        >
-          {advertisement.map((ad, index) => (
-            <SwiperSlide
-              key={index}
-              className="relative"
-              onClick={() => {
-                sendWebviewEvent("OPEN_BROWSER_EVENT", {
-                  url: ad.link,
-                });
-              }}
-            >
-              <Image alt="ad" src={ad.image} objectFit="cover" layout="fill" />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          className={classNames(
+            "w-full relative rounded-[20px] overflow-hidden h-[100px] border bg-[#CCCCCC]",
+            shimmer
+          )}
+        />
       </section>
     </>
   );
 };
 
 export default Advertisement;
+
+export { AdvertisementSkeleton };

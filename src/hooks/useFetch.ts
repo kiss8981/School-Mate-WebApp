@@ -1,6 +1,7 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from "axios";
 import client from "@/lib/fetch";
 import { toast } from "@/lib/webviewHandler";
+import { getCookie } from "@/lib/csrUtils";
 
 type UseFetchParams = {
   fetchInit?: AxiosRequestConfig;
@@ -44,12 +45,15 @@ export default function useFetch(
       oOnPending ? oOnPending() : onPending && onPending();
       const successToastObject = oSuccessToast ?? successToast;
       const requestEndpoint = oFetchInit?.url ? oFetchInit.url : url;
+      client.defaults.headers.common["Authorization"] = `Bearer ${getCookie(
+        "accessToken"
+      )}`;
       return client(requestEndpoint, {
         method: type,
         ...oFetchInit,
         ...fetchInit,
       })
-        .then((response) => {
+        .then(response => {
           if (successToastObject) {
             toast("success", successToastObject.message);
           }
@@ -58,13 +62,13 @@ export default function useFetch(
             oOnSuccess
               ? oOnSuccess(
                   response.status,
-                  response.statusText,
+                  response.data.message,
                   response.data.data
                 )
               : onSuccess &&
                 onSuccess(
                   response.status,
-                  response.statusText,
+                  response.data.message,
                   response.data.data
                 );
           }

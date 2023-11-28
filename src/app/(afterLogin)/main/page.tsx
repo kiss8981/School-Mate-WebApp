@@ -2,15 +2,11 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/auth";
 import { redirect } from "next/navigation";
 import { NextPage } from "next";
-import SchoolHeaderContainer from "./_component/SchoolHeadetContainer";
-import HeaderBadage from "./_component/HeaderBadage";
-import Advertisement from "./_component/Advertisement";
+import SchoolHeaderContainer from "./_component/SchoolHeaderContainer";
+import { AdvertisementSkeleton } from "./_component/Advertisement";
 import { Suspense } from "react";
 import { RecommnedArticleSkeleton } from "./_component/RecommnedArticle";
 import fetcher from "@/lib/fetch";
-import { classNames } from "@/lib/uitls";
-import { inter } from "@/lib/fonts";
-import Image from "next/image";
 import SectionContainer from "./_component/SectionContainer";
 import TipsSection from "./_component/TipsSection";
 import { AskedSkeleton } from "./_component/Asked";
@@ -28,6 +24,11 @@ const RecommentArticle = dynamic(
     ssr: false,
   }
 );
+
+const Advertisement = dynamic(() => import("./_component/Advertisement"), {
+  loading: () => <AdvertisementSkeleton />,
+  ssr: false,
+});
 
 const Main: NextPage = async () => {
   const auth = await getServerSession(authOptions);
@@ -51,18 +52,15 @@ const Main: NextPage = async () => {
         //   />
         // }
       >
-        <Advertisement
-          advertisement={[
-            {
-              image: "https://via.placeholder.com/350x200.png?text=350x100",
-              link: "https://via.placeholder.com/728x90.png?text=728x90",
-            },
-            {
-              image: "https://via.placeholder.com/350x200.png?text=350x100",
-              link: "https://via.placeholder.com/728x90.png?text=728x90",
-            },
-          ]}
-        />
+        <Suspense fallback={<AdvertisementSkeleton />}>
+          <Advertisement
+            data={fetcher(`/ad`, {
+              headers: {
+                Authorization: `Bearer ${auth.user.token.accessToken}`,
+              },
+            })}
+          />
+        </Suspense>
         <SectionContainer
           title="인기 게시물"
           subTitle="즐겨찾는 게시판"
@@ -70,7 +68,7 @@ const Main: NextPage = async () => {
         >
           <Suspense fallback={<RecommnedArticleSkeleton />}>
             <RecommentArticle
-              data={fetcher(`/board/suggest`, {
+              data={fetcher(`/board/hot`, {
                 headers: {
                   Authorization: `Bearer ${auth.user.token.accessToken}`,
                 },
@@ -87,6 +85,8 @@ const Main: NextPage = async () => {
           title="교내 친구들 찾기"
           subTitle="에스크 기능을 통해"
           path="/asked"
+          className="px-0"
+          titleClassName="px-5"
         >
           <Suspense fallback={<AskedSkeleton />}>
             <Asked

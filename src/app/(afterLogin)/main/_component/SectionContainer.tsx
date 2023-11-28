@@ -11,13 +11,27 @@ interface Props {
   subTitle: string;
   path: string;
   children: React.ReactNode;
+  className?: string;
+  titleClassName?: string;
 }
 
-const SectionContainer = ({ children, title, path, subTitle }: Props) => {
+const SectionContainer = ({
+  children,
+  title,
+  path,
+  subTitle,
+  className,
+  titleClassName,
+}: Props) => {
   return (
     <>
-      <div className={classNames("px-5 pt-4", inter.className)}>
-        <SectionTitle title={title} subTitle={subTitle} path={path} />
+      <div className={classNames("px-5 pt-4", inter.className, className)}>
+        <SectionTitle
+          title={title}
+          subTitle={subTitle}
+          path={path}
+          className={titleClassName}
+        />
         {children}
       </div>
     </>
@@ -28,15 +42,17 @@ const SectionTitle = ({
   title,
   subTitle,
   path,
+  className,
 }: {
   title: string;
   subTitle: string;
   path: string;
+  className?: string;
 }) => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-row">
+    <div className={classNames("flex flex-row", className)}>
       <div className="flex flex-col w-full">
         <span className="text-[#b6b6b6] text-sm">{subTitle}</span>
         <button

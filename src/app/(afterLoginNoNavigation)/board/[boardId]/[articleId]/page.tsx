@@ -5,15 +5,15 @@ import { ArticleWithImage } from "@/types/article";
 import { NextPage } from "next";
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
-import Image from "next/image";
 import Article from "./_component/Article";
+import SerachButton from "@/app/_component/SearchButton";
+import { Session } from "next-auth";
 
-const getArticle = async (boardId: string, articleId: string) => {
-  const auth = await getServerSession(authOptions);
-
-  if (!auth || !auth.user.registered) return redirect("/intro");
-  if (!auth.user.user.userSchool) return redirect("/verify");
-
+const getArticle = async (
+  boardId: string,
+  articleId: string,
+  auth: Session
+) => {
   const article = await fetcher(`/board/${boardId}/article/${articleId}`, {
     headers: {
       Authorization: `Bearer ${auth.user.token.accessToken}`,
@@ -33,18 +33,15 @@ interface Props {
 }
 
 const ArticlePage: NextPage<Props> = async ({ params }) => {
-  const article = await getArticle(params.boardId, params.articleId);
-  if (!article) return redirect("/intro");
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth.user.registered) return redirect("/intro");
+  if (!auth.user.user.userSchool) return redirect("/verify");
+  const article = await getArticle(params.boardId, params.articleId, auth);
+  if (!article) return <></>;
   return (
-    <HeaderContainer
-      title={article.board.name}
-      rightIcon={
-        <button className="flex flex-row space-x-2">
-          <Image src="/icons/Search.svg" alt="search" width={24} height={24} />
-        </button>
-      }
-    >
-      <Article article={article} />
+    <HeaderContainer title={article.board.name} rightIcon={<SerachButton />}>
+      <Article article={article} auth={auth} />
     </HeaderContainer>
   );
 };

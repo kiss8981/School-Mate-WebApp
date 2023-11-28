@@ -21,12 +21,12 @@ const Header = ({
   return (
     <header
       className={classNames(
-        "text-2xl bg-white fixed pt-[env(safe-area-inset-top)] w-full z-10 min-w-[280px] max-w-[540px]",
+        "text-2xl bg-white fixed w-full z-10 min-w-[280px] max-w-[540px]",
         className
       )}
       {...props}
     >
-      <div className="font-bold relative flex justify-between items-center h-16">
+      <div className="font-bold relative flex justify-between items-center h-14">
         {backIcon && (
           <button
             className="absolute left-4"
@@ -39,7 +39,7 @@ const Header = ({
         )}
         <span
           className={classNames(
-            "mx-auto font-bold text-[22px]",
+            "mx-auto font-bold text-[18px]",
             inter.className
           )}
         >

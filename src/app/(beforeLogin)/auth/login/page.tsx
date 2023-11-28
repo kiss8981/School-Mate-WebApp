@@ -10,9 +10,6 @@ import { useState } from "react";
 import LoginSection from "./_component/LoginSection";
 
 const LoginPage = async () => {
-  const session = await getSession();
-  const csrfToken = await getCsrfToken();
-
   return (
     <>
       <HeaderContainer>

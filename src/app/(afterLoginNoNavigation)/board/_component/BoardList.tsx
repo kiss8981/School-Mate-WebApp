@@ -17,19 +17,22 @@ const BoardList = async ({ data }: Props) => {
         title="인기 게시판"
         boards={[
           {
-            id: "/suggest" as any,
+            id: "/hot" as any,
             name: "HOT 게시판",
             default: true,
             schoolId: "1",
             noticeId: [],
             description: "",
+            icon: "🔥",
           },
         ]}
       />
-      <BoardListSection
-        title="즐겨찾는 게시판"
-        boards={boards.filter(board => board.default)}
-      />
+      {boards.filter(board => board.default).length !== 0 && (
+        <BoardListSection
+          title="즐겨찾는 게시판"
+          boards={boards.filter(board => board.default)}
+        />
+      )}
       {boards.filter(board => !board.default).length !== 0 && (
         <BoardListSection
           title="학교 게시판"
@@ -56,7 +59,13 @@ const BoardListSection = ({
             <BoardItem
               key={index}
               index={index}
-              icon={(board.id as any) === "/suggest" ? "🔥" : "📌"}
+              icon={
+                (board.id as any) === "/hot"
+                  ? "🔥"
+                  : board.icon
+                  ? board.icon
+                  : "📌"
+              }
               name={board.name}
               path={`/board/${board.id}`}
             />

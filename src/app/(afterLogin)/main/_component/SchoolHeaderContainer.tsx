@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import SchoolHeader from "./SchoolHeader";
+import BottomNavbar from "../../_component/BottomNavbar";
 
 const SchoolHeaderContainer = ({
   title = "",
@@ -39,10 +40,8 @@ const SchoolHeaderContainer = ({
         <SchoolHeader badge={badage} title={title} />
         <div
           style={{
-            paddingTop: `calc(env(safe-area-inset-top) + ${
-              badage ? "85.5px + 64px" : "64px"
-            })`,
-            paddingBottom: `calc(env(safe-area-inset-bottom) + 6rem)`,
+            paddingTop: badage ? "85.5px + 64px" : "64px",
+            paddingBottom: `6rem`,
           }}
         >
           {children}

@@ -1,5 +1,6 @@
 "use client";
 
+import { setCookie } from "@/lib/csrUtils";
 import { stackRouterPush } from "@/lib/stackRouter";
 import { sendWebviewEvent, toast } from "@/lib/webviewHandler";
 import { getSession, signIn } from "next-auth/react";
@@ -27,6 +28,11 @@ const LoginProcess: React.FC<{
           toast("error", "로그인에 실패하였습니다.");
           return;
         }
+
+        setCookie("accessToken", session?.user.token.accessToken, {
+          path: "/",
+          maxAge: 60 * 60 * 24 * 7,
+        });
 
         if (window.ReactNativeWebView) {
           sendWebviewEvent("LOGIN_EVENT", {

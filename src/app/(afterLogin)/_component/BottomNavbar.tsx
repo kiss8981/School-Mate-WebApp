@@ -19,13 +19,11 @@ export default function BottomNavbar() {
       <div
         className="fixed bottom-0 bg-whtie min-w-[280px] max-w-[540px] pt-2 flex items-center w-full z-50 bg-white"
         style={{
-          paddingBottom: useAgent.includes("ios")
-            ? "calc(env(safe-area-inset-bottom) - 0.2rem)"
-            : "0.5rem",
+          paddingBottom: "0.3rem",
           boxShadow: "0px -4px 30px rgba(0, 0, 0, 0.04)",
         }}
       >
-        <div className="flex flex-row px-10 justify-between items-center w-full py-2">
+        <div className="flex flex-row px-10 justify-between items-center w-full py-1.5">
           <Link
             className="h-[40px] flex flex-col justify-between items-center"
             href="/main"

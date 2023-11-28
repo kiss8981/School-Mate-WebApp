@@ -1,12 +1,51 @@
+"use client";
+
+import { LoadingFullPage } from "@/app/_component/Loading";
+import useFetch from "@/hooks/useFetch";
 import { inter } from "@/lib/fonts";
 import { classNames } from "@/lib/uitls";
+import { toast } from "@/lib/webviewHandler";
 import { ArticleWithImage } from "@/types/article";
 import dayjs from "dayjs";
+import { Session } from "next-auth";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const Article = ({ article }: { article: ArticleWithImage }) => {
+const Article = ({
+  article,
+  auth,
+}: {
+  article: ArticleWithImage;
+  auth: Session;
+}) => {
+  const router = useRouter();
+  const [likeLoading, setLikeLoading] = useState(false);
+  const { triggerFetch: requestLike } = useFetch(
+    `/board/article/${article.id}/like`,
+    "POST",
+    {
+      fetchInit: {
+        headers: {
+          Authorization: `Bearer ${auth.user.token.accessToken}`,
+        },
+      },
+      onError: (status, message) => {
+        setLikeLoading(false);
+        toast("error", message || "알 수 없는 오류가 발생했습니다.");
+      },
+      onSuccess: (status, message, body) => {
+        router.refresh();
+        setLikeLoading(false);
+        toast("success", message);
+      },
+      onPending: () => setLikeLoading(true),
+    }
+  );
+
   return (
     <>
+      {likeLoading && <LoadingFullPage />}
       <div
         className={classNames(
           "flex flex-col min-h-[100vh] px-4 pb-10",
@@ -59,14 +98,16 @@ const Article = ({ article }: { article: ArticleWithImage }) => {
           <div className="flex flex-col w-full mt-4">
             {article.images.map((image, index) => (
               <div
+                className="relative w-full rounded-xl overflow-hidden my-2"
                 key={index}
-                className="relative h-60 w-full rounded-[20px] overflow-hidden my-2"
               >
                 <Image
                   src={process.env.NEXT_PUBLIC_S3_URL + image}
                   alt="article"
-                  layout="fill"
-                  objectFit="cover"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{ width: "100%", height: "auto" }}
                 />
               </div>
             ))}
@@ -88,9 +129,24 @@ const Article = ({ article }: { article: ArticleWithImage }) => {
           </div>
           <div className="flex flex-row">
             <Image src="/icons/View.svg" alt="View" width={23} height={23} />
-            <span className="text-[#8c8c8c] ml-1">{article.likeCounts}</span>
+            <span className="text-[#8c8c8c] ml-1">{article.views}</span>
           </div>
         </div>
+        <button
+          onClick={() => requestLike({})}
+          className="border border-primary-500 rounded-full py-1 flex flex-row items-center justify-center px-2 w-32 mt-4"
+        >
+          <Image
+            src="/icons/LikePrimary.svg"
+            alt="Like"
+            width={20}
+            height={20}
+            className="mr-1"
+          />
+          <span className="text-primary-500 text-base font-bold py-1">
+            공감하기
+          </span>
+        </button>
       </div>
     </>
   );

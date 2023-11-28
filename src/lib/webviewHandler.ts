@@ -1,13 +1,27 @@
 import { toast as WebToast } from "react-toastify";
+export type TitleType = "leftheader" | "centerheader";
+type RouterEvent = {
+  ROUTER_EVENT: {
+    path: string;
+    type: "stack" | "reset";
+    scroll?: boolean;
+    title: string;
+    titleType: TitleType;
+  };
+  LOGIN_EVENT: any;
+  TOAST_EVENT: {
+    type: "success" | "error";
+    message: string;
+  };
+  PERMISSION_EVENT: any;
+  OPEN_BROWSER_EVENT: {
+    url: string;
+  };
+};
 
-export const sendWebviewEvent = (
-  type:
-    | "ROUTER_EVENT"
-    | "LOGIN_EVENT"
-    | "TOAST_EVENT"
-    | "PERMISSION_EVENT"
-    | "OPEN_BROWSER_EVENT",
-  data: any
+export const sendWebviewEvent = <T extends keyof RouterEvent>(
+  type: T,
+  data: RouterEvent[T]
 ): void => {
   if (!window || !window.ReactNativeWebView) {
     if (type === "OPEN_BROWSER_EVENT") {

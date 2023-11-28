@@ -6,6 +6,7 @@ import { classNames } from "@/lib/uitls";
 import { useRouter } from "next/navigation";
 import { stackRouterBack } from "@/lib/stackRouter";
 import { inter } from "@/lib/fonts";
+import SerachButton from "./SearchButton";
 
 const LeftHeaderContainer = ({
   title = "",
@@ -43,7 +44,7 @@ const LeftHeaderContainer = ({
         <Header title={title} backIcon={backIcon} />
         <div
           style={{
-            paddingTop: "calc(env(safe-area-inset-top) + 64px)",
+            paddingTop: "64px",
           }}
         >
           {children}
@@ -68,7 +69,7 @@ const Header = ({
   return (
     <header
       className={classNames(
-        "text-2xl bg-white fixed pt-[env(safe-area-inset-top)] w-full z-10 min-w-[280px] max-w-[540px] px-4",
+        "text-2xl bg-white fixed w-full z-10 min-w-[280px] max-w-[540px] px-4",
         className
       )}
       style={{
@@ -76,7 +77,7 @@ const Header = ({
       }}
       {...props}
     >
-      <div className="font-bold relative flex items-center h-16">
+      <div className="font-bold relative flex items-center h-14">
         {backIcon && (
           <button
             onClick={() => {
@@ -91,9 +92,9 @@ const Header = ({
         >
           {title}
         </span>
-        <button className="flex flex-row ml-auto">
-          <Image src="/icons/Search.svg" alt="search" width={24} height={24} />
-        </button>
+        <div className="flex flex-row ml-auto">
+          <SerachButton />
+        </div>
       </div>
     </header>
   );

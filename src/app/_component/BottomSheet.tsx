@@ -115,7 +115,7 @@ const BottomSheet = ({
         initial="hidden"
         animate={controls}
         style={{
-          paddingBottom: "calc(env(safe-area-inset-bottom) + 15px)",
+          paddingBottom: "15px",
         }}
         transition={{
           type: "spring",

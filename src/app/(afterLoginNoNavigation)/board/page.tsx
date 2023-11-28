@@ -1,9 +1,5 @@
 import LeftHeaderContainer from "@/app/_component/LeftHeaderContainer";
-import { inter } from "@/lib/fonts";
-import { stackRouterPush } from "@/lib/stackRouter";
-import { classNames } from "@/lib/uitls";
-import { redirect, useRouter } from "next/navigation";
-import { Board } from "schoolmate-types";
+import { redirect } from "next/navigation";
 import dynamic from "next/dynamic";
 import { BoardListSkeleton } from "./_component/BoardList";
 import { Suspense } from "react";

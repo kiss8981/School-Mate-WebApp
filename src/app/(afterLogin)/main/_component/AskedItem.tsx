@@ -6,7 +6,13 @@ import { AskedWithUser } from "@/types/asked";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-const AskedItem = ({ asked }: { asked: AskedWithUser }) => {
+const AskedItem = ({
+  asked,
+  index,
+}: {
+  asked: AskedWithUser;
+  index: number;
+}) => {
   const router = useRouter();
 
   return (
@@ -16,7 +22,8 @@ const AskedItem = ({ asked }: { asked: AskedWithUser }) => {
       }}
       className={classNames(
         `w-[140px] h-[200px] flex-shrink-0 relative bg-no-repeat bg-center rounded-[10px]`,
-        asked.user.profile ? "bg-cover" : ""
+        asked.user.profile ? "bg-cover" : "",
+        index === 0 ? "ml-5" : ""
       )}
       style={{
         backgroundImage: `linear-gradient(0deg, rgba(0,0,0,0.44), rgba(0, 0, 0, 0.44)), url(${

@@ -17,12 +17,12 @@ const Asked = async ({ data }: Props) => {
     <>
       <div
         className={classNames(
-          "mt-3 flex flex-row overflow-scroll space-x-4 scrollbar-hide",
+          "mt-3 flex flex-row overflow-scroll space-x-4 scrollbar-hide pr-5",
           roboto.className
         )}
       >
         {askeds.map((asked, index) => (
-          <AskedItem asked={asked} key={index} />
+          <AskedItem asked={asked} key={index} index={index} />
         ))}
       </div>
     </>
@@ -33,7 +33,7 @@ const AskedSkeleton = () => {
   const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent`;
   return (
     <>
-      <div className="h-[200px] mt-4 flex flex-row space-x-4 w-full">
+      <div className="h-[200px] mt-4 flex flex-row space-x-4 w-full px-4">
         <div
           className={`relative h-[200px] w-full rounded-[20px] bg-[#CCCCCC] ${shimmer}`}
         />

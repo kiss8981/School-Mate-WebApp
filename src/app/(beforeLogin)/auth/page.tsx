@@ -19,7 +19,7 @@ const LoginLandingPage = () => {
             roboto.className
           )}
           style={{
-            paddingTop: "calc(env(safe-area-inset-bottom) + 4rem)",
+            paddingTop: "2rem",
           }}
         >
           <span className="underline underline-offset-[-4px] decoration-[#2545ED]/20 decoration-[10px]">
@@ -40,9 +40,7 @@ const LoginLandingPage = () => {
             "w-full py-4 font-semibold text-lg rounded-full mt-auto",
             robotoMono.className
           )}
-          onClick={() =>
-            stackRouterPush(router, "/auth/register", "stack")
-          }
+          onClick={() => stackRouterPush(router, "/auth/register", "stack")}
         >
           회원가입
         </Button>
@@ -51,15 +49,13 @@ const LoginLandingPage = () => {
             "w-full font-bold text-base mt-4 text-primary-500",
             roboto.className
           )}
-          onClick={() =>
-            stackRouterPush(router, "/auth/register", "stack")
-          }
+          onClick={() => stackRouterPush(router, "/auth/register", "stack")}
         >
           15초 간편 가입하기
         </button>
         <button
           className={classNames(
-            "w-full mt-4 text-[14px] text-[#B6B6B6] underline-offset-4 underline pb-20",
+            "w-full mt-4 text-[14px] text-[#B6B6B6] underline-offset-4 underline pb-10",
             inter.className
           )}
           onClick={() => stackRouterPush(router, "/auth/login", "stack", false)}

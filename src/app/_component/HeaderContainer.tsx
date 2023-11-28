@@ -41,7 +41,7 @@ const HeaderContainer = ({
         <Header title={title} backIcon={backIcon} rightIcon={rightIcon} />
         <div
           style={{
-            paddingTop: "calc(env(safe-area-inset-top) + 64px)",
+            paddingTop: "64px",
           }}
         >
           {children}

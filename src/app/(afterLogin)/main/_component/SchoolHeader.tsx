@@ -1,7 +1,10 @@
+"use client";
+
+import SerachButton from "@/app/_component/SearchButton";
 import { inter } from "@/lib/fonts";
-import { stackRouterBack } from "@/lib/stackRouter";
 import { classNames } from "@/lib/uitls";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Header = ({
@@ -21,7 +24,7 @@ const Header = ({
   return (
     <header
       className={classNames(
-        "text-2xl bg-white fixed pt-[env(safe-area-inset-top)] w-full z-10 min-w-[280px] max-w-[540px]",
+        "text-2xl bg-white fixed  w-full z-10 min-w-[280px] max-w-[540px]",
         className
       )}
       style={{
@@ -29,7 +32,7 @@ const Header = ({
       }}
       {...props}
     >
-      <div className="font-bold flex items-center h-16 justify-between px-5">
+      <div className="font-bold flex items-center h-14 justify-between px-5">
         <span
           className={classNames(
             "text-primary-500 font-black text-[24px]",
@@ -41,9 +44,7 @@ const Header = ({
         >
           {title}
         </span>
-        <button className="flex flex-row space-x-2">
-          <Image src="/icons/Search.svg" alt="search" width={24} height={24} />
-        </button>
+        <SerachButton />
       </div>
       {badge && <div className="w-full px-5 pb-4">{badge}</div>}
     </header>
