@@ -1,6 +1,7 @@
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import HeaderContainer from "../_component/HeaderContainer";
+import HeaderContainer from "../../_component/HeaderContainer";
+import remarkGfm from "remark-gfm";
 
 const markdown = `
 ### 개인정보처리방침
@@ -193,7 +194,7 @@ const markdown = `
 
 <a id="chapter-10"></a>
 
-** 11. 스쿨메이트 이용자 및 법정대리인의 권리와 행사방법**
+**11. 스쿨메이트 이용자 및 법정대리인의 권리와 행사방법**
 
 *  스쿨메이트 이용자 및 법정대리인은 언제든지 등록되어 있는 자신 혹은 당해 만 14세 미만 아동의 개인정보를 조회하거나 수정할 수 있으며 스쿨메이트 탈퇴를 요청할 수도 있습니다.
 
@@ -241,12 +242,12 @@ const markdown = `
 		
 <a id="chapter-12"></a>
 
-** 13. 개인정보보호 책임자에 관한 사항 **
+**13. 개인정보보호 책임자에 관한 사항**
  * 이용자의 개인정보를 보호하고 개인정보와 관련한 불만을 처리하기 위하여 회사는 개인정보보호 책임자를 두고 있습니다. 이용자의 개인정보와 관련한 문의사항이 있으시면 아래의 개인정보보호 책임자 또는 개인정보보호 담당자의 이메일이나 팩스를 통해 연락 바랍니다. 회사는 '개인정보보호 담당부서'에서만 개인정보 열람 청구 업무를 담당합니다.
 
 <a id="chapter-13"></a>
 
-** 14. 권익침해 구제방법**
+**14. 권익침해 구제방법**
 * 이용자는 개인정보 침해로 인한 구제를 받기 위하여 개인정보분쟁조정위원회, 한국인터넷진흥원 개인정보침해신고센터 등에 분쟁 해결이나 상담 등을 신청할 수 있습니다. 이 밖에 기타 개인정보 침해에 대한 신고, 상담에 대해서는 아래의 기관에 문의하시기 바랍니다.
 
     - 개인정보분쟁조정위원회 (https://www.kopico.go.kr / 국번 없이 1833-6972)
@@ -293,7 +294,11 @@ const PrivacyPage = () => {
   return (
     <>
       <HeaderContainer title="개인정보처리방침">
-        <Markdown className="markdown-body px-4" rehypePlugins={[rehypeRaw]}>
+        <Markdown
+          className="markdown-body px-4"
+          rehypePlugins={[rehypeRaw]}
+          remarkPlugins={[remarkGfm]}
+        >
           {markdown}
         </Markdown>
       </HeaderContainer>
