@@ -48,7 +48,7 @@ const ArticleCard = ({
         )}
         <div className="mt-auto flex flex-row space-x-2 justify-end text-[0.75rem]">
           <div className="flex flex-row mt-1">
-            <Image alt="like" src="/icons/like.svg" width={13} height={13} />
+            <Image alt="like" src="/icons/Like.svg" width={13} height={13} />
             <span className="text-[#7c7c7c] text-[0.75rem] ml-1">
               {article.likeCounts}
             </span>

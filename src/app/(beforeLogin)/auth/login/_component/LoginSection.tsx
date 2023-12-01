@@ -13,9 +13,11 @@ const LoginSection = () => {
   const router = useRouter();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [loginfLoading, setLoginLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const requestLogin = async () => {
+    setLoginLoading(true);
     const res = await signIn("credentials", {
       redirect: false,
       phone,
@@ -24,8 +26,10 @@ const LoginSection = () => {
     });
 
     if (!res?.ok) {
+      setLoginLoading(false);
       toast("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
     } else {
+      setLoginLoading(false);
       const session = await getSession();
 
       if (!session?.user) {
@@ -59,7 +63,7 @@ const LoginSection = () => {
             phone.length > 3 && "border-primary-500"
           )}
           value={phone}
-          onChange={e =>
+          onChange={(e) =>
             setPhone(
               e.target.value
                 ?.replace(/[^0-9]/g, "")
@@ -72,7 +76,7 @@ const LoginSection = () => {
           <input
             type={isPasswordVisible ? "text" : "password"}
             placeholder="비밀번호"
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             className={classNames(
               "border-b rounded-none pb-2 w-full px-1 hover:border-primary-500 focus:border-primary-500 ring-0 outline-none",
               password.length > 3 && "border-primary-500"
@@ -104,6 +108,7 @@ const LoginSection = () => {
       </button>
       <Button
         onClick={requestLogin}
+        isLoading={loginfLoading}
         className="w-full py-4 font-semibold text-[14px] rounded-full mt-10"
       >
         로그인

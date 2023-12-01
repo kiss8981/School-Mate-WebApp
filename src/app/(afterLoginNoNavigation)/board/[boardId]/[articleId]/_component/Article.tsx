@@ -11,6 +11,7 @@ import { Session } from "next-auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Comment from "./Comment";
 
 const Article = ({
   article,
@@ -48,11 +49,11 @@ const Article = ({
       {likeLoading && <LoadingFullPage />}
       <div
         className={classNames(
-          "flex flex-col min-h-[100vh] px-4 pb-10",
+          "flex flex-col min-h-[100vh] pb-10",
           inter.className
         )}
       >
-        <div className="flex flex-row w-full items-center">
+        <div className="flex flex-row w-full items-center px-4">
           <div className="relative h-[50px] w-[50px] rounded-full overflow-hidden my-2">
             <Image
               src={
@@ -81,7 +82,7 @@ const Article = ({
             </span>
           </div>
         </div>
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-start px-4">
           <span className="text-lg font-bold h-full whitespace-pre-wrap break-words w-full">
             {article.title}
           </span>
@@ -95,7 +96,7 @@ const Article = ({
           </pre>
         </div>
         {article.images.length > 0 && (
-          <div className="flex flex-col w-full mt-4">
+          <div className="flex flex-col w-full mt-4 px-4">
             {article.images.map((image, index) => (
               <div
                 className="relative w-full rounded-xl overflow-hidden my-2"
@@ -113,7 +114,7 @@ const Article = ({
             ))}
           </div>
         )}
-        <div className="flex flex-row w-full mt-4 space-x-3">
+        <div className="flex flex-row w-full mt-4 space-x-3 px-4">
           <div className="flex flex-row">
             <Image src="/icons/Like.svg" alt="Like" width={20} height={20} />
             <span className="text-[#8c8c8c] ml-1">{article.likeCounts}</span>
@@ -134,7 +135,7 @@ const Article = ({
         </div>
         <button
           onClick={() => requestLike({})}
-          className="border border-primary-500 rounded-full py-1 flex flex-row items-center justify-center px-2 w-32 mt-4"
+          className="border border-primary-500 rounded-full py-1 flex flex-row items-center justify-center px-2 w-32 mt-4 mx-4"
         >
           <Image
             src="/icons/LikePrimary.svg"
@@ -147,6 +148,9 @@ const Article = ({
             공감하기
           </span>
         </button>
+        <div className="w-full py-1.5 bg-[#F9F9F9] mt-5" />
+        <Comment article={article} board={article.board} auth={auth} />
+        <div className="w-full py-1.5 bg-[#F9F9F9] mb-5" />
       </div>
     </>
   );
