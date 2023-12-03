@@ -15,6 +15,7 @@ import { Board } from "schoolmate-types";
 import Image from "next/image";
 import { classNames } from "@/lib/uitls";
 import { inter } from "@/lib/fonts";
+import { stackRouterPush } from "@/lib/stackRouter";
 
 const ArticleList = ({
   articles: { articles, totalPage },
@@ -77,7 +78,7 @@ const ArticleList = ({
   return (
     <>
       {loadingArticle && <LoadingFullPage />}
-      <WriteButton />
+      <WriteButton boardId={board.id} />
       <div className="flex flex-col pb-4 items-center w-full">
         {articleList.map((article, index) => (
           <div key={index} className="w-full px-4 border-b">
@@ -90,7 +91,7 @@ const ArticleList = ({
   );
 };
 
-const WriteButton = () => {
+const WriteButton = ({ boardId }: { boardId: number }) => {
   const [position, setPosition] = useState(0);
   const [opened, setOpened] = useState(true);
   const controls = useAnimation();
@@ -120,6 +121,9 @@ const WriteButton = () => {
 
   return (
     <motion.button
+      onClick={() => {
+        stackRouterPush(router, `/board/${boardId}/write`);
+      }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       className="fixed bottom-4 right-4 z-50 flex items-center justify-center rounded-full bg-primary-500 text-white h-12 shadow-lg font-bold px-3"
@@ -129,7 +133,7 @@ const WriteButton = () => {
           marginLeft: opened ? 0 : "0.2rem",
           marginRight: opened ? 0 : "0.2rem",
         }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: opened ? 0 : 0.6 }}
       >
         <Image src="/icons/PlusOnly.svg" alt="글쓰기" width={20} height={20} />
       </motion.div>

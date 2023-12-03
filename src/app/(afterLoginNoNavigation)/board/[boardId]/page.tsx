@@ -60,7 +60,7 @@ const BoardPage = async ({ params }: Props) => {
         rightIcon={<SerachButton />}
       >
         <div className={classNames("w-full", inter.className)}>
-          <div className="border-b">
+          <div className="border-b pt-4">
             <div className="px-4 flex flex-row justify-between pb-5">
               <div className="flex flex-col">
                 <div className="px-3 py-1 bg-[#F9F9F9] text-[#7C7C7C] w-fit rounded-[13px] text-[0.8rem]">

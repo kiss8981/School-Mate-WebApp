@@ -24,6 +24,10 @@ const Header = ({
         "text-2xl bg-white fixed w-full z-10 min-w-[280px] max-w-[540px]",
         className
       )}
+      style={{
+        boxShadow: "rgba(0, 0, 0, 0.06) 0px 2px 30px",
+        transform: "translate3d(0,0,0)",
+      }}
       {...props}
     >
       <div className="font-bold relative flex justify-between items-center h-14">

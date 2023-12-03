@@ -1,4 +1,4 @@
-import { Article, Board } from "schoolmate-types";
+import { Article, Board, Comment, ReComment } from "schoolmate-types";
 
 export interface ArticleWithImage extends Article {
   keyOfImages: string[];
@@ -12,4 +12,25 @@ export interface ArticleWithImage extends Article {
     profile: string;
   };
   board: Board;
+}
+
+export interface CommentWithUser extends Comment {
+  user: {
+    id: string;
+    name: string;
+    profile: string;
+  };
+  recomments: ReCommnetWithUser[];
+  isMe: boolean;
+  likeCounts: number;
+}
+
+export interface ReCommnetWithUser extends ReComment {
+  user: {
+    id: string;
+    name: string;
+    profile: string;
+  };
+  isMe: boolean;
+  likeCounts: number;
 }

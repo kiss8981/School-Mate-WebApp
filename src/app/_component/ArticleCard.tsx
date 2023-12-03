@@ -18,7 +18,7 @@ const ArticleCard = ({
         stackRouterPush(router, `/board/${article.boardId}/${article.id}`);
       }}
       className={classNames(
-        "w-full border-b flex flex-row py-3 min-h-[95px]",
+        "w-full border-b flex flex-row py-3 min-h-[95px] cursor-pointer",
         className
       )}
     >

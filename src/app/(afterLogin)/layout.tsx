@@ -12,8 +12,10 @@ interface Props {
 const Layout: NextPage<Props> = async ({ children }) => {
   return (
     <>
-      <div className="min-w-[280px] max-w-[540px] m-auto">{children}</div>
-      <BottomNavbar />
+      <div className="min-w-[280px] max-w-[540px] m-auto">
+        {children}
+        <BottomNavbar />
+      </div>
     </>
   );
 };

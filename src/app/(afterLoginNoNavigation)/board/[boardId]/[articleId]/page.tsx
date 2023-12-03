@@ -1,7 +1,7 @@
 import HeaderContainer from "@/app/_component/HeaderContainer";
 import { authOptions } from "@/app/auth";
 import fetcher from "@/lib/fetch";
-import { ArticleWithImage } from "@/types/article";
+import { ArticleWithImage, CommentWithUser } from "@/types/article";
 import { NextPage } from "next";
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
@@ -22,7 +22,12 @@ const getArticle = async (
   if (article.data.status === 401) return redirect("/intro");
   if (article.data.status === 404) return null;
 
-  return article.data.data as ArticleWithImage;
+  return article.data.data as ArticleWithImage & {
+    comments: {
+      comments: CommentWithUser[];
+      totalPage: number;
+    };
+  };
 };
 
 interface Props {

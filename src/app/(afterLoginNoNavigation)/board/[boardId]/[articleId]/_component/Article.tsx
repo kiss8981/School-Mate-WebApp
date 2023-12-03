@@ -5,7 +5,7 @@ import useFetch from "@/hooks/useFetch";
 import { inter } from "@/lib/fonts";
 import { classNames } from "@/lib/uitls";
 import { toast } from "@/lib/webviewHandler";
-import { ArticleWithImage } from "@/types/article";
+import { ArticleWithImage, CommentWithUser } from "@/types/article";
 import dayjs from "dayjs";
 import { Session } from "next-auth";
 import Image from "next/image";
@@ -17,7 +17,12 @@ const Article = ({
   article,
   auth,
 }: {
-  article: ArticleWithImage;
+  article: ArticleWithImage & {
+    comments: {
+      comments: CommentWithUser[];
+      totalPage: number;
+    };
+  };
   auth: Session;
 }) => {
   const router = useRouter();
@@ -49,7 +54,7 @@ const Article = ({
       {likeLoading && <LoadingFullPage />}
       <div
         className={classNames(
-          "flex flex-col min-h-[100vh] pb-10",
+          "flex flex-col min-h-[100vh] pb-20",
           inter.className
         )}
       >
@@ -135,7 +140,7 @@ const Article = ({
         </div>
         <button
           onClick={() => requestLike({})}
-          className="border border-primary-500 rounded-full py-1 flex flex-row items-center justify-center px-2 w-32 mt-4 mx-4"
+          className="border border-primary-500 rounded-full py-1 flex flex-row items-center justify-center px-2 w-28 mt-4 mx-4"
         >
           <Image
             src="/icons/LikePrimary.svg"
@@ -144,13 +149,12 @@ const Article = ({
             height={20}
             className="mr-1"
           />
-          <span className="text-primary-500 text-base font-bold py-1">
+          <span className="text-primary-500 text-sm font-bold py-1">
             공감하기
           </span>
         </button>
-        <div className="w-full py-1.5 bg-[#F9F9F9] mt-5" />
+        <div className="w-full py-1.5 bg-[#F9F9F9] mt-7" />
         <Comment article={article} board={article.board} auth={auth} />
-        <div className="w-full py-1.5 bg-[#F9F9F9] mb-5" />
       </div>
     </>
   );
