@@ -78,7 +78,7 @@ const ArticleList = ({
   return (
     <>
       {loadingArticle && <LoadingFullPage />}
-      <WriteButton boardId={board.id} />
+      {String(board.id) !== "hot" && <WriteButton boardId={board.id} />}
       <div className="flex flex-col pb-4 items-center w-full">
         {articleList.map((article, index) => (
           <div key={index} className="w-full px-4 border-b">

@@ -191,6 +191,7 @@ const CommentList = ({
 
   return (
     <>
+      <div className="w-full h-5 bg-[#F9F9F9] mt-5" />
       {commentList.length === 0 ? (
         <>
           {!loadingComment && (

@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Comment from "./Comment";
+import { stackRouterPush } from "@/lib/stackRouter";
 
 const Article = ({
   article,
@@ -138,22 +139,38 @@ const Article = ({
             <span className="text-[#8c8c8c] ml-1">{article.views}</span>
           </div>
         </div>
-        <button
-          onClick={() => requestLike({})}
-          className="border border-primary-500 rounded-full py-1 flex flex-row items-center justify-center px-2 w-28 mt-4 mx-4"
-        >
-          <Image
-            src="/icons/LikePrimary.svg"
-            alt="Like"
-            width={20}
-            height={20}
-            className="mr-1"
-          />
-          <span className="text-primary-500 text-sm font-bold py-1">
-            공감하기
-          </span>
-        </button>
-        <div className="w-full py-1.5 bg-[#F9F9F9] mt-7" />
+        <div className="flex flex-row px-4">
+          <button
+            onClick={() => requestLike({})}
+            className="border border-primary-500 rounded-full py-1 flex flex-row items-center justify-center px-2 w-28 mt-4"
+          >
+            <Image
+              src="/icons/LikePrimary.svg"
+              alt="Like"
+              width={20}
+              height={20}
+              className="mr-1"
+            />
+            <span className="text-primary-500 text-sm font-bold py-1">
+              공감하기
+            </span>
+          </button>
+          {article.isMe && (
+            <div className="ml-auto mt-auto">
+              <button
+                onClick={() =>
+                  stackRouterPush(
+                    router,
+                    `/board/${article.board.id}/${article.id}/edit`
+                  )
+                }
+                className="underline underline-offset-1 text-sm text-[#66738C]"
+              >
+                수정하기
+              </button>
+            </div>
+          )}
+        </div>
         <Comment article={article} board={article.board} auth={auth} />
       </div>
     </>

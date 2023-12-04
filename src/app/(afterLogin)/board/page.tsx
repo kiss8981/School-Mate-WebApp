@@ -1,17 +1,20 @@
 import LeftHeaderContainer from "@/app/_component/LeftHeaderContainer";
 import { redirect } from "next/navigation";
 import dynamic from "next/dynamic";
-import { BoardListSkeleton } from "./_component/BoardList";
+import { BoardListSkeleton } from "../../(afterLoginNoNavigation)/board/_component/BoardList";
 import { Suspense } from "react";
 import fetcher from "@/lib/fetch";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/auth";
 import { NextPage } from "next";
 
-const BoardItem = dynamic(() => import("./_component/BoardList"), {
-  loading: () => <BoardListSkeleton />,
-  ssr: false,
-});
+const BoardItem = dynamic(
+  () => import("../../(afterLoginNoNavigation)/board/_component/BoardList"),
+  {
+    loading: () => <BoardListSkeleton />,
+    ssr: false,
+  }
+);
 
 const BoardPage: NextPage = async () => {
   const auth = await getServerSession(authOptions);
@@ -24,6 +27,7 @@ const BoardPage: NextPage = async () => {
       <LeftHeaderContainer
         title="게시판 목록"
         className="bg-[#f9f9f9] min-h-[100vh] pb-10"
+        backIcon={false}
       >
         <Suspense fallback={<BoardListSkeleton />}>
           <BoardItem

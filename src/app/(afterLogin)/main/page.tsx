@@ -65,6 +65,7 @@ const Main: NextPage = async () => {
           title="인기 게시물"
           subTitle="즐겨찾는 게시판"
           path="/board"
+          pathType="replace"
         >
           <Suspense fallback={<RecommnedArticleSkeleton />}>
             <RecommentArticle
@@ -87,6 +88,7 @@ const Main: NextPage = async () => {
           path="/asked"
           className="px-0"
           titleClassName="px-5"
+          pathType="replace"
         >
           <Suspense fallback={<AskedSkeleton />}>
             <Asked

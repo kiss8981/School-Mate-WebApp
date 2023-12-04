@@ -10,6 +10,7 @@ interface Props {
   title: string;
   subTitle: string;
   path: string;
+  pathType?: "stack" | "replace";
   children: React.ReactNode;
   className?: string;
   titleClassName?: string;
@@ -22,6 +23,7 @@ const SectionContainer = ({
   subTitle,
   className,
   titleClassName,
+  pathType = "stack",
 }: Props) => {
   return (
     <>
@@ -30,6 +32,7 @@ const SectionContainer = ({
           title={title}
           subTitle={subTitle}
           path={path}
+          pathType={pathType}
           className={titleClassName}
         />
         {children}
@@ -43,10 +46,12 @@ const SectionTitle = ({
   subTitle,
   path,
   className,
+  pathType = "stack",
 }: {
   title: string;
   subTitle: string;
   path: string;
+  pathType?: "stack" | "replace";
   className?: string;
 }) => {
   const router = useRouter();
@@ -57,7 +62,11 @@ const SectionTitle = ({
         <span className="text-[#b6b6b6] text-sm">{subTitle}</span>
         <button
           onClick={() => {
-            stackRouterPush(router, path, "stack");
+            {
+              pathType === "stack"
+                ? stackRouterPush(router, path, "stack")
+                : router.push(path);
+            }
           }}
           className="flex items-center justify-between w-full"
         >

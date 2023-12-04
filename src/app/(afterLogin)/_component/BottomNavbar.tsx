@@ -4,6 +4,46 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { classNames } from "@/lib/uitls";
+import { inter } from "@/lib/fonts";
+
+const BottomNavbarList = [
+  {
+    name: "홈",
+    activeIcon: "/icons/Home.svg",
+    inactiveIcon: "/icons/HomeLight.svg",
+    link: "/main",
+    pattern: /^\/main/,
+  },
+  {
+    name: "게시판",
+    activeIcon: "/icons/BoardList.svg",
+    inactiveIcon: "/icons/BoardListLight.svg",
+    link: "/board",
+    pattern: /^\/board/,
+  },
+  {
+    name: "시간표",
+    activeIcon: "/icons/Timetable.svg",
+    inactiveIcon: "/icons/TimetableLight.svg",
+    link: "/timetable",
+    pattern: /^\/timetable/,
+  },
+  {
+    name: "에스크",
+    activeIcon: "/icons/Message.svg",
+    inactiveIcon: "/icons/MessageLight.svg",
+    link: "/asked",
+    pattern: /^\/asked/,
+  },
+  {
+    name: "내 정보",
+    activeIcon: "/icons/User.svg",
+    inactiveIcon: "/icons/UserLight.svg",
+    link: "/me",
+    pattern: /^\/me/,
+  },
+];
 
 export default function BottomNavbar() {
   const router = useRouter();
@@ -17,147 +57,52 @@ export default function BottomNavbar() {
   return (
     <>
       <div
-        className="fixed bottom-0 bg-whtie min-w-[280px] max-w-[540px] pt-2 flex items-center w-full z-50 bg-white"
+        className={classNames(
+          "fixed bottom-0 bg-whtie min-w-[280px] max-w-[540px] flex items-center text-[12px] w-full z-50 bg-white",
+          inter.className
+        )}
         style={{
           paddingBottom: "0.3rem",
           boxShadow: "0px -4px 30px rgba(0, 0, 0, 0.04)",
         }}
       >
-        <div className="flex flex-row px-10 justify-between items-center w-full py-1.5">
-          <Link
-            className="h-[40px] flex flex-col justify-between items-center"
-            href="/main"
-          >
-            {pathname === "/main" ? (
-              <>
-                <Image
-                  src="/icons/Home.svg"
-                  alt="home"
-                  width={27}
-                  height={27}
-                  className="cursor-pointer"
-                  onClick={() => router.push("/")}
-                />
-                <Image
-                  src="/icons/Dot.svg"
-                  alt="dot"
-                  width={6}
-                  height={6}
-                  className="cursor-pointer"
-                />
-              </>
-            ) : (
-              <>
-                <Image
-                  src="/icons/HomeLight.svg"
-                  alt="home"
-                  width={27}
-                  height={27}
-                  className="cursor-pointer"
-                />
-              </>
-            )}
-          </Link>
-          <Link
-            className="h-[40px] flex flex-col justify-between items-center"
-            href="/timetable"
-          >
-            {pathname === "/timetable" ? (
-              <>
-                <Image
-                  src="/icons/Board.svg"
-                  alt="home"
-                  width={27}
-                  height={27}
-                  className="cursor-pointer"
-                  onClick={() => router.push("/")}
-                />
-                <Image
-                  src="/icons/Dot.svg"
-                  alt="dot"
-                  width={6}
-                  height={6}
-                  className="cursor-pointer"
-                />
-              </>
-            ) : (
-              <>
-                <Image
-                  src="/icons/BoardLight.svg"
-                  alt="home"
-                  width={27}
-                  height={27}
-                  className="cursor-pointer"
-                />
-              </>
-            )}
-          </Link>
-          <Link
-            className="h-[40px] flex flex-col justify-between items-center"
-            href="/message"
-          >
-            {pathname === "/message" ? (
-              <>
-                <Image
-                  src="/icons/Message.svg"
-                  alt="home"
-                  width={27}
-                  height={27}
-                  className="cursor-pointer"
-                />
-                <Image
-                  src="/icons/Dot.svg"
-                  alt="dot"
-                  width={6}
-                  height={6}
-                  className="cursor-pointer"
-                />
-              </>
-            ) : (
-              <>
-                <Image
-                  src="/icons/MessageLight.svg"
-                  alt="home"
-                  width={27}
-                  height={27}
-                  className="cursor-pointer"
-                />
-              </>
-            )}
-          </Link>
-          <Link
-            className="h-[40px] flex flex-col justify-between items-center"
-            href="/me"
-          >
-            {pathname === "/me" ? (
-              <>
-                <Image
-                  src="/icons/User.svg"
-                  alt="home"
-                  width={27}
-                  height={27}
-                  className="cursor-pointer"
-                />
-                <Image
-                  src="/icons/Dot.svg"
-                  alt="dot"
-                  width={6}
-                  height={6}
-                  className="cursor-pointer"
-                />
-              </>
-            ) : (
-              <>
-                <Image
-                  src="/icons/UserLight.svg"
-                  alt="home"
-                  width={30}
-                  height={30}
-                  className="cursor-pointer"
-                />
-              </>
-            )}
-          </Link>
+        <div className="flex flex-row px-5 justify-between items-center w-full py-2.5">
+          {BottomNavbarList.map((item, key) => (
+            <Link
+              key={key}
+              className="h-[40px] flex flex-col justify-between items-center"
+              href={item.link}
+            >
+              <div
+                className="flex items-center justify-center"
+                style={{
+                  width: "28px",
+                  height: "28px",
+                }}
+              >
+                {item.pattern.test(pathname) ? (
+                  <>
+                    <Image
+                      src={item.activeIcon}
+                      alt={item.name}
+                      width={24}
+                      height={24}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Image
+                      src={item.inactiveIcon}
+                      alt={item.name}
+                      width={24}
+                      height={24}
+                    />
+                  </>
+                )}
+              </div>
+              <span className="mt-1">{item.name}</span>
+            </Link>
+          ))}
         </div>
       </div>
     </>

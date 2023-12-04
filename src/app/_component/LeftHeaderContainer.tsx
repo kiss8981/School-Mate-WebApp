@@ -88,7 +88,11 @@ const Header = ({
           </button>
         )}
         <span
-          className={classNames("ml-4 font-bold text-[22px]", inter.className)}
+          className={classNames(
+            "font-bold text-[22px]",
+            inter.className,
+            backIcon ? "ml-4" : ""
+          )}
         >
           {title}
         </span>

@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import clsx, { ClassValue } from "clsx";
+import dayjs from "dayjs";
 
 export const classNames = (...classes: ClassValue[]) => {
   return twMerge(clsx(...classes));
@@ -34,4 +35,17 @@ export const timeForToday = (value: Date) => {
   }
 
   return `${Math.floor(betweenTimeDay / 365)}년전`;
+};
+
+export const semesterHandler = () => {
+  const today = dayjs();
+
+  const semester1Start = dayjs(`${today.format("YYYY")}-03-01`);
+  const semester2Start = dayjs(`${today.format("YYYY")}-08-01`);
+  const semester2End = dayjs(`${today.format("YYYY")}-12-31`);
+  if (today.isAfter(semester1Start) && today.isBefore(semester2Start)) {
+    return "1";
+  } else if (today.isAfter(semester2Start) && today.isBefore(semester2End)) {
+    return "2";
+  }
 };
