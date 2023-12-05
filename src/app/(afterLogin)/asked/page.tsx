@@ -30,11 +30,12 @@ const AkedPage: NextPage = async () => {
     >
       <Suspense fallback={<AskedMeSkeleton />}>
         <AskedMe
-          data={fetcher(`/asked/${auth.user.user.id}`, {
+          data={fetcher(`/auth/me/asked`, {
             headers: {
               Authorization: `Bearer ${auth.user.token.accessToken}`,
             },
           })}
+          auth={auth}
         />
       </Suspense>
     </LeftHeaderContainer>

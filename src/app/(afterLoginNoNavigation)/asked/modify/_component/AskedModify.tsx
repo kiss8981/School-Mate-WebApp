@@ -7,6 +7,7 @@ import { inter } from "@/lib/fonts";
 import { stackRouterPush } from "@/lib/stackRouter";
 import { classNames } from "@/lib/uitls";
 import { toast } from "@/lib/webviewHandler";
+import { AskedListWithUser } from "@/types/asked";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -14,15 +15,23 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Collapse } from "react-collapse";
 
-const AskedIntro = ({ auth }: { auth: Session }) => {
+const AskedModify = ({
+  auth,
+  asked,
+}: {
+  auth: Session;
+  asked: AskedListWithUser;
+}) => {
   const router = useRouter();
   const upoadImageRef = useRef<HTMLInputElement>(null);
   const [profile, setProfile] = useState<File | null>(null);
-  const [profileKey, setProfileKey] = useState<string>();
+  const [profileKey, setProfileKey] = useState<string | undefined>(
+    asked.user.user.profile
+  );
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState("");
-  const [tag1, setTag1] = useState("");
-  const [tag2, setTag2] = useState("");
+  const [name, setName] = useState(asked.user.customId);
+  const [tag1, setTag1] = useState(asked.user.tags[0]);
+  const [tag2, setTag2] = useState(asked.user.tags[1]);
 
   const uploadImage = async (profile: File) => {
     setLoading(true);
@@ -30,7 +39,7 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
     formData.set("img", profile);
 
     try {
-      const { data } = await fetcher("/image", {
+      const { data } = await fetcher("/asked/image", {
         method: "POST",
         data: formData,
         headers: {
@@ -41,7 +50,7 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
       });
       setProfileKey(data.data);
       setProfile(profile);
-      toast("success", "프로필 사진이 업로드 되었습니다.");
+      toast("success", "프로필 사진이 변경되었습니다.");
     } catch (e: any) {
       setProfile(null);
       setProfileKey(undefined);
@@ -54,7 +63,7 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
   const deleteImage = async () => {
     setLoading(true);
     try {
-      await fetcher(`/image/${profileKey}`, {
+      await fetcher(`/asked/image`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${auth.user.token.accessToken}`,
@@ -62,6 +71,7 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
       });
       setProfileKey(undefined);
       setProfile(null);
+      toast("success", "프로필 사진이 삭제되었습니다.");
     } catch (e: any) {
       toast("error", e.response.data.message || e.message);
     } finally {
@@ -69,21 +79,20 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
     }
   };
 
-  const handleCreateUser = async () => {
+  const handleEditUser = async () => {
     try {
-      await fetcher("/asked/create", {
-        method: "POST",
+      await fetcher("/asked", {
+        method: "PUT",
         data: {
-          image: profileKey,
-          id: name,
-          tag1,
-          tag2,
+          ...(name === asked.user.customId ? {} : { id: name }),
+          ...(tag1 === asked.user.tags[0] ? {} : { tag1, tag2 }),
+          ...(tag2 === asked.user.tags[1] ? {} : { tag1, tag2 }),
         },
         headers: {
           Authorization: `Bearer ${auth.user.token.accessToken}`,
         },
       });
-      toast("success", "프로필이 생성되었습니다.");
+      toast("success", "변경사항이 저장되었습니다");
       stackRouterPush(router, "/asked", "reset");
     } catch (e: any) {
       toast("error", e.response.data.message || e.message);
@@ -104,6 +113,8 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
               backgroundImage: `url(${
                 profile
                   ? URL.createObjectURL(profile)
+                  : profileKey
+                  ? process.env.NEXT_PUBLIC_S3_URL + asked.user.user.profile
                   : "/images/schoolmate/logobg.svg"
               })`,
               backgroundSize: "cover",
@@ -136,6 +147,7 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
             onClick={() => {
               deleteImage();
             }}
+            disabled={!profileKey}
             className={classNames(
               "mt-5 font-bold flex flex-row items-center text-sm",
               profile ? "text-primary-500" : "text-gray-400"
@@ -157,7 +169,8 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
               }}
             />
             <span className="ml-2 mt-1 text-[#b6b6b6] text-sm">
-              에스크 내에서만 사용하는 아이디에요 (영문, 숫자만 가능)
+              에스크 내에서만 사용하는 아이디에요 (영문, 숫자만 가능) (한달에
+              한번만 변경 가능)
             </span>
           </div>
           <div className="w-full flex flex-col mt-5 pb-32">
@@ -198,7 +211,7 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
       {name && tag1 && tag2 && (
         <div className="px-5 w-full justify-center fixed bottom-3">
           <button
-            onClick={handleCreateUser}
+            onClick={handleEditUser}
             disabled={!(name && tag1 && tag2)}
             className={classNames(
               "mt-5 w-full font-bold flex flex-row items-center justify-center py-2 rounded-full h-14",
@@ -218,4 +231,4 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
   );
 };
 
-export default AskedIntro;
+export default AskedModify;
