@@ -136,6 +136,7 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
             onClick={() => {
               deleteImage();
             }}
+            disabled={!profileKey}
             className={classNames(
               "mt-5 font-bold flex flex-row items-center text-sm",
               profile ? "text-primary-500" : "text-gray-400"
