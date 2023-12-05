@@ -62,11 +62,10 @@ export default function BottomNavbar() {
           inter.className
         )}
         style={{
-          paddingBottom: "0.3rem",
           boxShadow: "0px -4px 30px rgba(0, 0, 0, 0.04)",
         }}
       >
-        <div className="flex flex-row px-5 justify-between items-center w-full py-2.5">
+        <div className="flex flex-row px-8 justify-between items-center w-full py-2.5">
           {BottomNavbarList.map((item, key) => (
             <Link
               key={key}
