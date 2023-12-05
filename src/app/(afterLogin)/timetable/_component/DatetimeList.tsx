@@ -12,7 +12,7 @@ const DatetimeList = () => {
           inter.className
         )}
       >
-        <span className="font-bold text-black text-base bg-[#f0f0f0] px-3 py-1 rounded-full w-20 flex items-center justify-center">
+        <span className="font-bold text-black text-base bg-[#f0f0f0] px-3 py-1 rounded-full min-w-[5rem] flex items-center justify-center">
           {dayjs().format("dddd")}
         </span>
         <div className="flex flex-row items-center justify-between w-full">
