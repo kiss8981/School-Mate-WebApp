@@ -1,19 +1,29 @@
+import { inter } from "@/lib/fonts";
 import { classNames } from "@/lib/uitls";
 import dayjs from "dayjs";
+dayjs.locale("ko");
 
 const DatetimeList = () => {
   return (
     <>
-      <div className="px-5 flex-row flex w-full space-x-3">
-        {Array(5)
-          .fill(0)
-          .map((_, i) => (
+      <div
+        className={classNames(
+          "px-5 flex-row flex w-full space-x-3",
+          inter.className
+        )}
+      >
+        <span className="font-bold text-black text-base bg-[#f0f0f0] px-3 py-1 rounded-full w-20 flex items-center justify-center">
+          {dayjs().format("dddd")}
+        </span>
+        <div className="flex flex-row items-center justify-between w-full">
+          {Array.from(Array(7).keys()).map((item, key) => (
             <DatetimeItem
-              date={dayjs().add(i, "day").toDate()}
-              isSelected={i === 0}
-              key={i}
+              date={dayjs().add(key, "day").toDate()}
+              isSelected={key === 0}
+              key={key}
             />
           ))}
+        </div>
       </div>
     </>
   );
@@ -28,23 +38,16 @@ const DatetimeItem = ({
 }) => {
   return (
     <>
-      <div
+      <span
         className={classNames(
-          "px-3 py-4 flex flex-col w-full items-center justify-center rounded-2xl",
-          isSelected ? "bg-primary-500 text-white" : "bg-white text-[#25AAED]"
+          "w-8 items-center justify-center flex h-8 rounded-full",
+          isSelected ? "text-black border" : "text-[#b6b6b6]",
+          dayjs(date).format("ddd") === "토" ? "text-[#25aaed]" : "",
+          dayjs(date).format("ddd") === "일" ? "text-[#f44336]" : ""
         )}
       >
-        <span className="font-bold w-9">
-          {dayjs(date).format("ddd").toUpperCase()}
-        </span>
-        <div
-          className={classNames(
-            "w-full my-2 h-[0.15rem] rounded-full",
-            isSelected ? "bg-white" : "bg-[#2C3439]"
-          )}
-        />
-        <span className="font-bold">{dayjs(date).format("DD")}</span>
-      </div>
+        {dayjs(date).format("D")}
+      </span>
     </>
   );
 };

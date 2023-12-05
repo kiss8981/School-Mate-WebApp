@@ -9,7 +9,7 @@ interface Props {
 const TimetableContainer = ({ rightIcon, children, className }: Props) => {
   return (
     <div className={className}>
-      <TimetableHeader />
+      <TimetableHeader  />
       <div
         style={{
           paddingTop: "80px",

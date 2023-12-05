@@ -1,6 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import clsx, { ClassValue } from "clsx";
 import dayjs from "dayjs";
+import { ISpecialTimetableRow } from "@/types/school";
 
 export const classNames = (...classes: ClassValue[]) => {
   return twMerge(clsx(...classes));
@@ -49,3 +50,68 @@ export const semesterHandler = () => {
     return "2";
   }
 };
+
+export function findColorByContent(text: string) {
+  for (const item of colorList) {
+    const regexp = item.regexp;
+    if (regexp.test(text)) {
+      return item.color;
+    }
+  }
+  return null; // 매치되는 색상이 없을 경우
+}
+
+export function mergeRowsWithSameContent(
+  rows: ISpecialTimetableRow[]
+): ISpecialTimetableRow[] {
+  const mergedRows: ISpecialTimetableRow[] = [];
+
+  for (let i = 0; i < rows.length; i++) {
+    const currentRow = { ...rows[i] };
+    const nextRow = rows[i + 1];
+
+    if (nextRow && currentRow.ITRT_CNTNT === nextRow.ITRT_CNTNT) {
+      // If ITRT_CNTNT of the currentRow is equal to the nextRow, merge them
+      currentRow.PERIO += `, ${nextRow.PERIO}`; // Merge PERIO (or any other property as needed)
+      // Add other properties to merge similarly
+
+      // Skip the next row since it has been merged
+      i++;
+    }
+
+    mergedRows.push(currentRow);
+  }
+
+  return mergedRows;
+}
+
+const colorList = [
+  {
+    regexp: /역사/g,
+    color: "#70E991",
+  },
+  {
+    regexp: /한국사/g,
+    color: "#70E991",
+  },
+  {
+    regexp: /생물/g,
+    color: "#FFBD98",
+  },
+  {
+    regexp: /국어/g,
+    color: "#FFE298",
+  },
+  {
+    regexp: /수학/g,
+    color: "#FF9898",
+  },
+  {
+    regexp: /확률/g,
+    color: "#FF9898",
+  },
+  {
+    regexp: /영어/g,
+    color: "#70E991",
+  },
+];

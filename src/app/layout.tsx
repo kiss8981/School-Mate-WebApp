@@ -4,6 +4,8 @@ import { classNames } from "@/lib/uitls";
 import { NanumGothic } from "@/lib/fonts";
 import { ToastContainer } from "react-toastify";
 
+import 'dayjs/locale/ko'
+
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
 import "./globals.css";
