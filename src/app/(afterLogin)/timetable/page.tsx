@@ -5,17 +5,21 @@ import { NextPage } from "next";
 import TimetableContainer from "./_component/HeaderContainer";
 import { Suspense } from "react";
 import DatetimeList from "./_component/DatetimeList";
-import TimetableList, { TimetableSkeleton } from "./_component/Timetable";
+import { TimetableSkeleton } from "./_component/Timetable";
 import fetcher from "@/lib/fetch";
 import dayjs from "dayjs";
+import dynamic from "next/dynamic";
+
+const TimetableList = dynamic(() => import("./_component/Timetable"), {
+  loading: () => <TimetableSkeleton />,
+  ssr: false,
+});
 
 const Timetable: NextPage = async () => {
   const auth = await getServerSession(authOptions);
 
   if (!auth || !auth.user.registered) return redirect("/intro");
   if (!auth.user.user.userSchool) return redirect("/verify");
-
-  const callbackUpdate = () => {};
 
   return (
     <TimetableContainer>

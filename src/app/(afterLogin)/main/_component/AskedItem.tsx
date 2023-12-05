@@ -21,8 +21,8 @@ const AskedItem = ({
         stackRouterPush(router, `/asked/${asked.customId || asked.userId}`);
       }}
       className={classNames(
-        `w-[140px] h-[200px] flex-shrink-0 relative bg-no-repeat bg-center rounded-[10px]`,
-        asked.user.profile ? "bg-cover" : "",
+        `w-[150px] h-[200px] flex-shrink-0 relative bg-no-repeat bg-center rounded-[10px]`,
+        asked.image ? "bg-cover" : "",
         index === 0 ? "ml-5" : ""
       )}
       style={{
@@ -33,12 +33,25 @@ const AskedItem = ({
         })`,
       }}
     >
-      <span className="absolute text-center text-white font-bold top-[50%] left-[50%] transform text-xl translate-x-[-50%] translate-y-[-50%]">
+      <span className="absolute text-center text-white font-bold top-[45%] left-[50%] transform text-xl translate-x-[-50%] translate-y-[-50%]">
         {asked.user.name}
       </span>
 
       <div className="absolute bottom-3 left-[50%] transform translate-x-[-50%] w-full px-4">
-        <button className="flex flex-row items-center rounded-full bg-white text-black border-none py-1.5 w-full justify-center">
+        <div className="flex flex-row items-center justify-between space-x-1">
+          {asked.tags.slice(0, 2).map((item, key) => (
+            <span
+              key={key}
+              className={classNames(
+                "text-[0.6rem] font-bold text-white px-1.5 py-1 rounded-full w-[190px] truncate",
+                "bg-[#0a1a3a]"
+              )}
+            >
+              #{item}
+            </span>
+          ))}
+        </div>
+        <button className="mt-2 flex flex-row items-center rounded-full bg-white text-black border-none py-1.5 w-full justify-center">
           <Image
             src="/icons/PlusOnly.svg"
             alt="더보기"
