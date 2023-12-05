@@ -27,8 +27,8 @@ const AskedItem = ({
       )}
       style={{
         backgroundImage: `linear-gradient(0deg, rgba(0,0,0,0.44), rgba(0, 0, 0, 0.44)), url(${
-          asked.user.profile
-            ? asked.user.profile
+          asked.image
+            ? process.env.NEXT_PUBLIC_S3_URL + asked.image
             : "/images/schoolmate/logo.svg"
         })`,
       }}

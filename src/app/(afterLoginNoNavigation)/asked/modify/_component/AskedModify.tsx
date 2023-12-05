@@ -80,6 +80,7 @@ const AskedModify = ({
   };
 
   const handleEditUser = async () => {
+    setLoading(true);
     try {
       await fetcher("/asked", {
         method: "PUT",
@@ -93,9 +94,12 @@ const AskedModify = ({
         },
       });
       toast("success", "변경사항이 저장되었습니다");
+      setLoading(false);
       stackRouterPush(router, "/asked", "reset");
     } catch (e: any) {
       toast("error", e.response.data.message || e.message);
+    } finally {
+      setLoading(false);
     }
   };
 

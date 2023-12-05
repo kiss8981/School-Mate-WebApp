@@ -70,6 +70,7 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
   };
 
   const handleCreateUser = async () => {
+    setLoading(true);
     try {
       await fetcher("/asked/create", {
         method: "POST",
@@ -87,6 +88,8 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
       stackRouterPush(router, "/asked", "reset");
     } catch (e: any) {
       toast("error", e.response.data.message || e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
