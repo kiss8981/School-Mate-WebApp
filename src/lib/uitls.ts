@@ -71,11 +71,7 @@ export function mergeRowsWithSameContent(
     const nextRow = rows[i + 1];
 
     if (nextRow && currentRow.ITRT_CNTNT === nextRow.ITRT_CNTNT) {
-      // If ITRT_CNTNT of the currentRow is equal to the nextRow, merge them
-      currentRow.PERIO += `, ${nextRow.PERIO}`; // Merge PERIO (or any other property as needed)
-      // Add other properties to merge similarly
-
-      // Skip the next row since it has been merged
+      currentRow.PERIO += `, ${nextRow.PERIO}`;
       i++;
     }
 

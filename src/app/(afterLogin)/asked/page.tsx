@@ -2,18 +2,43 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/auth";
 import { redirect } from "next/navigation";
 import { NextPage } from "next";
+import LeftHeaderContainer from "@/app/_component/LeftHeaderContainer";
+import { Session } from "next-auth";
+import fetcher from "@/lib/fetch";
+import { AskedWithUser } from "@/types/asked";
+import { AxiosError } from "axios";
+import { Suspense } from "react";
+import { AskedMeSkeleton } from "./_component/AskedMe";
+import dynamic from "next/dynamic";
 
-const Home: NextPage = async () => {
-  // const auth = await getServerSession(authOptions);
+const AskedMe = dynamic(() => import("./_component/AskedMe"), {
+  loading: () => <AskedMeSkeleton />,
+  ssr: false,
+});
 
-  // if (!auth) return redirect("/intro");
+const AkedPage: NextPage = async () => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth) return redirect("/intro");
+  if (!auth.user.user.userSchool) return redirect("/verify");
 
   return (
-    <div>
-      <h1>After Login Page</h1>
-      <h2></h2>
-    </div>
+    <LeftHeaderContainer
+      backIcon={false}
+      title="에스크"
+      searchPath="/searchasked"
+    >
+      <Suspense fallback={<AskedMeSkeleton />}>
+        <AskedMe
+          data={fetcher(`/asked/${auth.user.user.id}`, {
+            headers: {
+              Authorization: `Bearer ${auth.user.token.accessToken}`,
+            },
+          })}
+        />
+      </Suspense>
+    </LeftHeaderContainer>
   );
 };
 
-export default Home;
+export default AkedPage;

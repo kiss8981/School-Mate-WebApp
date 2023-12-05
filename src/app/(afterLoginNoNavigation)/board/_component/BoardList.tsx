@@ -52,7 +52,7 @@ const BoardListSection = ({
 }) => {
   return (
     <>
-      <div className={classNames("flex flex-col px-4 pt-5", inter.className)}>
+      <div className={classNames("flex flex-col px-5 pt-5", inter.className)}>
         <span className="text-[#b6b6b6] text-base font-bold">{title}</span>
         <div className="flex flex-col items-start mt-2 rounded-[20px] py-2 px-7 bg-white drop-shadow-lg">
           {boards.map((board, index) => (
@@ -80,7 +80,7 @@ const BoardListSkeleton = () => {
   const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent`;
 
   return (
-    <div className="flex flex-col mt-6 px-4 items-center">
+    <div className="flex flex-col mt-6 px-5 items-center">
       <div className="flex flex-col w-full">
         <div
           className={`relative h-[20px] w-24 rounded-[20px] bg-[#CCCCCC] ${shimmer}`}

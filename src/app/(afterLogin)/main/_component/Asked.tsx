@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Asked = async ({ data }: Props) => {
-  const askeds = (await data.then(res => res.data.data)) as AskedWithUser[];
+  const askeds = (await data.then((res) => res.data.data)) as AskedWithUser[];
   return (
     <>
       <div
@@ -21,9 +21,17 @@ const Asked = async ({ data }: Props) => {
           roboto.className
         )}
       >
-        {askeds.map((asked, index) => (
-          <AskedItem asked={asked} key={index} index={index} />
-        ))}
+        {askeds.length === 0 ? (
+          <>
+            <span className="mx-auto my-10">아직 등록된 에스크 학생이 없습니다.</span>
+          </>
+        ) : (
+          <>
+            {askeds.map((asked, index) => (
+              <AskedItem asked={asked} key={index} index={index} />
+            ))}
+          </>
+        )}
       </div>
     </>
   );

@@ -11,13 +11,17 @@ import SerachButton from "./SearchButton";
 const LeftHeaderContainer = ({
   title = "",
   backIcon = true,
+  seachIcon = true,
   children,
   className = "",
+  searchPath = "/search",
 }: {
   title?: string;
   backIcon?: boolean;
+  seachIcon?: boolean;
   children?: React.ReactNode;
   className?: string;
+  searchPath?: string;
 }) => {
   useEffect(() => {
     function handleVerticalResize() {
@@ -41,7 +45,12 @@ const LeftHeaderContainer = ({
   return (
     <>
       <div className={className}>
-        <Header title={title} backIcon={backIcon} />
+        <Header
+          title={title}
+          backIcon={backIcon}
+          searchPath={searchPath}
+          seachIcon={seachIcon}
+        />
         <div
           style={{
             paddingTop: "64px",
@@ -58,18 +67,22 @@ const Header = ({
   title = "",
   className = "",
   backIcon = true,
+  seachIcon = true,
+  searchPath = "/search",
   ...props
 }: {
   title?: string;
   className?: string;
   backIcon?: boolean;
+  seachIcon?: boolean;
+  searchPath?: string;
 } & React.ComponentPropsWithRef<"header">) => {
   const router = useRouter();
 
   return (
     <header
       className={classNames(
-        "text-2xl bg-white fixed w-full z-10 min-w-[280px] max-w-[540px] px-4",
+        "text-2xl bg-white fixed w-full z-10 min-w-[280px] max-w-[540px] px-5",
         className
       )}
       style={{
@@ -91,14 +104,16 @@ const Header = ({
           className={classNames(
             "font-bold text-[22px]",
             inter.className,
-            backIcon ? "ml-4" : ""
+            backIcon ? "ml-5" : ""
           )}
         >
           {title}
         </span>
-        <div className="flex flex-row ml-auto">
-          <SerachButton />
-        </div>
+        {seachIcon && (
+          <div className="flex flex-row ml-auto">
+            <SerachButton searchPath={searchPath} />
+          </div>
+        )}
       </div>
     </header>
   );
