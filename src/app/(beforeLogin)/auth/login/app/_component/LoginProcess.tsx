@@ -8,15 +8,13 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useLayoutEffect } from "react";
 
 const LoginProcess: React.FC<{
-  loginData: {
-    token: string;
-  };
-}> = ({ loginData }) => {
+  token: string;
+}> = ({ token }) => {
   const router = useRouter();
   useEffect(() => {
     signIn("credentials", {
       redirect: false,
-      code: loginData.token,
+      code: token,
       provider: "app",
     }).then(async res => {
       if (!res?.ok) {
