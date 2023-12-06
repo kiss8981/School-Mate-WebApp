@@ -21,7 +21,7 @@ const AskedItem = ({
         stackRouterPush(router, `/asked/${asked.customId || asked.userId}`);
       }}
       className={classNames(
-        `w-[150px] h-[200px] flex-shrink-0 relative bg-no-repeat bg-center rounded-[10px]`,
+        `w-[130px] h-[200px] flex-shrink-0 relative bg-no-repeat bg-center rounded-[10px]`,
         asked.image ? "bg-cover" : "",
         index === 0 ? "ml-5" : ""
       )}

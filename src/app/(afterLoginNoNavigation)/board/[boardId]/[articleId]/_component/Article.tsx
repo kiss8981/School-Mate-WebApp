@@ -28,6 +28,29 @@ const Article = ({
 }) => {
   const router = useRouter();
   const [likeLoading, setLikeLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const { triggerFetch: requestDelete } = useFetch(
+    `/board/article/${article.id}`,
+    "DELETE",
+    {
+      fetchInit: {
+        headers: {
+          Authorization: `Bearer ${auth.user.token.accessToken}`,
+        },
+      },
+      onError: (status, message) => {
+        setDeleteLoading(false);
+        toast("error", message || "알 수 없는 오류가 발생했습니다.");
+      },
+      onSuccess: (status, message, body) => {
+        stackRouterPush(router, `/board/${article.boardId}`);
+        setDeleteLoading(false);
+        toast("success", "게시글이 삭제되었습니다.");
+      },
+      onPending: () => setDeleteLoading(true),
+    }
+  );
+
   const { triggerFetch: requestLike } = useFetch(
     `/board/article/${article.id}/like`,
     "POST",
@@ -53,6 +76,7 @@ const Article = ({
   return (
     <>
       {likeLoading && <LoadingFullPage />}
+      {deleteLoading && <LoadingFullPage />}
       <div
         className={classNames(
           "flex flex-col min-h-[100vh] pb-20",
@@ -158,15 +182,10 @@ const Article = ({
           {article.isMe && (
             <div className="ml-auto mt-auto">
               <button
-                onClick={() =>
-                  stackRouterPush(
-                    router,
-                    `/board/${article.board.id}/${article.id}/edit`
-                  )
-                }
+                onClick={() => requestDelete({})}
                 className="underline underline-offset-1 text-sm text-[#66738C]"
               >
-                수정하기
+                삭제하기
               </button>
             </div>
           )}

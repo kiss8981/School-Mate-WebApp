@@ -8,6 +8,7 @@ type RouterEvent = {
     title: string;
     titleType: TitleType;
   };
+  LOGOUT_EVENT: any;
   LOGIN_EVENT: any;
   TOAST_EVENT: {
     type: "success" | "error";

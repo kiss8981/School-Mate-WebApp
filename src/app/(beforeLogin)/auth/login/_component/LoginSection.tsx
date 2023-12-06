@@ -2,7 +2,7 @@
 
 import { classNames } from "@/lib/uitls";
 import { getSession, signIn } from "next-auth/react";
-import { useState } from "react";
+import { FormEvent, FormEventHandler, useState } from "react";
 import Image from "next/image";
 import Button from "@/app/_component/Button";
 import { sendWebviewEvent, toast } from "@/lib/webviewHandler";
@@ -16,7 +16,8 @@ const LoginSection = () => {
   const [loginfLoading, setLoginLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const requestLogin = async () => {
+  const requestLogin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoginLoading(true);
     const res = await signIn("credentials", {
       redirect: false,
@@ -47,72 +48,79 @@ const LoginSection = () => {
           },
         });
       } else {
-        stackRouterPush(router, "/", "reset");
+        stackRouterPush(router, "/main", "reset");
       }
     }
   };
 
   return (
     <>
-      <div className={classNames("font-light w-full space-y-14 mt-16")}>
-        <input
-          type="text"
-          placeholder="휴대폰 번호"
-          className={classNames(
-            "border-b rounded-none pb-2 w-full px-1 hover:border-primary-500 focus:border-primary-500 ring-0 outline-none",
-            phone.length > 3 && "border-primary-500"
-          )}
-          value={phone}
-          onChange={(e) =>
-            setPhone(
-              e.target.value
-                ?.replace(/[^0-9]/g, "")
-                .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
-                .replace(/(-{1,2})$/g, "")
-            )
-          }
-        />
-        <div className="relative w-full">
+      <form
+        className={classNames("font-light w-full mt-16")}
+        onSubmit={requestLogin}
+      >
+        <div className="space-y-14 flex flex-col">
           <input
-            type={isPasswordVisible ? "text" : "password"}
-            placeholder="비밀번호"
-            onChange={(e) => setPassword(e.target.value)}
+            type="text"
+            placeholder="휴대폰 번호"
             className={classNames(
               "border-b rounded-none pb-2 w-full px-1 hover:border-primary-500 focus:border-primary-500 ring-0 outline-none",
-              password.length > 3 && "border-primary-500"
+              phone.length > 3 && "border-primary-500"
             )}
+            value={phone}
+            onChange={e =>
+              setPhone(
+                e.target.value
+                  ?.replace(/[^0-9]/g, "")
+                  .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+                  .replace(/(-{1,2})$/g, "")
+              )
+            }
           />
-          <button
-            className="absolute right-0 top-0 h-full px-2 pb-2"
-            onClick={() => {
-              setIsPasswordVisible(!isPasswordVisible);
-            }}
-          >
-            <Image src="/icons/Eye.svg" alt="eye" width={20} height={20} />
-          </button>
+          <div className="relative w-full">
+            <input
+              type={isPasswordVisible ? "text" : "password"}
+              placeholder="비밀번호"
+              onChange={e => setPassword(e.target.value)}
+              className={classNames(
+                "border-b rounded-none pb-2 w-full px-1 hover:border-primary-500 focus:border-primary-500 ring-0 outline-none",
+                password.length > 3 && "border-primary-500"
+              )}
+            />
+            <button
+              type="button"
+              className="absolute right-0 top-0 h-full px-2 pb-2"
+              onClick={() => {
+                setIsPasswordVisible(!isPasswordVisible);
+              }}
+            >
+              <Image src="/icons/Eye.svg" alt="eye" width={20} height={20} />
+            </button>
+          </div>
         </div>
-      </div>
-      <button className="mt-4 text-[#B6B6B6] text-sm w-full text-right flex flex-row items-center justify-end">
-        비밀번호 찾기{" "}
-        <Image
-          src="/icons/Back.svg"
-          className="rotate-180 text-[#B6B6B6] ml-1"
-          width={6}
-          height={6}
-          alt="back"
-          style={{
-            filter:
-              "invert(75%) sepia(29%) saturate(12%) hue-rotate(100deg) brightness(91%) contrast(93%)",
-          }}
-        />
-      </button>
-      <Button
-        onClick={requestLogin}
-        isLoading={loginfLoading}
-        className="w-full py-4 font-semibold text-[14px] rounded-full mt-10"
-      >
-        로그인
-      </Button>
+
+        <button className="mt-4 text-[#B6B6B6] text-sm w-full text-right flex flex-row items-center justify-end">
+          비밀번호 찾기{" "}
+          <Image
+            src="/icons/Back.svg"
+            className="rotate-180 text-[#B6B6B6] ml-1"
+            width={6}
+            height={6}
+            alt="back"
+            style={{
+              filter:
+                "invert(75%) sepia(29%) saturate(12%) hue-rotate(100deg) brightness(91%) contrast(93%)",
+            }}
+          />
+        </button>
+        <Button
+          isLoading={loginfLoading}
+          className="w-full py-4 font-semibold text-[14px] rounded-full mt-10"
+        >
+          로그인
+        </Button>
+      </form>
+
       {/* <div className="flex flex-row items-center justify-center font-semibold text-[10px] my-6">
             <hr className="w-full h-1 border-[#B6B6B6]" />
             <span className="w-40 text-[#B6B6B6] mx-4">SNS LOGIN</span>

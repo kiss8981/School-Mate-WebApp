@@ -1,7 +1,8 @@
 "use client";
 
+import Lottie from "lottie-react";
+import LoadingLogo from "@/assets/lottie/loadingLogo.json";
 import { setCookie } from "@/lib/csrUtils";
-import { stackRouterPush } from "@/lib/stackRouter";
 import { sendWebviewEvent, toast } from "@/lib/webviewHandler";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -19,7 +20,7 @@ const LoginProcess: React.FC<{
     }).then(async res => {
       if (!res?.ok) {
         toast("error", "로그인 세션이 만료되었습니다.");
-        stackRouterPush(router, "/auth/login", "reset");
+        router.replace("/auth/login");
       } else {
         const session = await getSession();
         if (!session?.user) {
@@ -41,14 +42,19 @@ const LoginProcess: React.FC<{
               refreshToken: session?.user.token.refreshToken,
             },
           });
-        } else {
-          stackRouterPush(router, "/main", "reset");
         }
+        router.replace("/main");
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return <></>;
+  return (
+    <>
+      <div className="flex h-screen items-center justify-center">
+        <Lottie className="w-44" animationData={LoadingLogo} />
+      </div>
+    </>
+  );
 };
 
 export default LoginProcess;

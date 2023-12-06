@@ -54,7 +54,7 @@ const AskedEditStatusMessage = ({
           <>
             <div className=" relative w-56 ">
               <input
-                className="outline-none border-b pb-2 pr-12 w-full"
+                className="outline-none border-b pb-2 pr-12 w-full rounded-none"
                 value={statusMessage}
                 placeholder="상태 메시지를 입력해 주세요"
                 onChange={e => {
