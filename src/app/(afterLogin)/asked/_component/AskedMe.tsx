@@ -16,14 +16,14 @@ const AskedMe = async ({
   auth: Session;
 }) => {
   const askedme = (await data
-    .then(res => res.data.data)
-    .catch(e => null)) as AskedListWithUser | null;
+    .then((res) => res.data.data)
+    .catch((e) => null)) as AskedListWithUser | null;
 
   if (!askedme) return <AskedCreate />;
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full pb-20">
         <div className="w-full py-3 border-b">
           <div className="px-5 w-full flex flex-row items-center">
             <div className="relative w-[65px] h-[65px]">
@@ -64,7 +64,11 @@ const AskedMe = async ({
             <AskedMore />
           </div>
         </div>
-        <AskedList askeds={askedme.askeds} />
+        <AskedList
+          askeds={askedme.askeds}
+          totalPage={askedme.pages}
+          auth={auth}
+        />
       </div>
     </>
   );

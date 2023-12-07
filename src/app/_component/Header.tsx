@@ -43,7 +43,7 @@ const Header = ({
         )}
         <span
           className={classNames(
-            "mx-auto font-bold text-[18px]",
+            "mx-auto font-bold text-[20px]",
             inter.className
           )}
         >

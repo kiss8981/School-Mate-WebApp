@@ -13,10 +13,10 @@ const TimetableHeader = () => {
           boxShadow: "0px 2px 30px rgba(0, 0, 0, 0.06)",
         }}
       >
-        <div className="font-bold flex items-center h-14 justify-between px-5">
+        <div className="font-bold flex items-center h-14 justify-center px-5">
           <div
             className={classNames(
-              "text-primary-500 font-black text-[20px] flex flex-col items-start justify-center",
+              "text-primary-500 font-black text-[20px] flex flex-col items-center justify-center",
               inter.className
             )}
             style={{

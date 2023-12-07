@@ -102,7 +102,7 @@ const Header = ({
         )}
         <span
           className={classNames(
-            "font-bold text-[22px]",
+            "font-bold text-[20px]",
             inter.className,
             backIcon ? "ml-5" : ""
           )}

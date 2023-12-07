@@ -43,6 +43,7 @@ const Article = ({
         toast("error", message || "알 수 없는 오류가 발생했습니다.");
       },
       onSuccess: (status, message, body) => {
+        stackRouterPush(router, `/board`, "reset");
         stackRouterPush(router, `/board/${article.boardId}`);
         setDeleteLoading(false);
         toast("success", "게시글이 삭제되었습니다.");

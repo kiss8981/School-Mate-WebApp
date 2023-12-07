@@ -9,17 +9,19 @@ export type AskedWithUser = AskedUser & {
 
 export type AskedListWithUser = {
   askeds: AskedDetailWithUser[];
-  user: {
-    user: {
-      name: string;
-      profile: string;
-    };
-    tags: string[];
-    statusMessage?: string;
-    userId: string;
-    customId: string;
-  };
+  user: AskedUserDetail;
   pages: number;
+};
+
+export type AskedUserDetail = {
+  user: {
+    name: string;
+    profile: string;
+  };
+  tags: string[];
+  statusMessage?: string;
+  userId: string;
+  customId: string;
 };
 
 export type AskedDetailWithUser = Asked & {
@@ -28,4 +30,5 @@ export type AskedDetailWithUser = Asked & {
     profile?: string;
   };
   askedUserId?: string;
+  isMyAsked: boolean;
 };

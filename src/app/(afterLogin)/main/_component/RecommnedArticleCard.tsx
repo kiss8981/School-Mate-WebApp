@@ -13,7 +13,7 @@ const RecommentButton = () => {
     <div className="w-full flex flex-row justify-center mt-4">
       <button
         onClick={() => {
-          stackRouterPush(router, "/board");
+          router.push("/board");
         }}
         className="flex flex-row items-center justify-center text-[#7c7c7c] bg-[#F9F9F9] rounded-full px-4 border py-1.5"
       >

@@ -18,6 +18,9 @@ type RouterEvent = {
   OPEN_BROWSER_EVENT: {
     url: string;
   };
+  ASKED_REPLAY_EVENT: {
+    replyed: boolean;
+  };
 };
 
 export const sendWebviewEvent = <T extends keyof RouterEvent>(

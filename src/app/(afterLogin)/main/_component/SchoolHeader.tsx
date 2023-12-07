@@ -35,7 +35,7 @@ const Header = ({
       <div className="font-bold flex items-center h-14 justify-between px-5">
         <span
           className={classNames(
-            "text-primary-500 font-black text-[24px]",
+            "text-primary-500 font-black text-[20px]",
             inter.className
           )}
           style={{

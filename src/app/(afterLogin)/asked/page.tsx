@@ -10,6 +10,8 @@ import { AxiosError } from "axios";
 import { Suspense } from "react";
 import { AskedMeSkeleton } from "./_component/AskedMe";
 import dynamic from "next/dynamic";
+import HeaderContainer from "@/app/_component/HeaderContainer";
+import SerachButton from "@/app/_component/SearchButton";
 
 const AskedMe = dynamic(() => import("./_component/AskedMe"), {
   loading: () => <AskedMeSkeleton />,
@@ -23,10 +25,10 @@ const AkedPage: NextPage = async () => {
   if (!auth.user.user.userSchool) return redirect("/verify");
 
   return (
-    <LeftHeaderContainer
+    <HeaderContainer
       backIcon={false}
       title="에스크"
-      searchPath="/searchasked"
+      rightIcon={<SerachButton searchPath="/searchasked" />}
     >
       <Suspense fallback={<AskedMeSkeleton />}>
         <AskedMe
@@ -38,7 +40,7 @@ const AkedPage: NextPage = async () => {
           auth={auth}
         />
       </Suspense>
-    </LeftHeaderContainer>
+    </HeaderContainer>
   );
 };
 
