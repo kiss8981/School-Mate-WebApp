@@ -1,13 +1,12 @@
-import ArticleCard from "@/app/_component/ArticleCard";
 import fetcher, { swrFetcher } from "@/lib/fetch";
 import { inter } from "@/lib/fonts";
-import { classNames, timeForToday } from "@/lib/uitls";
-import { ArticleWithImage } from "@/types/article";
+import { stackRouterPush } from "@/lib/stackRouter";
+import { classNames } from "@/lib/uitls";
 import { AskedUserDetail } from "@/types/asked";
 import { Session } from "next-auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSWR from "swr";
 
 const SearchModalResult = ({
@@ -95,9 +94,15 @@ const SearchModalResult = ({
 };
 
 const AskedCard = ({ asked }: { asked: AskedUserDetail }) => {
+  const router = useRouter();
   return (
     <>
-      <div className="w-full flex flex-row items-center py-2">
+      <div
+        className="w-full flex flex-row items-center py-2"
+        onClick={() => {
+          stackRouterPush(router, `/asked/${asked.userId}`);
+        }}
+      >
         <div
           className={classNames(
             "relative rounded-full w-16 h-16 overflow-hidden border bg-[#CCCCCC]"
