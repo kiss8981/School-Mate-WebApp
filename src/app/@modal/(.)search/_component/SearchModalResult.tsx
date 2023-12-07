@@ -1,16 +1,11 @@
 import ArticleCard from "@/app/_component/ArticleCard";
-import useFetch from "@/hooks/useFetch";
 import fetcher, { swrFetcher } from "@/lib/fetch";
 import { inter } from "@/lib/fonts";
-import { stackRouterPush } from "@/lib/stackRouter";
 import { classNames, timeForToday } from "@/lib/uitls";
 import { ArticleWithImage } from "@/types/article";
 import { Session } from "next-auth";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Article } from "schoolmate-types";
 import useSWR from "swr";
 
 const SearchModalResult = ({
