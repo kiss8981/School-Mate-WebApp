@@ -47,9 +47,8 @@ const LoginSection = () => {
             refreshToken: session?.user.token.refreshToken,
           },
         });
-      } else {
-        stackRouterPush(router, "/main", "reset");
       }
+      stackRouterPush(router, "/main", "reset");
     }
   };
 
@@ -68,7 +67,7 @@ const LoginSection = () => {
               phone.length > 3 && "border-primary-500"
             )}
             value={phone}
-            onChange={e =>
+            onChange={(e) =>
               setPhone(
                 e.target.value
                   ?.replace(/[^0-9]/g, "")
@@ -81,7 +80,7 @@ const LoginSection = () => {
             <input
               type={isPasswordVisible ? "text" : "password"}
               placeholder="비밀번호"
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               className={classNames(
                 "border-b rounded-none pb-2 w-full px-1 hover:border-primary-500 focus:border-primary-500 ring-0 outline-none",
                 password.length > 3 && "border-primary-500"
@@ -114,6 +113,7 @@ const LoginSection = () => {
           />
         </button>
         <Button
+          type="submit"
           isLoading={loginfLoading}
           className="w-full py-4 font-semibold text-[14px] rounded-full mt-10"
         >
