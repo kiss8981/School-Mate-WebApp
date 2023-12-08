@@ -107,7 +107,7 @@ const MyInfo = ({ auth }: { auth: Session }) => {
             </button>
             <button
               onClick={() => {
-                stackRouterPush(router, "/secession");
+                stackRouterPush(router, "/signout");
               }}
               className="w-full text-left"
             >
