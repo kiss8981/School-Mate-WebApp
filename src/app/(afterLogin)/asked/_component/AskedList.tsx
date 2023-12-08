@@ -36,7 +36,7 @@ const AskedList = ({
   useEffect(() => {
     if (totalPage === page) return;
     if (inView && !loadingAskeds) {
-      setPage((prevState) => prevState + 1);
+      setPage(prevState => prevState + 1);
     }
   }, [inView, loadingAskeds]);
 
@@ -172,7 +172,7 @@ const AskedCard = ({
               </div>
               <span
                 className={classNames(
-                  "text-[0.7rem] font-bold text-[#b6b6b6] truncate max-w-[15rem]"
+                  "text-[0.7rem] font-bold text-[#b6b6b6] truncate max-w-[12rem]"
                 )}
               >
                 {asked.question}

@@ -14,8 +14,10 @@
     "dayjs": "^1.11.10",
     "framer-motion": "^10.16.4",
     "github-markdown-css": "^5.4.0",
+    "linkify-it": "^5.0.0",
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.0",
+    "mdurl": "^2.0.0",
     "next": "latest",
     "next-auth": "^4.24.3",
     "nextjs-progressbar": "^0.0.16",
@@ -39,6 +41,7 @@
     "zustand": "^4.4.4"
   },
   "devDependencies": {
+    "@types/linkify-it": "^3.0.5",
     "@types/lodash": "^4.14.202",
     "@types/node": "latest",
     "@types/react": "latest",

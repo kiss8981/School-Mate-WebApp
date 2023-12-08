@@ -1,5 +1,6 @@
 "use client";
 
+import { Hyperlink } from "@/app/_component/Hyperlink";
 import { LoadingFullPage } from "@/app/_component/Loading";
 import useFetch from "@/hooks/useFetch";
 import fetcher from "@/lib/fetch";
@@ -90,7 +91,7 @@ const UserAksedList = ({
   useEffect(() => {
     if (totalPage === page) return;
     if (inView && !loadingMessage) {
-      setPage((prevState) => prevState + 1);
+      setPage(prevState => prevState + 1);
     }
   }, [inView, loadingMessage]);
 
@@ -193,14 +194,10 @@ const UserAskedItem = ({
               {asked.isAnonymous ? "익명" : asked.questionUser.name}
             </span>
             <div className="border rounded-[10px] p-2 bg-[#f0f0f0] ml-auto flex flex-row mt-1">
-              <pre
-                className={classNames(
-                  inter.className,
-                  "max-w-[13.5rem] whitespace-pre-wrap break-all"
-                )}
-              >
-                {asked.question}
-              </pre>
+              <Hyperlink
+                className="max-w-[13.5rem] whitespace-pre-wrap break-all"
+                text={asked.question}
+              />
             </div>
           </div>
           <div className="relative w-[50px] h-[50px] rounded-full">
@@ -235,14 +232,10 @@ const UserAskedItem = ({
             <div className="flex flex-col ml-3">
               <span>{askedUser.user.name}</span>
               <div className="border rounded-[10px] p-2 flex flex-row mt-1">
-                <pre
-                  className={classNames(
-                    "max-w-[13.5rem] whitespace-pre-wrap break-all",
-                    inter.className
-                  )}
-                >
-                  {asked.answer}
-                </pre>
+                <Hyperlink
+                  className="max-w-[13.5rem] whitespace-pre-wrap break-all"
+                  text={asked.answer}
+                />
               </div>
             </div>
           </div>

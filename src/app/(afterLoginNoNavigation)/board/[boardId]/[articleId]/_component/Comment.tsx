@@ -21,7 +21,10 @@ import { CommentWithUser, ReCommnetWithUser } from "@/types/article";
 import dayjs from "dayjs";
 import { classNames } from "@/lib/uitls";
 import { inter } from "@/lib/fonts";
-import { useOutsideClick } from "@/hooks/useOutsideClick";
+import LinkifyIt from "linkify-it";
+import { Hyperlink } from "@/app/_component/Hyperlink";
+
+const linkify = LinkifyIt();
 
 const CommentList = ({
   article,
@@ -328,14 +331,11 @@ const Commnet = ({
               </span>
             </div>
           </div>
-          <pre
-            className={classNames(
-              inter.className,
-              "text-sm whitespace-pre-wrap px-1 "
-            )}
-          >
-            {comment.content}
-          </pre>
+          <Hyperlink
+            text={comment.content}
+            className="text-sm whitespace-pre-wrap px-1"
+          />
+
           <div className="w-full flex flex-row mt-2 px-1">
             <button
               className="flex flex-row items-center text-[#66738C] text-[0.7rem] cursor-pointer"
@@ -456,14 +456,10 @@ const Recomment = ({
               </span>
             </div>
           </div>
-          <pre
-            className={classNames(
-              inter.className,
-              "text-sm whitespace-pre-wrap px-1 "
-            )}
-          >
-            {comment.content}
-          </pre>
+          <Hyperlink
+            className="text-sm whitespace-pre-wrap px-1"
+            text={comment.content}
+          />
           <div className="w-full flex flex-row mt-2 px-1">
             <button
               className="flex flex-row items-center text-[#66738C] text-[0.7rem] cursor-pointer"

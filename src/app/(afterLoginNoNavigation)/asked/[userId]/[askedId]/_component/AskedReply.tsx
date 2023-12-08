@@ -1,5 +1,6 @@
 "use client";
 
+import { Hyperlink } from "@/app/_component/Hyperlink";
 import useFetch from "@/hooks/useFetch";
 import { inter } from "@/lib/fonts";
 import { stackRouterPush } from "@/lib/stackRouter";
@@ -99,14 +100,10 @@ const AskedReply = ({
               {asked.isAnonymous ? "익명" : asked.questionUser.name}
             </span>
             <div className="border rounded-[10px] p-2 bg-[#fff] flex flex-row mt-1">
-              <pre
-                className={classNames(
-                  inter.className,
-                  "max-w-[13.5rem] whitespace-pre-wrap break-all"
-                )}
-              >
-                {asked.question}
-              </pre>
+              <Hyperlink
+                text={asked.question}
+                className="max-w-[13.5rem] whitespace-pre-wrap break-all"
+              />
             </div>
           </div>
         </div>
@@ -114,14 +111,10 @@ const AskedReply = ({
           <div className="flex flex-row mt-4 w-full">
             <div className="flex flex-col ml-auto ">
               <div className="border rounded-[10px] p-2 flex flex-row mt-1 bg-[#f0f0f0]">
-                <pre
-                  className={classNames(
-                    "max-w-[13.5rem] whitespace-pre-wrap break-all",
-                    inter.className
-                  )}
-                >
-                  {asked.answer}
-                </pre>
+                <Hyperlink
+                  text={asked.answer}
+                  className="max-w-[13.5rem] whitespace-pre-wrap break-all"
+                />
               </div>
             </div>
           </div>

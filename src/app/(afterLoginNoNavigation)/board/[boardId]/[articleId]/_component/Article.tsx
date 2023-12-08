@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Comment from "./Comment";
 import { stackRouterPush } from "@/lib/stackRouter";
+import { Hyperlink } from "@/app/_component/Hyperlink";
 
 const Article = ({
   article,
@@ -117,14 +118,10 @@ const Article = ({
           <span className="text-lg font-bold h-full whitespace-pre-wrap break-words w-full">
             {article.title}
           </span>
-          <pre
-            className={classNames(
-              "mt-1 text-start w-full h-full whitespace-pre-wrap break-words text-base",
-              inter.className
-            )}
-          >
-            {article.content}
-          </pre>
+          <Hyperlink
+            className="mt-1 text-start w-full h-full whitespace-pre-wrap break-words text-base"
+            text={article.content}
+          />
         </div>
         {article.images.length > 0 && (
           <div className="flex flex-col w-full mt-4 px-4">
