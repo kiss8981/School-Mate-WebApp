@@ -1,7 +1,11 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { classNames } from "@/lib/uitls";
 import { roboto } from "@/lib/fonts";
+import { useRouter } from "next/navigation";
+import { stackRouterPush } from "@/lib/stackRouter";
 
 interface Props {
   title: string;
@@ -10,9 +14,15 @@ interface Props {
 }
 
 const TipsSection: React.FC<Props> = ({ title, description, link }) => {
+  const router = useRouter();
   return (
     <>
-      <div className={classNames("px-5 mt-4", roboto.className)}>
+      <div
+        className={classNames("px-5 mt-4", roboto.className)}
+        onClick={() => {
+          stackRouterPush(router, link);
+        }}
+      >
         <div className="w-full border-[#f0f0f0] rounded-[20px] p-4 border flex flex-row">
           <div className="flex flex-col">
             <span className="px-3 py-1 text-white rounded-[8px] bg-[#2545ED] w-fit font-bold">

@@ -177,13 +177,27 @@ const Article = ({
               공감하기
             </span>
           </button>
-          {article.isMe && (
+          {article.isMe ? (
             <div className="ml-auto mt-auto">
               <button
                 onClick={() => requestDelete({})}
                 className="underline underline-offset-1 text-sm text-[#66738C]"
               >
                 삭제하기
+              </button>
+            </div>
+          ) : (
+            <div className="ml-auto mt-auto">
+              <button
+                onClick={() => {
+                  stackRouterPush(
+                    router,
+                    `/board/${article.boardId}/${article.id}/report`
+                  );
+                }}
+                className="underline underline-offset-1 text-sm text-[#66738C]"
+              >
+                신고하기
               </button>
             </div>
           )}
