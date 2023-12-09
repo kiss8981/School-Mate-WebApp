@@ -4,12 +4,20 @@ import { classNames } from "@/lib/uitls";
 import { NanumGothic } from "@/lib/fonts";
 import { ToastContainer } from "react-toastify";
 
-import 'dayjs/locale/ko'
+import "dayjs/locale/ko";
 
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
 import "./globals.css";
 import "github-markdown-css/github-markdown.css";
+
+// notion 테마 스타일링 (필수)
+import "react-notion-x/src/styles.css";
+
+// 코드 하이라이트 스타일용
+import "prismjs/themes/prism-tomorrow.css";
+// 공식등 수학적 기호 스타일용
+import "katex/dist/katex.min.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",

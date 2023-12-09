@@ -80,7 +80,7 @@ const Main: NextPage = async () => {
         <TipsSection
           title="가이드 보러가기"
           description="스쿨메이트가 처음이세요?"
-          link="https://schoolmate.notion.site/ff90a6e2df3c490a8e7003d4721ebd0c"
+          link="/guide"
         />
         <SectionContainer
           title="교내 친구들 찾기"
