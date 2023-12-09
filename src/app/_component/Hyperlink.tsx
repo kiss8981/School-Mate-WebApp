@@ -17,7 +17,6 @@ export const Hyperlink = ({
   const links = linkify.match(text);
   const router = useRouter();
   const handleOpenLink = (url: string) => {
-    console.log(process.env.NEXT_PUBLIC_WHITELISTED_DOMAINS);
     const whitelistDomain = String(
       process.env.NEXT_PUBLIC_WHITELISTED_DOMAINS
     ).split(" ");

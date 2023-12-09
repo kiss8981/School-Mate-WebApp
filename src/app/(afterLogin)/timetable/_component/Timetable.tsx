@@ -11,7 +11,6 @@ const Timetable = async ({ data }: { data: Promise<AxiosResponse> }) => {
   const timelist = (await data
     .then(res => res.data.data)
     .catch(e => {
-      console.error(e);
       return [];
     })) as ISpecialTimetableRow[];
   const mergeContents = mergeRowsWithSameContent(timelist);
