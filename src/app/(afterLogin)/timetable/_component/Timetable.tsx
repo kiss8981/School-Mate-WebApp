@@ -8,16 +8,29 @@ import { ISpecialTimetableRow } from "@/types/school";
 import { AxiosResponse } from "axios";
 
 const Timetable = async ({ data }: { data: Promise<AxiosResponse> }) => {
-  const timelist = (await data.then(
-    (res) => res.data.data
-  )) as ISpecialTimetableRow[];
+  const timelist = (await data
+    .then(res => res.data.data)
+    .catch(e => {
+      console.error(e);
+      return [];
+    })) as ISpecialTimetableRow[];
   const mergeContents = mergeRowsWithSameContent(timelist);
   return (
     <>
       <div className="flex flex-col space-y-4">
-        {mergeContents.map((item, key) => (
-          <Timeitem data={item} key={key} />
-        ))}
+        {mergeContents.length === 0 ? (
+          <>
+            <span className="mx-auto mt-20 text-lg text-[#b6b6b6]">
+              오늘은 수업이 없는날 인가요?
+            </span>
+          </>
+        ) : (
+          <>
+            {mergeContents.map((item, key) => (
+              <Timeitem data={item} key={key} />
+            ))}
+          </>
+        )}
       </div>
     </>
   );
