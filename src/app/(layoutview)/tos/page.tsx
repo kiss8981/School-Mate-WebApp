@@ -273,10 +273,10 @@ API 직접 호출, 유저 에이전트 조작, 패킷 캡처, 비정상적인 �
 4. 이 약관에서 정하지 아니한 사항과 이 약관의 해석에 관하여는 관련법 또는 관례에 따릅니다. 
 `;
 
-const PrivacyPage = () => {
+const TosPage = () => {
   return (
     <>
-      <HeaderContainer title="개인정보처리방침">
+      <HeaderContainer title="이용약관">
         <Markdown
           className="markdown-body px-4"
           rehypePlugins={[rehypeRaw]}
@@ -289,4 +289,4 @@ const PrivacyPage = () => {
   );
 };
 
-export default PrivacyPage;
+export default TosPage;
