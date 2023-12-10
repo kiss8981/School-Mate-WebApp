@@ -86,7 +86,7 @@ const RegisterPage = () => {
         name,
         code: phoneVerifyNumber,
         token: phoneVerifyToken,
-        marketingAgree: false,
+        marketingAgree: agreementMarketing,
       });
       setSuccessRegisterModalOpen(true);
 
