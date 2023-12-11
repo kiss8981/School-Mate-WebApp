@@ -101,7 +101,7 @@ const Article = ({
             />
           </div>
           <div className="flex flex-col ml-3">
-            <span className="text-[#66738C] text-base font-bold items-center flex justify-center">
+            <span className="text-[#66738C] text-base font-bold items-center flex justify-start">
               {article.isAnonymous ? "익명" : article.user.name}
               {article.isMe && (
                 <span className="font-light border border-primary-500 rounded-full text-primary-500 px-1 ml-1 text-[0.75rem] leading-[1rem]">
