@@ -1,7 +1,12 @@
 import HeaderContainer from "@/app/_component/HeaderContainer";
 import { NotionAPI } from "notion-client";
 import NotionPage from "./_component/Notion";
+import { Metadata } from "next";
 export const revalidate = 3600; // revalidate the data at most every hour
+
+export const metadata: Metadata = {
+  title: "가이드",
+};
 
 const getNotionData = async () => {
   const notion = new NotionAPI();

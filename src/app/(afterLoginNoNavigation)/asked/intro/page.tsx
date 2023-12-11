@@ -3,6 +3,11 @@ import AskedIntro from "./_component/AskedIntro";
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/auth";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `에스크 프로필 만들기`,
+};
 
 const AskedPage = async () => {
   const auth = await getServerSession(authOptions);

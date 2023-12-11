@@ -1,5 +1,9 @@
-import { NextPage } from "next";
+import { Metadata, NextPage } from "next";
 import LoginProcess from "./_component/LoginProcess";
+
+export const metadata: Metadata = {
+  title: "로그인 중...",
+};
 
 const AppLoginPage: NextPage<{
   searchParams: {

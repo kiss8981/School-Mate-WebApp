@@ -3,11 +3,13 @@ import Header from "@/app/_component/Header";
 import HeaderContainer from "@/app/_component/HeaderContainer";
 import { inter } from "@/lib/fonts";
 import { classNames } from "@/lib/uitls";
-import { sendWebviewEvent } from "@/lib/webviewHandler";
-import { getCsrfToken, getSession, signIn } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
 import LoginSection from "./_component/LoginSection";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "로그인",
+};
 
 const LoginPage = async () => {
   return (

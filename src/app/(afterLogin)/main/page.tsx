@@ -1,16 +1,37 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/auth";
 import { redirect } from "next/navigation";
-import { NextPage } from "next";
+import { Metadata, NextPage } from "next";
 import SchoolHeaderContainer from "./_component/SchoolHeaderContainer";
 import { AdvertisementSkeleton } from "./_component/Advertisement";
-import { Suspense } from "react";
+import { Suspense, cache } from "react";
 import { RecommnedArticleSkeleton } from "./_component/RecommnedArticle";
 import fetcher from "@/lib/fetch";
 import SectionContainer from "./_component/SectionContainer";
 import TipsSection from "./_component/TipsSection";
 import { AskedSkeleton } from "./_component/Asked";
 import dynamic from "next/dynamic";
+
+const getAuth = cache(async () => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth.user.registered) return redirect("/intro");
+  if (!auth.user.user.userSchool) return redirect("/verify");
+
+  return auth;
+});
+
+export const generateMetadata = async (): Promise<Metadata> => {
+  const auth = await getAuth();
+  if (!auth)
+    return {
+      title: "로그인이 필요합니다.",
+    };
+
+  return {
+    title: auth.user.user.userSchool?.school.defaultName || "스쿨메이트",
+  };
+};
 
 const Asked = dynamic(() => import("./_component/Asked"), {
   loading: () => <AskedSkeleton />,
@@ -31,18 +52,15 @@ const Advertisement = dynamic(() => import("./_component/Advertisement"), {
 });
 
 const Main: NextPage = async () => {
-  const auth = await getServerSession(authOptions);
-
-  if (!auth || !auth.user.registered) return redirect("/intro");
-  if (!auth.user.user.userSchool) return redirect("/verify");
+  const auth = await getAuth();
 
   return (
     <>
       <SchoolHeaderContainer
         title={
-          auth.user.user.userSchool.school.name
+          auth.user.user.userSchool?.school.name
             ? auth.user.user.userSchool.school.name
-            : auth.user.user.userSchool.school.defaultName
+            : auth.user.user.userSchool?.school.defaultName
         }
         // badage={
         //   <HeaderBadage

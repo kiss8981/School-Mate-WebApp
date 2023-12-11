@@ -1,6 +1,6 @@
 import HeaderContainer from "@/app/_component/HeaderContainer";
 import SerachButton from "@/app/_component/SearchButton";
-import { auth, authOptions } from "@/app/auth";
+import { authOptions } from "@/app/auth";
 import fetcher from "@/lib/fetch";
 import { inter } from "@/lib/fonts";
 import { classNames } from "@/lib/uitls";
@@ -10,16 +10,21 @@ import { redirect } from "next/navigation";
 import { Board } from "schoolmate-types";
 import Image from "next/image";
 import { ArticleListSkeleton } from "./_component/ArticleListSSR";
-import { Suspense } from "react";
+import { Suspense, cache } from "react";
 import { Session } from "next-auth";
 import dynamic from "next/dynamic";
+import { Metadata } from "next";
 
 const ArticleList = dynamic(() => import("./_component/ArticleListSSR"), {
   loading: () => <ArticleListSkeleton />,
   ssr: false,
 });
 
-const getBoard = async (boardId: string, auth: Session) => {
+const getBoard = cache(async (boardId: string) => {
+  const auth = await getServerSession(authOptions);
+  if (!auth || !auth.user.registered) return redirect("/intro");
+  if (!auth.user.user.userSchool) return redirect("/verify");
+
   const board = await fetcher(`/board/${boardId}`, {
     headers: {
       Authorization: `Bearer ${auth.user.token.accessToken}`,
@@ -28,7 +33,28 @@ const getBoard = async (boardId: string, auth: Session) => {
   if (board.data.status === 401) return redirect("/intro");
   if (board.data.status === 404) return null;
 
-  return board.data.data as Board & { article: ArticleWithImage[] };
+  return {
+    ...board.data.data,
+    auth,
+  } as Board & { article: ArticleWithImage[] } & {
+    auth: Session;
+  };
+});
+
+export const generateMetadata = async ({
+  params,
+}: Props): Promise<Metadata> => {
+  const board = await getBoard(params.boardId);
+  if (!board)
+    return {
+      title: "찾을 수 없는 게시판",
+      description: "존재하지 않는 게시판입니다.",
+    };
+
+  return {
+    title: board.name,
+    description: board.description,
+  };
 };
 
 interface Props {
@@ -39,10 +65,7 @@ interface Props {
 }
 
 const BoardPage = async ({ params }: Props) => {
-  const auth = await getServerSession(authOptions);
-  if (!auth || !auth.user.registered) return redirect("/intro");
-  if (!auth.user.user.userSchool) return redirect("/verify");
-  const board = await getBoard(params.boardId, auth);
+  const board = await getBoard(params.boardId);
 
   if (!board) return <></>;
   return (
@@ -97,11 +120,11 @@ const BoardPage = async ({ params }: Props) => {
                   : `/board/${params.boardId}/articles`,
                 {
                   headers: {
-                    Authorization: `Bearer ${auth.user.token.accessToken}`,
+                    Authorization: `Bearer ${board.auth.user.token.accessToken}`,
                   },
                 }
               )}
-              auth={auth}
+              auth={board.auth}
               board={
                 params.boardId === "hot"
                   ? ({

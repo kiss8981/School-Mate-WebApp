@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import fetcher from "@/lib/fetch";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/auth";
-import { NextPage } from "next";
+import { Metadata, NextPage } from "next";
 
 const BoardItem = dynamic(
   () => import("../../(afterLoginNoNavigation)/board/_component/BoardList"),
@@ -15,6 +15,10 @@ const BoardItem = dynamic(
     ssr: false,
   }
 );
+
+export const metadata: Metadata = {
+  title: "게시판 목록",
+};
 
 const BoardPage: NextPage = async () => {
   const auth = await getServerSession(authOptions);

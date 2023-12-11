@@ -4,8 +4,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "../auth";
 import { Metadata } from "next";
 export const metadata: Metadata = {
-  viewport:
-    "width=device-width, initial-scale=1.0, user-scalable=0, viewport-fit=cover, maximum-scale=1.0",
+  title: "에스크 검색",
 };
 
 const SearchAskedPage = async () => {

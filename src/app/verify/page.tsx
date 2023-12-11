@@ -6,6 +6,7 @@ import { UserSchoolVerify } from "schoolmate-types";
 import Error from "@/app/_component/Error";
 import VerifyRequest from "./_component/verfiyRequest";
 import HeaderContainer from "@/app/_component/HeaderContainer";
+import { Metadata } from "next";
 
 async function getVerifyList(
   auth: Session
@@ -22,6 +23,10 @@ async function getVerifyList(
     return null;
   }
 }
+
+export const metadata: Metadata = {
+  title: "학교인증",
+};
 
 const VerifyPage = async () => {
   const auth = await getServerSession(authOptions);

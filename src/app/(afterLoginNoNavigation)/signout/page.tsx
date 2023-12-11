@@ -3,6 +3,11 @@ import { authOptions } from "@/app/auth";
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import SignoutComponent from "./_component/SignoutComponent";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "회원탈퇴",
+};
 
 const SignOut = async () => {
   const auth = await getServerSession(authOptions);

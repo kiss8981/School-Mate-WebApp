@@ -1,7 +1,12 @@
 import HeaderContainer from "@/app/_component/HeaderContainer";
+import { Metadata } from "next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+
+export const metadata: Metadata = {
+  title: "이용약관",
+};
 
 const markdown = `
 ### 서비스 이용약관

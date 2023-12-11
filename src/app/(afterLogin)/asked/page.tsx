@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/auth";
 import { redirect } from "next/navigation";
-import { NextPage } from "next";
+import { Metadata, NextPage } from "next";
 import LeftHeaderContainer from "@/app/_component/LeftHeaderContainer";
 import { Session } from "next-auth";
 import fetcher from "@/lib/fetch";
@@ -17,6 +17,10 @@ const AskedMe = dynamic(() => import("./_component/AskedMe"), {
   loading: () => <AskedMeSkeleton />,
   ssr: false,
 });
+
+export const metadata: Metadata = {
+  title: "에스크",
+};
 
 const AkedPage: NextPage = async () => {
   const auth = await getServerSession(authOptions);

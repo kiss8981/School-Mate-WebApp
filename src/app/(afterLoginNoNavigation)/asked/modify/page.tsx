@@ -6,6 +6,11 @@ import { authOptions } from "@/app/auth";
 import fetcher from "@/lib/fetch";
 import { Session } from "next-auth";
 import { AskedListWithUser } from "@/types/asked";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "에스크 프로필 수정",
+};
 
 const getAsked = async (auth: Session) => {
   try {

@@ -6,6 +6,11 @@ import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { Report } from "schoolmate-types";
 import ReportComponent from "./_component/ReportComponent";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "신고 추가조치",
+};
 
 interface Props {
   params: {

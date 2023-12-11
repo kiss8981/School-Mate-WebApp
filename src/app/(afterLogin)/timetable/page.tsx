@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/auth";
 import { redirect } from "next/navigation";
-import { NextPage } from "next";
+import { Metadata, NextPage } from "next";
 import TimetableContainer from "./_component/HeaderContainer";
 import { Suspense } from "react";
 import DatetimeList from "./_component/DatetimeList";
@@ -9,6 +9,10 @@ import { TimetableSkeleton } from "./_component/Timetable";
 import fetcher from "@/lib/fetch";
 import dayjs from "dayjs";
 import dynamic from "next/dynamic";
+
+export const metadata: Metadata = {
+  title: `시간표`,
+};
 
 const TimetableList = dynamic(() => import("./_component/Timetable"), {
   loading: () => <TimetableSkeleton />,

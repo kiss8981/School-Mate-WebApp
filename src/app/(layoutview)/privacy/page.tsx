@@ -2,6 +2,11 @@ import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import HeaderContainer from "../../_component/HeaderContainer";
 import remarkGfm from "remark-gfm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "게인정보처리방침",
+};
 
 const markdown = `
 ### 개인정보처리방침
