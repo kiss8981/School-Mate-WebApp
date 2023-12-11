@@ -47,7 +47,7 @@ export const generateMetadata = async ({
     };
 
   return {
-    title: asked.user.user.name + "의 에스크",
+    title: `${asked.user.user.name}의 에스크 / ${asked.auth.user.user.userSchool?.school.defaultName}`,
   };
 };
 

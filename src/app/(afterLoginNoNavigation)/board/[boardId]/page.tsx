@@ -50,9 +50,8 @@ export const generateMetadata = async ({
       title: "찾을 수 없는 게시판",
       description: "존재하지 않는 게시판입니다.",
     };
-
   return {
-    title: board.name,
+    title: `${board.name} / ${board.auth.user.user.userSchool?.school.defaultName}`,
     description: board.description,
   };
 };

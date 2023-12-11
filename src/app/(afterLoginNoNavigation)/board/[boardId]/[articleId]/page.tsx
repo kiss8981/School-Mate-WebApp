@@ -48,7 +48,7 @@ export const generateMetadata = async ({
     };
 
   return {
-    title: `${article.title} / ${article.board.name}`,
+    title: `${article.title} / ${article.board.name} / ${article.auth.user.user.userSchool?.school.defaultName}`,
     description: article.content,
     openGraph: {
       ...(article.images && {
@@ -58,7 +58,6 @@ export const generateMetadata = async ({
           },
         ],
       }),
-      siteName: "스쿨메이트",
     },
   };
 };
