@@ -44,7 +44,7 @@ function KakaoAdFit({ className }: { className?: string }) {
   return (
     <>
       <div className={classNames("w-full", className)}>
-        <aside className="aside__kakaoAdFit rounded-lg overflow-hidden h-[100px]"></aside>
+        <aside className="aside__kakaoAdFit"></aside>
       </div>
     </>
   );
