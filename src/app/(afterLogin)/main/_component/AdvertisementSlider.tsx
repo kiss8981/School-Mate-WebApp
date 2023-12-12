@@ -29,7 +29,7 @@ const AdvertisementSlider = ({
         </div>
         <Swiper
           className="w-full relative rounded-[20px] overflow-hidden h-[100px] border"
-          onSlideChange={swiper => setActivePage(swiper.activeIndex)}
+          onSlideChange={(swiper) => setActivePage(swiper.activeIndex)}
         >
           {advertisement.map((ad, index) => (
             <SwiperSlide
@@ -41,7 +41,12 @@ const AdvertisementSlider = ({
                 });
               }}
             >
-              <Image alt="ad" src={ad.image} layout="fill" objectFit="cover" />
+              <Image
+                alt="ad"
+                src={process.env.NEXT_PUBLIC_S3_URL + ad.image}
+                layout="fill"
+                objectFit="cover"
+              />
             </SwiperSlide>
           ))}
         </Swiper>
