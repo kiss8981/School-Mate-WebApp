@@ -14,6 +14,7 @@ import { useState } from "react";
 import Comment from "./Comment";
 import { stackRouterPush } from "@/lib/stackRouter";
 import { Hyperlink } from "@/app/_component/Hyperlink";
+import Advertisement from "@/app/_component/Advisement";
 
 const Article = ({
   article,
@@ -202,6 +203,7 @@ const Article = ({
             </div>
           )}
         </div>
+        <Advertisement className="px-4 pt-5" />
         <Comment article={article} board={article.board} auth={auth} />
       </div>
     </>

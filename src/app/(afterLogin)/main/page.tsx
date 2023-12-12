@@ -10,6 +10,7 @@ import fetcher from "@/lib/fetch";
 import SectionContainer from "./_component/SectionContainer";
 import TipsSection from "./_component/TipsSection";
 import { AskedSkeleton } from "./_component/Asked";
+import AdvertisementAds from "@/app/_component/Advisement";
 import dynamic from "next/dynamic";
 
 const getAuth = cache(async () => {
@@ -100,6 +101,7 @@ const Main: NextPage = async () => {
           description="스쿨메이트가 처음이세요?"
           link="/guide"
         />
+        <AdvertisementAds className="px-5 pt-5"/>
         <SectionContainer
           title="교내 친구들 찾기"
           subTitle="에스크 기능을 통해"
