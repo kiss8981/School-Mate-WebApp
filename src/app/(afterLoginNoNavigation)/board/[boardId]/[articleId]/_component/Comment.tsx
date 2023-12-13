@@ -94,7 +94,7 @@ const CommentList = ({
   useEffect(() => {
     if (totalPage === page) return;
     if (inView && !loadingComment) {
-      setPage(prevState => prevState + 1);
+      setPage((prevState) => prevState + 1);
     }
   }, [inView, loadingComment]);
 
@@ -212,6 +212,10 @@ const CommentList = ({
                 key={index}
                 comment={comment}
                 auth={auth}
+                reload={() => {
+                  setPage(1);
+                  fetchComment(1);
+                }}
                 callbackSelect={() => {
                   if (selectRecommentId) {
                     setSelectRecommentId(undefined);
@@ -246,11 +250,13 @@ const Commnet = ({
   auth,
   callbackSelect,
   isSelectRecomment,
+  reload,
 }: {
   comment: CommentWithUser;
   auth: Session;
   callbackSelect: () => void;
   isSelectRecomment: boolean;
+  reload?: () => void;
 }) => {
   const [likeCount, setLikeCount] = useState(comment.likeCounts);
   const [reCommnetCount, setReCommnetCount] = useState(
@@ -269,6 +275,25 @@ const Commnet = ({
       onSuccess: (status, message, body) => {
         setLikeCount(body.likeCounts);
         setReCommnetCount(body.recomments.length);
+      },
+    }
+  );
+
+  const { triggerFetch: delteTrigger } = useFetch(
+    `/board/article/${comment.articleId}/comment/${comment.id}`,
+    "DELETE",
+    {
+      fetchInit: {
+        headers: {
+          Authorization: `Bearer ${auth.user.token.accessToken}`,
+        },
+      },
+      onError: (status, message) => {
+        toast("error", message || "알 수 없는 오류가 발생했습니다.");
+      },
+      onSuccess: (status, message, body) => {
+        reload && reload();
+        toast("success", "삭제되었습니다.");
       },
     }
   );
@@ -318,7 +343,7 @@ const Commnet = ({
               />
             </div>
             <div className="flex flex-col ml-3">
-              <span className="text-[#66738C] text-sm font-bold items-center flex justify-center">
+              <span className="text-[#66738C] text-sm font-bold items-center flex justify-start">
                 {comment.isAnonymous ? "익명" : comment.user.name}
                 {comment.isMe && (
                   <span className="font-light border border-primary-500 rounded-full text-primary-500 px-1 ml-1 text-[0.75rem] leading-[1rem]">
@@ -353,25 +378,42 @@ const Commnet = ({
               <span className="mr-1">좋아요</span>
               <span className="mr-2">{likeCount}</span>
             </button>
-            <button
-              className="flex flex-row items-center text-[#66738C] text-[0.7rem] cursor-pointer"
-              onClick={() => {
-                callbackSelect();
-              }}
-            >
-              <Image
-                src="/icons/Comment.svg"
-                alt="Comment"
-                width={16}
-                height={16}
-                className="mr-1"
-              />
-              <span className="mr-1">답글</span>
-              <span className="mr-2">{reCommnetCount}</span>
-            </button>
+            {!comment.isDeleted && (
+              <button
+                className="flex flex-row items-center text-[#66738C] text-[0.7rem] cursor-pointer"
+                onClick={() => {
+                  callbackSelect();
+                }}
+              >
+                <Image
+                  src="/icons/Comment.svg"
+                  alt="Comment"
+                  width={16}
+                  height={16}
+                  className="mr-1"
+                />
+                <span className="mr-1">답글</span>
+                <span className="mr-2">{reCommnetCount}</span>
+              </button>
+            )}
+            {comment.isMe && !comment.isDeleted && (
+              <button
+                onClick={() => delteTrigger({})}
+                className="underline underline-offset-1 text-sm text-[#66738C] ml-auto"
+              >
+                삭제하기
+              </button>
+            )}
           </div>
           {comment.recomments.map((recomment, index) => (
-            <Recomment key={index} comment={recomment} auth={auth} />
+            <Recomment
+              key={index}
+              comment={recomment}
+              auth={auth}
+              reload={() => {
+                reload && reload();
+              }}
+            />
           ))}
         </div>
       </div>
@@ -382,11 +424,32 @@ const Commnet = ({
 const Recomment = ({
   comment,
   auth,
+  reload,
 }: {
   comment: ReCommnetWithUser;
   auth: Session;
+  reload?: () => void;
 }) => {
   const [likeCount, setLikeCount] = useState(comment.likeCounts);
+
+  const { triggerFetch: delteTrigger } = useFetch(
+    `/board/article/${comment.articleId}/comment/${comment.commentId}/recomment/${comment.id}`,
+    "DELETE",
+    {
+      fetchInit: {
+        headers: {
+          Authorization: `Bearer ${auth.user.token.accessToken}`,
+        },
+      },
+      onError: (status, message) => {
+        toast("error", message || "알 수 없는 오류가 발생했습니다.");
+      },
+      onSuccess: (status, message, body) => {
+        reload && reload();
+        toast("success", "삭제되었습니다.");
+      },
+    }
+  );
 
   const { triggerFetch: commentTrigger } = useFetch(
     `/board/article/${comment.articleId}/comment/${comment.commentId}/recomment/${comment.id}`,
@@ -477,6 +540,14 @@ const Recomment = ({
               <span className="mr-1">좋아요</span>
               <span className="mr-2">{likeCount}</span>
             </button>
+            {comment.isMe && !comment.isDeleted && (
+              <button
+                onClick={() => delteTrigger({})}
+                className="underline underline-offset-1 text-[0.75rem] text-[#66738C] ml-auto"
+              >
+                삭제하기
+              </button>
+            )}
           </div>
         </div>
       </div>
