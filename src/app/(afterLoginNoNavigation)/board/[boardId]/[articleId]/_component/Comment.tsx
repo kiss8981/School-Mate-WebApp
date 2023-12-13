@@ -327,8 +327,8 @@ const Commnet = ({
         )}
       >
         <div className="flex flex-col">
-          <div className="flex flex-row items-center">
-            <div className="relative h-[40px] w-[40px] rounded-full overflow-hidden mb-2">
+          <div className="flex flex-row items-center mb-1">
+            <div className="relative h-[40px] w-[40px] rounded-full overflow-hidden">
               <Image
                 src={
                   !comment.isAnonymous
@@ -342,7 +342,7 @@ const Commnet = ({
                 objectFit="cover"
               />
             </div>
-            <div className="flex flex-col ml-3">
+            <div className="flex flex-col ml-2">
               <span className="text-[#66738C] text-sm font-bold items-center flex justify-start">
                 {comment.isAnonymous ? "익명" : comment.user.name}
                 {comment.isMe && (
@@ -490,8 +490,8 @@ const Recomment = ({
     <>
       <div className="pr-5 pl-9 pt-2">
         <div className="flex flex-col">
-          <div className="flex flex-row items-center">
-            <div className="relative h-[34px] w-[34px] rounded-full overflow-hidden my-2">
+          <div className="flex flex-row items-center mb-1">
+            <div className="relative h-[34px] w-[34px] rounded-full overflow-hidden">
               <Image
                 src={
                   !comment.isAnonymous
@@ -505,7 +505,7 @@ const Recomment = ({
                 objectFit="cover"
               />
             </div>
-            <div className="flex flex-col ml-3">
+            <div className="flex flex-col ml-2">
               <span className="text-[#66738C] text-[0.7rem] font-bold items-center flex justify-center">
                 {comment.isAnonymous ? "익명" : comment.user.name}
                 {comment.isMe && (
