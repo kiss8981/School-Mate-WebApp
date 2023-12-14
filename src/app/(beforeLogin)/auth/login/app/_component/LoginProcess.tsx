@@ -4,7 +4,7 @@ import Lottie from "lottie-react";
 import LoadingLogo from "@/assets/lottie/loadingLogo.json";
 import { setCookie } from "@/lib/csrUtils";
 import { sendWebviewEvent, toast } from "@/lib/webviewHandler";
-import { getSession, signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useLayoutEffect } from "react";
 
@@ -12,25 +12,27 @@ const LoginProcess: React.FC<{
   token: string;
 }> = ({ token }) => {
   const router = useRouter();
+  const { update: updateSession } = useSession();
   useEffect(() => {
     signIn("credentials", {
       redirect: false,
       code: token,
       provider: "app",
-    }).then(async res => {
+    }).then(async (res) => {
       if (!res?.ok) {
         toast("error", "로그인 세션이 만료되었습니다.");
         router.replace("/auth/login");
       } else {
-        const session = await getSession();
+        const session = await updateSession();
         if (!session?.user) {
           toast("error", "로그인에 실패하였습니다.");
           return;
         }
 
-        setCookie("accessToken", session?.user.token.accessToken, {
+        setCookie("Authorization", session?.user.token.accessToken, {
           path: "/",
           maxAge: 60 * 60 * 24 * 7,
+          domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
         });
 
         if (window.ReactNativeWebView) {
