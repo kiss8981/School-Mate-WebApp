@@ -15,6 +15,7 @@ import Comment from "./Comment";
 import { stackRouterPush } from "@/lib/stackRouter";
 import { Hyperlink } from "@/app/_component/Hyperlink";
 import Advertisement from "@/app/_component/Advisement";
+import ArticleMore from "./ArticleMore";
 
 const Article = ({
   article,
@@ -114,6 +115,11 @@ const Article = ({
               {dayjs(article.createdAt).format("MM/DD HH:mm")}
             </span>
           </div>
+          {!article.isMe && !article.isAnonymous && (
+            <div className="ml-auto mb-auto mt-2.5">
+              <ArticleMore userId={article.userId} />
+            </div>
+          )}
         </div>
         <div className="flex flex-col items-start px-4">
           <span className="text-lg font-bold h-full whitespace-pre-wrap break-words w-full">
