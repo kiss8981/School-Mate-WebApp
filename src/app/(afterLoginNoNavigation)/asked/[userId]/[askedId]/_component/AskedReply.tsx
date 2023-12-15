@@ -25,11 +25,6 @@ const AskedReply = ({
     `/asked/${defaultAsked.id}/reply`,
     "POST",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       successToast: {
         message: "답변이 등록되었습니다.",
       },
@@ -99,10 +94,10 @@ const AskedReply = ({
             <span className="text-right items-center flex justify-start">
               {asked.isAnonymous ? "익명" : asked.questionUser.name}
             </span>
-            <div className="border rounded-[10px] p-2 bg-[#fff] flex flex-row mt-1">
+            <div className="border rounded-[10px] p-2 bg-[#fff] flex flex-row mt-1 w-fit">
               <Hyperlink
                 text={asked.question}
-                className="max-w-[13.5rem] whitespace-pre-wrap break-all"
+                className="max-w-[13.5rem] whitespace-pre-wrap break-all w-fit"
               />
             </div>
           </div>
@@ -110,10 +105,10 @@ const AskedReply = ({
         {asked.answer && (
           <div className="flex flex-row mt-4 w-full">
             <div className="flex flex-col ml-auto ">
-              <div className="border rounded-[10px] p-2 flex flex-row mt-1 bg-[#f0f0f0]">
+              <div className="border rounded-[10px] p-2 flex flex-row mt-1 bg-[#f0f0f0] w-fit">
                 <Hyperlink
                   text={asked.answer}
-                  className="max-w-[13.5rem] whitespace-pre-wrap break-all"
+                  className="max-w-[13.5rem] whitespace-pre-wrap break-all w-fit"
                 />
               </div>
             </div>

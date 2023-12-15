@@ -17,89 +17,47 @@ import { useInView } from "react-intersection-observer";
 import fetcher from "@/lib/fetch";
 import { AxiosError } from "axios";
 import { stackRouterPush } from "@/lib/stackRouter";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { PaginationParams } from "@/types/fetcher";
 
-const AskedList = ({
-  askeds: defaultAsked,
-  totalPage: defaultTotalPage,
-  auth,
-}: {
-  askeds: AskedDetailWithUser[];
-  totalPage: number;
-  auth: Session;
-}) => {
-  const [ref, inView] = useInView();
-  const [page, setPage] = useState(1);
-  const [loadingAskeds, setLoadingAskeds] = useState(false);
-  const [askeds, setAskeds] = useState<AskedDetailWithUser[]>(defaultAsked);
-  const [totalPage, setTotalPage] = useState(defaultTotalPage);
-
-  useEffect(() => {
-    if (totalPage === page) return;
-    if (inView && !loadingAskeds) {
-      setPage(prevState => prevState + 1);
-    }
-  }, [inView, loadingAskeds]);
+const AskedList = () => {
+  const askedFetch = (params: PaginationParams) =>
+    fetcher.get(`/auth/me/asked`, {
+      params,
+    });
+  const {
+    isFetching,
+    data: askeds,
+    fetchNextPage,
+  } = useInfiniteScroll<AskedDetailWithUser>(askedFetch, {});
+  const [viewRef, inView] = useInView();
 
   useEffect(() => {
-    if (page === 1) return;
-    if (page > totalPage) return;
-    if (totalPage === 1) return;
-    fetchAskeds();
-  }, [page]);
-
-  const fetchAskeds = async () => {
-    setLoadingAskeds(true);
-    try {
-      const { data: askedsData } = await fetcher<{
-        data: {
-          askeds: AskedDetailWithUser[];
-          pages: number;
-        };
-      }>(`/auth/me/asked?page=${page}`, {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      });
-
-      const datas = [...askeds, ...askedsData.data.askeds];
-
-      setAskeds(
-        datas.sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        )
-      );
-      setTotalPage(askedsData.data.pages);
-    } catch (e) {
-      if (e instanceof AxiosError) {
-        toast(
-          "error",
-          e.response?.data.message || "알 수 없는 오류가 발생했습니다."
-        );
-      }
-    } finally {
-      setLoadingAskeds(false);
-    }
-  };
+    if (inView && !isFetching) fetchNextPage();
+  }, [inView]);
 
   return (
     <>
-      {askeds.map((asked, index) => (
-        <AskedCard asked={asked} key={index} auth={auth} />
-      ))}
-      {loadingAskeds && <LoadingFullPage />}
-      <div ref={ref} />
+      {askeds
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+        .map((asked, index) => (
+          <AskedCard asked={asked} key={index} />
+        ))}
+
+      {isFetching && (
+        <div className="flex justify-center items-center my-10 pb-10">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500"></div>
+        </div>
+      )}
+      <div ref={viewRef} />
     </>
   );
 };
 
-const AskedCard = ({
-  asked: defaultAsked,
-  auth,
-}: {
-  asked: AskedDetailWithUser;
-  auth: Session;
-}) => {
+const AskedCard = ({ asked: defaultAsked }: { asked: AskedDetailWithUser }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [asked, setAsked] = useState<AskedDetailWithUser>(defaultAsked);
@@ -107,11 +65,6 @@ const AskedCard = ({
     `/asked/${asked.id}/deny`,
     "POST",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       onSuccess(statusCode, statusText, body) {
         setLoading(false);
         setAsked(body);

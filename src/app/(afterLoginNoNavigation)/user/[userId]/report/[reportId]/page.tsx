@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { Report } from "schoolmate-types";
 import ReportComponent from "./_component/ReportUser";
 import { Metadata } from "next/types";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "신고 추가조치",
@@ -19,10 +20,12 @@ interface Props {
   };
 }
 
-const getReportResult = async (reportId: string, auth: Session) => {
+const getReportResult = async (reportId: string) => {
+  const authorizationToken = cookies().get("Authorization");
+
   const user = await fetcher(`/report/${reportId}`, {
     headers: {
-      Authorization: `Bearer ${auth.user.token.accessToken}`,
+      Authorization: `Bearer ${authorizationToken?.value}`,
     },
   });
   if (user.data.status === 401) return redirect("/intro");
@@ -36,7 +39,7 @@ const ReportResultPage = async ({ params }: Props) => {
 
   if (!auth || !auth.user.registered) return redirect("/intro");
   if (!auth.user.user.userSchool) return redirect("/verify");
-  const report = await getReportResult(params.reportId, auth);
+  const report = await getReportResult(params.reportId);
   if (!report) return <></>;
   return (
     <>

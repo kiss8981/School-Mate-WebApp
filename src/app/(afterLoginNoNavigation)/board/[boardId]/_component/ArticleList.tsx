@@ -3,90 +3,54 @@
 import ArticleCard from "@/app/_component/ArticleCard";
 import { LoadingFullPage } from "@/app/_component/Loading";
 import fetcher from "@/lib/fetch";
-import { toast } from "@/lib/webviewHandler";
 import { ArticleWithImage } from "@/types/article";
-import { AxiosError } from "axios";
-import { AnimatePresence, animate, motion, useAnimation } from "framer-motion";
-import { Session } from "next-auth";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import { Board } from "schoolmate-types";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { classNames } from "@/lib/uitls";
-import { inter } from "@/lib/fonts";
 import { stackRouterPush } from "@/lib/stackRouter";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { PaginationParams } from "@/types/fetcher";
+import { useInView } from "react-intersection-observer";
 
-const ArticleList = ({
-  articles: { articles, totalPage },
-  board,
-  auth,
-}: {
-  articles: {
-    articles: ArticleWithImage[];
-    totalPage: number;
-  };
-  board: Board;
-  auth: Session;
-}) => {
-  const [articleList, setArticleList] = useState<ArticleWithImage[]>(articles);
-  const [loadingArticle, setLoadingArticle] = useState(false);
-  const [page, setPage] = useState(1);
-  const [ref, inView] = useInView();
-
-  useEffect(() => {
-    if (totalPage === page) return;
-    if (inView && !loadingArticle) {
-      setPage(prevState => prevState + 1);
-    }
-  }, [inView, loadingArticle]);
-
-  useEffect(() => {
-    if (page === 1) return;
-    if (page > totalPage) return;
-    if (totalPage === 1) return;
-    fetchArticle();
-  }, [page]);
-
-  const fetchArticle = async () => {
-    try {
-      setLoadingArticle(true);
-      const { data } = await fetcher.get<{
-        data: {
-          articles: ArticleWithImage[];
-          totalPage: number;
-        };
-      }>(`/board/${board.id}/articles?page=${page}`, {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      });
-      setArticleList(prevState => [...prevState, ...data.data.articles]);
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        toast(
-          "error",
-          err.response?.data.message || "알 수 없는 오류가 발생했습니다."
-        );
+const ArticleList = ({ boardId }: { boardId: string }) => {
+  const articlesfetcher = (params: PaginationParams) =>
+    fetcher.get(
+      boardId === "hot" ? `/board/hot` : `/board/${boardId}/articles`,
+      {
+        params,
       }
-    } finally {
-      setPage(prevState => prevState + 1);
-      setLoadingArticle(false);
-    }
-  };
+    );
+  const {
+    data: articles,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteScroll<ArticleWithImage>(articlesfetcher, {});
+  const [viewRef, inView] = useInView();
+
+  useEffect(() => {
+    if (inView && !isFetching) fetchNextPage();
+  }, [inView]);
 
   return (
     <>
-      {loadingArticle && <LoadingFullPage />}
-      {String(board.id) !== "hot" && <WriteButton boardId={board.id} />}
-      <div className="flex flex-col pb-4 items-center w-full">
-        {articleList.map((article, index) => (
-          <div key={index} className="w-full px-4 border-b">
-            <ArticleCard article={article} className="border-none" />
+      {boardId !== "hot" && <WriteButton boardId={Number(boardId)} />}
+      {articles.length === 0 && isFetching ? (
+        <ArticleListSkeleton />
+      ) : (
+        <>
+          <div className="flex flex-col pb-4 items-center w-full">
+            {articles.map((article, index) => (
+              <div key={index} className="w-full px-4 border-b">
+                <ArticleCard article={article} className="border-none" />
+              </div>
+            ))}
           </div>
-        ))}
-        <div ref={ref} />
-      </div>
+          <div ref={viewRef} />
+          {isFetching && <LoadingFullPage />}
+        </>
+      )}
     </>
   );
 };
@@ -151,6 +115,24 @@ const WriteButton = ({ boardId }: { boardId: number }) => {
         )}
       </AnimatePresence>
     </motion.button>
+  );
+};
+
+const ArticleListSkeleton = () => {
+  const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent`;
+
+  return (
+    <div className="flex flex-col mt-3 pb-4 px-4 items-center w-full space-y-2">
+      <div
+        className={`relative h-[100px] w-full rounded-[20px] bg-[#CCCCCC] ${shimmer}`}
+      />
+      <div
+        className={`relative h-[100px] w-full rounded-[20px] bg-[#CCCCCC] ${shimmer}`}
+      />
+      <div
+        className={`relative h-[100px] w-full rounded-[20px] bg-[#CCCCCC] ${shimmer}`}
+      />
+    </div>
   );
 };
 

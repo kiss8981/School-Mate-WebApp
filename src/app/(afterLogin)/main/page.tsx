@@ -3,15 +3,13 @@ import { authOptions } from "@/app/auth";
 import { redirect } from "next/navigation";
 import { Metadata, NextPage } from "next";
 import SchoolHeaderContainer from "./_component/SchoolHeaderContainer";
-import { AdvertisementSkeleton } from "./_component/Advertisement";
-import { Suspense, cache } from "react";
-import { RecommnedArticleSkeleton } from "./_component/RecommnedArticle";
-import fetcher from "@/lib/fetch";
+import { cache } from "react";
 import SectionContainer from "./_component/SectionContainer";
 import TipsSection from "./_component/TipsSection";
-import { AskedSkeleton } from "./_component/Asked";
 import AdvertisementAds from "@/app/_component/Advisement";
-import dynamic from "next/dynamic";
+import Advertisement from "./_component/Advertisement";
+import RecommentArticle from "./_component/RecommnedArticle";
+import Asked from "./_component/Asked";
 
 const getAuth = cache(async () => {
   const auth = await getServerSession(authOptions);
@@ -34,24 +32,6 @@ export const generateMetadata = async (): Promise<Metadata> => {
   };
 };
 
-const Asked = dynamic(() => import("./_component/Asked"), {
-  loading: () => <AskedSkeleton />,
-  ssr: false,
-});
-
-const RecommentArticle = dynamic(
-  () => import("./_component/RecommnedArticle"),
-  {
-    loading: () => <RecommnedArticleSkeleton />,
-    ssr: false,
-  }
-);
-
-const Advertisement = dynamic(() => import("./_component/Advertisement"), {
-  loading: () => <AdvertisementSkeleton />,
-  ssr: false,
-});
-
 const Main: NextPage = async () => {
   const auth = await getAuth();
 
@@ -71,37 +51,21 @@ const Main: NextPage = async () => {
         //   />
         // }
       >
-        <Suspense fallback={<AdvertisementSkeleton />}>
-          <Advertisement
-            data={fetcher(`/ad`, {
-              headers: {
-                Authorization: `Bearer ${auth.user.token.accessToken}`,
-              },
-            })}
-          />
-        </Suspense>
+        <Advertisement />
         <SectionContainer
           title="인기 게시물"
           subTitle="즐겨찾는 게시판"
           path="/board"
           pathType="replace"
         >
-          <Suspense fallback={<RecommnedArticleSkeleton />}>
-            <RecommentArticle
-              data={fetcher(`/board/hot`, {
-                headers: {
-                  Authorization: `Bearer ${auth.user.token.accessToken}`,
-                },
-              })}
-            />
-          </Suspense>
+          <RecommentArticle />
         </SectionContainer>
         <TipsSection
           title="가이드 보러가기"
           description="스쿨메이트가 처음이세요?"
           link="/guide"
         />
-        <AdvertisementAds className="px-5 pt-5"/>
+        <AdvertisementAds className="px-5 pt-5" />
         <SectionContainer
           title="교내 친구들 찾기"
           subTitle="에스크 기능을 통해"
@@ -110,15 +74,7 @@ const Main: NextPage = async () => {
           titleClassName="px-5"
           pathType="replace"
         >
-          <Suspense fallback={<AskedSkeleton />}>
-            <Asked
-              data={fetcher(`/asked`, {
-                headers: {
-                  Authorization: `Bearer ${auth.user.token.accessToken}`,
-                },
-              })}
-            />
-          </Suspense>
+          <Asked />
         </SectionContainer>
       </SchoolHeaderContainer>
     </>

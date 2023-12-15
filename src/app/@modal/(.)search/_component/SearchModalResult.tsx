@@ -20,9 +20,10 @@ const SearchModalResult = ({
   ] = `Bearer ${auth?.user.token.accessToken}`;
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const { data, error, isLoading } = useSWR<{
-    data: ArticleWithImage[];
-  }>(`/board/search?keyword=${keyword}&page=${page}`, swrFetcher);
+  const { data, error, isLoading } = useSWR<ArticleWithImage[]>(
+    `/board/search?keyword=${keyword}&page=${page}`,
+    swrFetcher
+  );
 
   const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent`;
   if (isLoading || !keyword)
@@ -51,7 +52,7 @@ const SearchModalResult = ({
       </>
     );
 
-  if (data && data.data.length === 0)
+  if (data && data.length === 0)
     return (
       <>
         <div
@@ -81,7 +82,7 @@ const SearchModalResult = ({
   return (
     <>
       <div className={classNames("px-5", inter.className)}>
-        {data?.data.map((article, index) => (
+        {data?.map((article, index) => (
           <ArticleCard key={index} article={article} />
         ))}
       </div>

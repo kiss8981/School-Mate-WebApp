@@ -7,16 +7,19 @@ import fetcher from "@/lib/fetch";
 import { Session } from "next-auth";
 import { AskedListWithUser } from "@/types/asked";
 import { Metadata } from "next";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "에스크 프로필 수정",
 };
 
 const getAsked = async (auth: Session) => {
+  const authorizationToken = cookies().get("Authorization");
+
   try {
     const asked = await fetcher(`/asked/${auth.user.user.id}`, {
       headers: {
-        Authorization: `Bearer ${auth.user.token.accessToken}`,
+        Authorization: `Bearer ${authorizationToken?.value}`,
       },
     });
 

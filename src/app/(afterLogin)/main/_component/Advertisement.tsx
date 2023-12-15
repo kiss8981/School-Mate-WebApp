@@ -1,22 +1,18 @@
-import { AxiosResponse } from "axios";
+"use client";
+
 import { Advertise } from "schoolmate-types";
 import AdvertisementSlider from "./AdvertisementSlider";
 import { classNames } from "@/lib/uitls";
+import useSWR from "swr";
+import { swrFetcher } from "@/lib/fetch";
 
-interface Props {
-  data: Promise<
-    AxiosResponse<{
-      data: Advertise[];
-    }>
-  >;
-}
-
-const Advertisement = async ({ data }: Props) => {
-  const advertisement = await data.then(res => res.data.data);
+const Advertisement = () => {
+  const { data, isLoading, error } = useSWR<Advertise[]>("/ad", swrFetcher);
+  if (!data || isLoading) return <AdvertisementSkeleton />;
 
   return (
     <>
-      <AdvertisementSlider advertisement={advertisement} />
+      <AdvertisementSlider advertisement={data} />
     </>
   );
 };
@@ -39,5 +35,3 @@ const AdvertisementSkeleton = () => {
 };
 
 export default Advertisement;
-
-export { AdvertisementSkeleton };

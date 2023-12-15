@@ -52,11 +52,7 @@ const SignoutConfirm = ({ auth }: { auth: Session }) => {
         token: verfiyToken,
       });
 
-      await fetcher.delete("/auth/me", {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      });
+      await fetcher.delete("/auth/me");
       requestLogout();
       toast("success", "계정이 삭제되었습니다.");
     } catch (error: any) {
@@ -73,17 +69,9 @@ const SignoutConfirm = ({ auth }: { auth: Session }) => {
   const requestPhoneVerify = async () => {
     try {
       setLoading(true);
-      const { data } = await fetcher.post(
-        "/auth/verify/login/phonemessage",
-        {
-          phone: auth.user.user.phone,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.user.token.accessToken}`,
-          },
-        }
-      );
+      const { data } = await fetcher.post("/auth/verify/login/phonemessage", {
+        phone: auth.user.user.phone,
+      });
       toast("success", "인증번호가 전송되었습니다.");
       setVerifyToken(data.data);
     } catch (error: any) {

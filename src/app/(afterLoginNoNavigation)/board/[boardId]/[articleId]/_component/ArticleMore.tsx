@@ -36,7 +36,7 @@ const ArticleMore = ({ userId }: { userId: string }) => {
                 setModal(false);
                 stackRouterPush(router, `/user/${userId}/report`);
               }}
-              className="h-10 flex flex-row items-center px-3 w-20 justify-center"
+              className="h-10 flex flex-row items-center px-3 w-24 justify-center"
             >
               유저차단
             </button>

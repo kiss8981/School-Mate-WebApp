@@ -8,16 +8,18 @@ import { redirect } from "next/navigation";
 import AskedReply from "./_component/AskedReply";
 import { cache } from "react";
 import { Metadata } from "next";
+import { cookies } from "next/headers";
 
 const getAskedDetail = cache(async (userId: string, askedId: string) => {
   const auth = await getServerSession(authOptions);
   if (!auth || !auth.user.registered) return redirect("/intro");
   if (!auth.user.user.userSchool) return redirect("/verify");
+  const authorizationToken = cookies().get("Authorization");
 
   try {
     const asked = await fetcher(`/asked/${userId}/${askedId}`, {
       headers: {
-        Authorization: `Bearer ${auth.user.token.accessToken}`,
+        Authorization: `Bearer ${authorizationToken?.value}`,
       },
     });
     return {

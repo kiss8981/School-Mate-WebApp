@@ -8,15 +8,18 @@ import { redirect, useParams } from "next/navigation";
 import UserAksedList from "./_component/UserAskedList";
 import { cache } from "react";
 import { Metadata } from "next";
+import { cookies } from "next/headers";
 
 const getUserAsked = cache(async (userId: string) => {
   const auth = await getServerSession(authOptions);
   if (!auth || !auth.user.registered) return redirect("/intro");
   if (!auth.user.user.userSchool) return redirect("/verify");
+  const authorizationToken = cookies().get("Authorization");
+
   try {
     const asked = await fetcher(`/asked/${userId}`, {
       headers: {
-        Authorization: `Bearer ${auth.user.token.accessToken}`,
+        Authorization: `Bearer ${authorizationToken?.value}`,
       },
     });
     return {
@@ -62,7 +65,7 @@ const AskedUser = async ({ params }: Props) => {
         className="pb-20"
         seachIcon={false}
       >
-        <UserAksedList asked={asked} auth={asked.auth} />
+        <UserAksedList asked={asked} />
       </LeftHeaderContainer>
     </>
   );

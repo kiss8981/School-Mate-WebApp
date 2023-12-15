@@ -9,36 +9,40 @@ import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { Board } from "schoolmate-types";
 import Image from "next/image";
-import { ArticleListSkeleton } from "./_component/ArticleListSSR";
-import { Suspense, cache } from "react";
+import ArticleList from "./_component/ArticleList";
+import { cache } from "react";
 import { Session } from "next-auth";
-import dynamic from "next/dynamic";
 import { Metadata } from "next";
-
-const ArticleList = dynamic(() => import("./_component/ArticleListSSR"), {
-  loading: () => <ArticleListSkeleton />,
-  ssr: false,
-});
+import { cookies } from "next/headers";
+import { AxiosError } from "axios";
 
 const getBoard = cache(async (boardId: string) => {
   const auth = await getServerSession(authOptions);
   if (!auth || !auth.user.registered) return redirect("/intro");
   if (!auth.user.user.userSchool) return redirect("/verify");
+  const authorizationToken = cookies().get("Authorization");
 
-  const board = await fetcher(`/board/${boardId}`, {
-    headers: {
-      Authorization: `Bearer ${auth.user.token.accessToken}`,
-    },
-  });
-  if (board.data.status === 401) return redirect("/intro");
-  if (board.data.status === 404) return null;
+  try {
+    const board = await fetcher(`/board/${boardId}`, {
+      headers: {
+        Authorization: `Bearer ${authorizationToken?.value}`,
+      },
+    });
 
-  return {
-    ...board.data.data,
-    auth,
-  } as Board & { article: ArticleWithImage[] } & {
-    auth: Session;
-  };
+    return {
+      ...board.data.data,
+      auth,
+    } as Board & { article: ArticleWithImage[] } & {
+      auth: Session;
+    };
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      if (!e.response) return null;
+      if (e.response.status === 401) return redirect("/intro");
+      if (e.response.status === 404) return null;
+    }
+    return null;
+  }
 });
 
 export const generateMetadata = async ({
@@ -111,29 +115,7 @@ const BoardPage = async ({ params }: Props) => {
               />
             </div>
           </div>
-          <Suspense fallback={<ArticleListSkeleton />}>
-            <ArticleList
-              data={fetcher(
-                params.boardId === "hot"
-                  ? "/board/hot"
-                  : `/board/${params.boardId}/articles`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${board.auth.user.token.accessToken}`,
-                  },
-                }
-              )}
-              auth={board.auth}
-              board={
-                params.boardId === "hot"
-                  ? ({
-                      ...board,
-                      id: "hot",
-                    } as unknown as Board)
-                  : board
-              }
-            />
-          </Suspense>
+          <ArticleList boardId={params.boardId} />
         </div>
       </HeaderContainer>
     </>

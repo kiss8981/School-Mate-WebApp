@@ -3,6 +3,7 @@
 import { Hyperlink } from "@/app/_component/Hyperlink";
 import { LoadingFullPage } from "@/app/_component/Loading";
 import useFetch from "@/hooks/useFetch";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import fetcher from "@/lib/fetch";
 import { inter } from "@/lib/fonts";
 import { classNames } from "@/lib/uitls";
@@ -12,6 +13,7 @@ import {
   AskedListWithUser,
   AskedUserDetail,
 } from "@/types/asked";
+import { PaginationParams } from "@/types/fetcher";
 import { AxiosError } from "axios";
 import { Session } from "next-auth";
 import Image from "next/image";
@@ -20,33 +22,37 @@ import { useInView } from "react-intersection-observer";
 
 const UserAksedList = ({
   asked: defaultAsked,
-  auth,
 }: {
   asked: AskedListWithUser;
-  auth: Session;
 }) => {
+  const askedFetcher = (params: PaginationParams) =>
+    fetcher.get(`/asked/${defaultAsked.user.userId}`, {
+      params,
+    });
+  const {
+    data: askeds,
+    isFetching,
+    fetchNextPage,
+    resetPage,
+    hasNextPage,
+    page,
+  } = useInfiniteScroll<AskedDetailWithUser>(askedFetcher, {});
   const messageEndRef = useRef<HTMLDivElement | null>(null);
-  const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(defaultAsked.pages);
   const [viewRef, inView] = useInView();
   const [loadingMessage, setLoadingMessage] = useState(false);
-  const [askeds, setAskeds] = useState<AskedDetailWithUser[]>(
-    defaultAsked.askeds
-  );
+
+  useEffect(() => {
+    if (inView && hasNextPage) fetchNextPage();
+  }, [inView]);
+
   const { triggerFetch: addAsked } = useFetch(
     `/asked/${defaultAsked.user.userId}`,
     "POST",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       onPending: () => setLoadingMessage(true),
       onSuccess: () => {
         setLoadingMessage(false);
-        setPage(1);
-        fetchMessage(1);
+        resetPage();
       },
       onError(statusCode, statusText, body) {
         setLoadingMessage(false);
@@ -84,69 +90,10 @@ const UserAksedList = ({
   }, []);
 
   useEffect(() => {
-    if (messageEndRef.current)
+    if (messageEndRef.current && (page === 1 || page === 2)) {
       messageEndRef.current.scrollIntoView({ behavior: "instant" });
-  }, []);
-
-  useEffect(() => {
-    if (totalPage === page) return;
-    if (inView && !loadingMessage) {
-      setPage(prevState => prevState + 1);
     }
-  }, [inView, loadingMessage]);
-
-  useEffect(() => {
-    if (page === 1) return;
-    if (page > totalPage) return;
-    if (totalPage === 1) return;
-    fetchMessage();
   }, [page]);
-
-  const fetchMessage = async (prpsPage?: number) => {
-    try {
-      setLoadingMessage(true);
-      const { data } = await fetcher<{
-        data: {
-          askeds: AskedDetailWithUser[];
-          pages: number;
-        };
-      }>(`/asked/${defaultAsked.user.userId}`, {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-        params: {
-          page: prpsPage ? prpsPage : page,
-        },
-      });
-      if (prpsPage) {
-        setAskeds(
-          data.data.askeds.sort(
-            (a, b) =>
-              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-          )
-        );
-        messageEndRef?.current?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        const datas = [...data.data.askeds, ...askeds];
-        setAskeds(
-          datas.sort(
-            (a, b) =>
-              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-          )
-        );
-      }
-      setTotalPage(data.data.pages);
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        toast(
-          "error",
-          err.response?.data.message || "알 수 없는 오류가 발생했습니다."
-        );
-      }
-    } finally {
-      setLoadingMessage(false);
-    }
-  };
 
   return (
     <>
@@ -161,13 +108,24 @@ const UserAksedList = ({
         <>
           <div ref={viewRef} />
           {loadingMessage && <LoadingFullPage />}
-          {askeds.map((askedItem, key) => (
-            <UserAskedItem
-              key={key}
-              asked={askedItem}
-              askedUser={defaultAsked.user}
-            />
-          ))}
+          {isFetching && (
+            <div className="flex justify-center items-center my-10 pt-10">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500"></div>
+            </div>
+          )}
+          {askeds
+            .sort(
+              (a, b) =>
+                new Date(a.createdAt).getTime() -
+                new Date(b.createdAt).getTime()
+            )
+            .map((askedItem, key) => (
+              <UserAskedItem
+                key={key}
+                asked={askedItem}
+                askedUser={defaultAsked.user}
+              />
+            ))}
           <div ref={messageEndRef} />
         </>
       )}
@@ -193,9 +151,9 @@ const UserAskedItem = ({
               )}
               {asked.isAnonymous ? "익명" : asked.questionUser.name}
             </span>
-            <div className="border rounded-[10px] p-2 bg-[#f0f0f0] ml-auto flex flex-row mt-1">
+            <div className="border rounded-[10px] p-2 bg-[#f0f0f0] ml-auto flex flex-row mt-1 w-fit">
               <Hyperlink
-                className="max-w-[13.5rem] whitespace-pre-wrap break-all"
+                className="max-w-[13.5rem] whitespace-pre-wrap w-fit break-all"
                 text={asked.question}
               />
             </div>
@@ -231,9 +189,9 @@ const UserAskedItem = ({
             </div>
             <div className="flex flex-col ml-3">
               <span>{askedUser.user.name}</span>
-              <div className="border rounded-[10px] p-2 flex flex-row mt-1">
+              <div className="border rounded-[10px] p-2 flex flex-row mt-1 w-fit">
                 <Hyperlink
-                  className="max-w-[13.5rem] whitespace-pre-wrap break-all"
+                  className="max-w-[13.5rem] whitespace-pre-wrap w-fit break-all"
                   text={asked.answer}
                 />
               </div>

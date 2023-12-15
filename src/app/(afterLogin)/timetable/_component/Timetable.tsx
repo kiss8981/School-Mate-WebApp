@@ -1,3 +1,6 @@
+"use client";
+
+import { swrFetcher } from "@/lib/fetch";
 import { inter } from "@/lib/fonts";
 import {
   classNames,
@@ -5,19 +8,32 @@ import {
   mergeRowsWithSameContent,
 } from "@/lib/uitls";
 import { ISpecialTimetableRow } from "@/types/school";
-import { AxiosResponse } from "axios";
+import dayjs from "dayjs";
+import { Session } from "next-auth";
+import useSWR from "swr";
 
-const Timetable = async ({ data }: { data: Promise<AxiosResponse> }) => {
-  const timelist = (await data
-    .then(res => res.data.data)
-    .catch(e => {
-      return [];
-    })) as ISpecialTimetableRow[];
-  const mergeContents = mergeRowsWithSameContent(timelist);
+const Timetable = ({ auth }: { auth: Session }) => {
+  const {
+    data: timelist,
+    isLoading,
+    error,
+  } = useSWR(
+    `/school/${auth.user.user.userSchoolId}/timetable?grade=${
+      auth.user.user.userSchool?.grade
+    }&class=${auth.user.user.userSchool?.class}&date=${dayjs().format(
+      "YYYY-MM-DD"
+    )}${
+      auth.user.user.userSchool?.dept
+        ? `&dept=${auth.user.user.userSchool?.dept}`
+        : ""
+    }`,
+    swrFetcher
+  );
+  if (isLoading) return <TimetableSkeleton />;
   return (
     <>
       <div className="flex flex-col space-y-4">
-        {mergeContents.length === 0 ? (
+        {(!timelist && error) || timelist.length === 0 ? (
           <>
             <span className="mx-auto mt-20 text-lg text-[#b6b6b6]">
               오늘은 수업이 없는날 인가요?
@@ -25,7 +41,7 @@ const Timetable = async ({ data }: { data: Promise<AxiosResponse> }) => {
           </>
         ) : (
           <>
-            {mergeContents.map((item, key) => (
+            {mergeRowsWithSameContent(timelist).map((item, key) => (
               <Timeitem data={item} key={key} />
             ))}
           </>
@@ -82,6 +98,4 @@ const TimetableSkeleton = () => {
     </div>
   );
 };
-
-export { TimetableSkeleton };
 export default Timetable;

@@ -9,32 +9,42 @@ import Article from "./_component/Article";
 import SerachButton from "@/app/_component/SearchButton";
 import { Session } from "next-auth";
 import { cache } from "react";
+import { cookies } from "next/headers";
+import { Axios, AxiosError } from "axios";
 
 const getArticle = cache(async (boardId: string, articleId: string) => {
   const auth = await getServerSession(authOptions);
 
   if (!auth || !auth.user.registered) return redirect("/intro");
   if (!auth.user.user.userSchool) return redirect("/verify");
+  const authorizationToken = cookies().get("Authorization");
 
-  const article = await fetcher(`/board/${boardId}/article/${articleId}`, {
-    headers: {
-      Authorization: `Bearer ${auth.user.token.accessToken}`,
-    },
-  });
-  if (article.data.status === 401) return redirect("/intro");
-  if (article.data.status === 404) return null;
+  try {
+    const article = await fetcher(`/board/${boardId}/article/${articleId}`, {
+      headers: {
+        Authorization: `Bearer ${authorizationToken?.value}`,
+      },
+    });
 
-  return {
-    ...article.data.data,
-    auth: auth,
-  } as ArticleWithImage & {
-    comments: {
-      comments: CommentWithUser[];
-      totalPage: number;
+    return {
+      ...article.data.data,
+      auth: auth,
+    } as ArticleWithImage & {
+      comments: {
+        comments: CommentWithUser[];
+        totalPage: number;
+      };
+    } & {
+      auth: Session;
     };
-  } & {
-    auth: Session;
-  };
+  } catch (e: any) {
+    if (e instanceof AxiosError) {
+      if (!e.response) return null;
+      if (e.response.status === 401) return redirect("/intro");
+      if (e.response.status === 404) return null;
+    }
+    return null;
+  }
 });
 
 export const generateMetadata = async ({

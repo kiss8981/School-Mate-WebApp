@@ -41,7 +41,6 @@ const AskedModify = ({
         method: "POST",
         data: formData,
         headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
           storage: "asked",
           "Content-Type": "multipart/form-data",
         },
@@ -63,9 +62,6 @@ const AskedModify = ({
     try {
       await fetcher(`/asked/image`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
       });
       setProfileKey(undefined);
       setProfile(null);
@@ -86,9 +82,6 @@ const AskedModify = ({
           ...(name === asked.user.customId ? {} : { id: name }),
           ...(tag1 === asked.user.tags[0] ? {} : { tag1, tag2 }),
           ...(tag2 === asked.user.tags[1] ? {} : { tag1, tag2 }),
-        },
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
         },
       });
       toast("success", "변경사항이 저장되었습니다");

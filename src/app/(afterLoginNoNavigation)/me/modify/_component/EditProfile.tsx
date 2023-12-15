@@ -33,12 +33,6 @@ const EditProfile = ({ auth }: { auth: Session }) => {
   });
 
   const { triggerFetch: updateEmail } = useFetch("/auth/me/email", "PATCH", {
-    fetchInit: {
-      headers: {
-        Authorization: `Bearer ${auth.user.token.accessToken}`,
-        "Content-Type": "application/json",
-      },
-    },
     onPending: () => setLoading(true),
     onSuccess: async (status, message, data) => {
       await updateSession();
@@ -57,12 +51,6 @@ const EditProfile = ({ auth }: { auth: Session }) => {
     "/auth/me/nickname",
     "PATCH",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-          "Content-Type": "application/json",
-        },
-      },
       onPending: () => setLoading(true),
       onSuccess: async (status, message, data) => {
         await updateSession();
@@ -83,7 +71,6 @@ const EditProfile = ({ auth }: { auth: Session }) => {
     {
       fetchInit: {
         headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
           "Content-Type": "multipart/form-data",
           storage: "profile",
         },

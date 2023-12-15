@@ -1,18 +1,20 @@
-import Button from "@/app/_component/Button";
-import Image from "next/image";
+"use client";
+
 import { classNames } from "@/lib/uitls";
 import { AskedWithUser } from "@/types/asked";
-import { AxiosResponse } from "axios";
 import React from "react";
 import { roboto } from "@/lib/fonts";
 import AskedItem from "./AskedItem";
+import useSWR from "swr";
+import { swrFetcher } from "@/lib/fetch";
 
-interface Props {
-  data: Promise<AxiosResponse>;
-}
+const Asked = () => {
+  const { data: askeds, isLoading } = useSWR<{
+    contents: AskedWithUser[];
+  }>("/asked", swrFetcher);
 
-const Asked = async ({ data }: Props) => {
-  const askeds = (await data.then((res) => res.data.data)) as AskedWithUser[];
+  if (!askeds || isLoading) return <AskedSkeleton />;
+
   return (
     <>
       <div
@@ -21,13 +23,15 @@ const Asked = async ({ data }: Props) => {
           roboto.className
         )}
       >
-        {askeds.length === 0 ? (
+        {askeds.contents.length === 0 ? (
           <>
-            <span className="mx-auto my-10">아직 등록된 에스크 학생이 없습니다.</span>
+            <span className="mx-auto my-10">
+              아직 등록된 에스크 학생이 없습니다.
+            </span>
           </>
         ) : (
           <>
-            {askeds.map((asked, index) => (
+            {askeds.contents.map((asked, index) => (
               <AskedItem asked={asked} key={index} index={index} />
             ))}
           </>
@@ -50,5 +54,4 @@ const AskedSkeleton = () => {
   );
 };
 
-export { Asked, AskedSkeleton };
 export default Asked;

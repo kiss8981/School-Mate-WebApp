@@ -32,7 +32,6 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
         method: "POST",
         data: formData,
         headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
           storage: "asked",
           "Content-Type": "multipart/form-data",
         },
@@ -54,9 +53,6 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
     try {
       await fetcher(`/image/${profileKey}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
       });
       setProfileKey(undefined);
       setProfile(null);
@@ -77,9 +73,6 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
           id: name,
           tag1,
           tag2,
-        },
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
         },
       });
       toast("success", "프로필이 생성되었습니다.");

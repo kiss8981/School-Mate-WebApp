@@ -9,10 +9,8 @@ import { toast } from "@/lib/webviewHandler";
 
 const AskedEditStatusMessage = ({
   statusMessage: defaultStatusMessage,
-  auth,
 }: {
   statusMessage?: string;
-  auth: Session;
 }) => {
   const [editStatusMessage, setEditStatusMessage] = useState(false);
   const [statusMessage, setStatusMessage] = useState(defaultStatusMessage);
@@ -20,11 +18,6 @@ const AskedEditStatusMessage = ({
     "/asked/changestatusmessage",
     "POST",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       successToast: {
         message: "상태 메시지가 변경되었습니다.",
       },

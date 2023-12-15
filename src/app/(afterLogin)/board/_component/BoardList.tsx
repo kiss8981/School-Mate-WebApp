@@ -1,15 +1,27 @@
+"use client";
+
 import { inter } from "@/lib/fonts";
 import { classNames } from "@/lib/uitls";
 import { AxiosResponse } from "axios";
 import { Board } from "schoolmate-types";
 import BoardItem from "./BoardItem";
+import useSWR from "swr";
+import { swrFetcher } from "@/lib/fetch";
 
-interface Props {
-  data: Promise<AxiosResponse>;
-}
+const BoardList = () => {
+  const {
+    isLoading,
+    error,
+    data: boards,
+  } = useSWR<Board[]>("/board", swrFetcher);
 
-const BoardList = async ({ data }: Props) => {
-  const boards = (await data.then(res => res.data.data)) as Board[];
+  if (isLoading || !boards) return <BoardListSkeleton />;
+  if (error)
+    return (
+      <>
+        <span>알 수 없는 오류 발생</span>
+      </>
+    );
 
   return (
     <>

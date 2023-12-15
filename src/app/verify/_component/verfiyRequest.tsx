@@ -37,11 +37,6 @@ const VerifyRequest: React.FC<{
   const [classNum, setClassNum] = useState<string>();
   const [department, setDepartment] = useState<string>();
   const { triggerFetch: findSchools } = useFetch("/school/search", "GET", {
-    fetchInit: {
-      headers: {
-        Authorization: `Bearer ${auth.user.token.accessToken}`,
-      },
-    },
     onSuccess: (res, stautsMessage, body: SchoolInfoRow[]) => {
       setSchoolList(body);
       setLoadingSchoolList(false);
@@ -58,11 +53,6 @@ const VerifyRequest: React.FC<{
   });
 
   const { triggerFetch: findSchool } = useFetch(``, "GET", {
-    fetchInit: {
-      headers: {
-        Authorization: `Bearer ${auth.user.token.accessToken}`,
-      },
-    },
     onPending: () => setLoadingSchool(true),
     onSuccess: (res, statusMessage, body: ClassInfoRow[]) => {
       setLoadingSchool(false);
@@ -80,7 +70,6 @@ const VerifyRequest: React.FC<{
   const { triggerFetch: requestUploadImage } = useFetch("/image", "POST", {
     fetchInit: {
       headers: {
-        Authorization: `Bearer ${auth.user.token.accessToken}`,
         "Content-Type": "multipart/form-data",
         storage: "schoolverify",
       },
@@ -109,11 +98,6 @@ const VerifyRequest: React.FC<{
     "/school/verify",
     "POST",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       onSuccess: (res, statusMessage) => {
         setLoadingSchool(false);
         toast(

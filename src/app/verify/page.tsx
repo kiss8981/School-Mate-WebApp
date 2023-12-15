@@ -7,14 +7,16 @@ import Error from "@/app/_component/Error";
 import VerifyRequest from "./_component/verfiyRequest";
 import HeaderContainer from "@/app/_component/HeaderContainer";
 import { Metadata } from "next";
+import { cookies } from "next/headers";
 
 async function getVerifyList(
   auth: Session
 ): Promise<UserSchoolVerify[] | null> {
+  const authorizationToken = cookies().get("Authorization");
   try {
     const { data: verifyList } = await fetcher("/auth/me/schoolverify", {
       headers: {
-        Authorization: `Bearer ${auth.user.token.accessToken}`,
+        Authorization: `Bearer ${authorizationToken?.value}`,
       },
     });
 

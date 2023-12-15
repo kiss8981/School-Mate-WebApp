@@ -1,30 +1,17 @@
-import Button from "@/app/_component/Button";
-import Input from "@/app/_component/Input";
 import useFetch from "@/hooks/useFetch";
 import Image from "next/image";
 import fetcher from "@/lib/fetch";
 import { toast } from "@/lib/webviewHandler";
-import { AxiosError } from "axios";
 import { Session } from "next-auth";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import {
-  Article,
-  Board,
-  Comment,
-  CommentPayload,
-  ReComment,
-  User,
-} from "schoolmate-types";
+import { useEffect, useState } from "react";
+import { Article, Board } from "schoolmate-types";
 import { CommentWithUser, ReCommnetWithUser } from "@/types/article";
 import dayjs from "dayjs";
 import { classNames } from "@/lib/uitls";
-import { inter } from "@/lib/fonts";
-import LinkifyIt from "linkify-it";
 import { Hyperlink } from "@/app/_component/Hyperlink";
-
-const linkify = LinkifyIt();
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { PaginationParams } from "@/types/fetcher";
+import { useInView } from "react-intersection-observer";
 
 const CommentList = ({
   article,
@@ -40,26 +27,29 @@ const CommentList = ({
   board: Board;
   auth: Session;
 }) => {
-  const router = useRouter();
-  const [commentList, setCommentList] = useState<CommentWithUser[]>(
-    article.comments.comments.sort(
-      (a, b) => dayjs(b.createdAt).unix() - dayjs(a.createdAt).unix()
-    )
-  );
-  const [loadingComment, setLoadingComment] = useState(false);
-  const [page, setPage] = useState(1);
-  const [ref, inView] = useInView();
+  const commentFetcher = (params: PaginationParams) =>
+    fetcher.get(`/board/${board.id}/article/${article.id}/comments`, {
+      params,
+    });
+
+  const {
+    data: commentList,
+    isFetching: loadingComment,
+    hasNextPage,
+    resetPage,
+    fetchNextPage,
+  } = useInfiniteScroll<CommentWithUser>(commentFetcher, {});
+  const [viewRef, inView] = useInView();
+
+  useEffect(() => {
+    if (inView && !loadingComment) fetchNextPage();
+  }, [inView]);
+
   const [selectRecommentId, setSelectRecommentId] = useState<string>();
-  const [totalPage, setTotalPage] = useState(article.comments.totalPage);
   const { triggerFetch: commentTrigger } = useFetch(
     `/board/article/${article.id}/comment`,
     "POST",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       successToast: {
         message: "작성되었습니다",
       },
@@ -67,18 +57,12 @@ const CommentList = ({
         toast("error", message || "알 수 없는 오류가 발생했습니다.");
       },
       onSuccess: () => {
-        setPage(1);
-        fetchComment(1);
+        resetPage();
       },
     }
   );
 
   const { triggerFetch: recommentTrigger } = useFetch("", "POST", {
-    fetchInit: {
-      headers: {
-        Authorization: `Bearer ${auth.user.token.accessToken}`,
-      },
-    },
     successToast: {
       message: "작성되었습니다",
     },
@@ -86,71 +70,9 @@ const CommentList = ({
       toast("error", message || "알 수 없는 오류가 발생했습니다.");
     },
     onSuccess: async () => {
-      setPage(1);
-      fetchComment(1);
+      resetPage();
     },
   });
-
-  useEffect(() => {
-    if (totalPage === page) return;
-    if (inView && !loadingComment) {
-      setPage((prevState) => prevState + 1);
-    }
-  }, [inView, loadingComment]);
-
-  useEffect(() => {
-    if (page === 1) return;
-    if (page > totalPage) return;
-    if (totalPage === 1) return;
-    fetchComment();
-  }, [page]);
-
-  const fetchComment = async (prpsPage?: number) => {
-    try {
-      setLoadingComment(true);
-      const { data } = await fetcher.get<{
-        data: {
-          comments: CommentWithUser[];
-          totalPage: number;
-        };
-      }>(
-        `/board/${board.id}/article/${article.id}/comments?page=${
-          prpsPage ? prpsPage : page
-        }`,
-        {
-          headers: {
-            Authorization: `Bearer ${auth.user.token.accessToken}`,
-          },
-        }
-      );
-      if (prpsPage) {
-        setCommentList(
-          data.data.comments.sort(
-            (a, b) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          )
-        );
-      } else {
-        const datas = [...commentList, ...data.data.comments.reverse()];
-        setCommentList(
-          datas.sort(
-            (a, b) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          )
-        );
-        setTotalPage(data.data.totalPage);
-      }
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        toast(
-          "error",
-          err.response?.data.message || "알 수 없는 오류가 발생했습니다."
-        );
-      }
-    } finally {
-      setLoadingComment(false);
-    }
-  };
 
   useEffect(() => {
     const handleComment = async (event: MessageEvent) => {
@@ -207,40 +129,46 @@ const CommentList = ({
       ) : (
         <>
           <div className="flex flex-col">
-            {commentList.map((comment, index) => (
-              <Commnet
-                key={index}
-                comment={comment}
-                auth={auth}
-                reload={() => {
-                  setPage(1);
-                  fetchComment(1);
-                }}
-                callbackSelect={() => {
-                  if (selectRecommentId) {
-                    setSelectRecommentId(undefined);
-                    toast("success", "답글 작성을 취소했습니다.");
-                    return;
+            {commentList
+              .sort(
+                (a, b) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime()
+              )
+              .map((comment, index) => (
+                <Commnet
+                  key={index}
+                  comment={comment}
+                  auth={auth}
+                  reload={() => {
+                    resetPage();
+                  }}
+                  callbackSelect={() => {
+                    if (selectRecommentId) {
+                      setSelectRecommentId(undefined);
+                      toast("success", "답글 작성을 취소했습니다.");
+                      return;
+                    }
+                    toast(
+                      "success",
+                      comment.user.name + "님에게 답글을 남깁니다."
+                    );
+                    setSelectRecommentId(comment.id.toString());
+                  }}
+                  isSelectRecomment={
+                    selectRecommentId === comment.id.toString()
                   }
-                  toast(
-                    "success",
-                    comment.user.name + "님에게 답글을 남깁니다."
-                  );
-                  setSelectRecommentId(comment.id.toString());
-                }}
-                isSelectRecomment={selectRecommentId === comment.id.toString()}
-              />
-            ))}
+                />
+              ))}
+            <div ref={viewRef} />
           </div>
         </>
       )}
-
       {loadingComment && (
-        <div className="flex justify-center items-center my-10">
+        <div className="flex justify-center items-center my-10 pb-10">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500"></div>
         </div>
       )}
-      <div ref={ref} />
     </>
   );
 };
@@ -267,11 +195,6 @@ const Commnet = ({
     `/board/article/${comment.articleId}/comment/${comment.id}`,
     "GET",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       onSuccess: (status, message, body) => {
         setLikeCount(body.likeCounts);
         setReCommnetCount(body.recomments.length);
@@ -283,11 +206,6 @@ const Commnet = ({
     `/board/article/${comment.articleId}/comment/${comment.id}`,
     "DELETE",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       onError: (status, message) => {
         toast("error", message || "알 수 없는 오류가 발생했습니다.");
       },
@@ -302,11 +220,6 @@ const Commnet = ({
     `/board/article/${comment.articleId}/comment/${comment.id}/like`,
     "POST",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       onError: (status, message) => {
         toast("error", message || "알 수 없는 오류가 발생했습니다.");
       },
@@ -436,11 +349,6 @@ const Recomment = ({
     `/board/article/${comment.articleId}/comment/${comment.commentId}/recomment/${comment.id}`,
     "DELETE",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       onError: (status, message) => {
         toast("error", message || "알 수 없는 오류가 발생했습니다.");
       },
@@ -455,11 +363,6 @@ const Recomment = ({
     `/board/article/${comment.articleId}/comment/${comment.commentId}/recomment/${comment.id}`,
     "GET",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       onSuccess: (status, message, body) => {
         setLikeCount(body.likeCounts);
       },
@@ -470,11 +373,6 @@ const Recomment = ({
     `/board/article/${comment.articleId}/comment/${comment.commentId}/recomment/${comment.id}/like`,
     "POST",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       onError: (status, message) => {
         toast("error", message || "알 수 없는 오류가 발생했습니다.");
       },

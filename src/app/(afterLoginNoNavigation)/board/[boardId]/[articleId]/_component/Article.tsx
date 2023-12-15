@@ -36,11 +36,6 @@ const Article = ({
     `/board/article/${article.id}`,
     "DELETE",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       onError: (status, message) => {
         setDeleteLoading(false);
         toast("error", message || "알 수 없는 오류가 발생했습니다.");
@@ -59,11 +54,6 @@ const Article = ({
     `/board/article/${article.id}/like`,
     "POST",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${auth.user.token.accessToken}`,
-        },
-      },
       onError: (status, message) => {
         setLikeLoading(false);
         toast("error", message || "알 수 없는 오류가 발생했습니다.");

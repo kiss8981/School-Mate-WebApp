@@ -1,20 +1,20 @@
+"use client";
+
 import { ArticleWithImage } from "@/types/article";
-import { AxiosResponse } from "axios";
 import NoRecommendArticle from "./NoRecommendArticle";
 import { ArticleCard, RecommentButton } from "./RecommnedArticleCard";
+import useSWR from "swr";
+import { swrFetcher } from "@/lib/fetch";
 
-export const RecommentArticle = async ({
-  data,
-}: {
-  data: Promise<AxiosResponse>;
-}) => {
-  const articles = (await data.then(
-    res => res.data.data.articles
-  )) as ArticleWithImage[];
+const RecommentArticle = () => {
+  const { data: articles, isLoading } = useSWR<{
+    contents: ArticleWithImage[];
+  }>("/board/hot", swrFetcher);
+  if (isLoading || !articles) return <RecommnedArticleSkeleton />;
 
   return (
     <>
-      {articles.length === 0 ? (
+      {articles.contents.length === 0 ? (
         <NoRecommendArticle />
       ) : (
         <>
@@ -24,7 +24,7 @@ export const RecommentArticle = async ({
               columnGap: "0.75rem",
             }}
           >
-            {articles.splice(0, 6).map((article, index) => (
+            {articles.contents.splice(0, 6).map((article, index) => (
               <ArticleCard key={index} article={article} />
             ))}
           </div>
@@ -35,7 +35,7 @@ export const RecommentArticle = async ({
   );
 };
 
-export const RecommnedArticleSkeleton = () => {
+const RecommnedArticleSkeleton = () => {
   const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent`;
 
   return (

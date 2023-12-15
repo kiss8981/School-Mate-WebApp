@@ -25,11 +25,6 @@ const ReportComponent = (props: ReportComponentProps) => {
     `/report/${props.report.id}/blind`,
     "POST",
     {
-      fetchInit: {
-        headers: {
-          Authorization: `Bearer ${props.auth.user.token.accessToken}`,
-        },
-      },
       onPending: () => setBlindArticleFetching(true),
       onSuccess: () => {
         toast("success", "해당 게시글을 보지 않도록 설정했습니다.");

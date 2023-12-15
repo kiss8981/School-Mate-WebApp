@@ -1,5 +1,6 @@
+"use client";
+
 import { AskedListWithUser, AskedWithUser } from "@/types/asked";
-import { AxiosResponse } from "axios";
 import AskedCreate from "./AskedCreate";
 import Image from "next/image";
 import { classNames } from "@/lib/uitls";
@@ -7,18 +8,19 @@ import AskedMore from "./AskedMore";
 import AskedEditStatusMessage from "./AskedEditStatusMessage";
 import { Session } from "next-auth";
 import AskedList from "./AskedList";
+import useSWR from "swr";
+import { swrFetcher } from "@/lib/fetch";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { toast } from "@/lib/webviewHandler";
 
-const AskedMe = async ({
-  data,
-  auth,
-}: {
-  data: Promise<AxiosResponse>;
-  auth: Session;
-}) => {
-  const askedme = (await data
-    .then((res) => res.data.data)
-    .catch((e) => null)) as AskedListWithUser | null;
+const AskedMe = () => {
+  const {
+    isLoading,
+    error,
+    data: askedme,
+  } = useSWR<AskedListWithUser>("/auth/me/asked", swrFetcher);
 
+  if (isLoading) return <AskedMeSkeleton />;
   if (!askedme) return <AskedCreate />;
 
   return (
@@ -55,20 +57,31 @@ const AskedMe = async ({
                     </span>
                   ))}
                 </div>
+                <CopyToClipboard
+                  text={`https://app.schoolmate.kr/view?url=/asked/${askedme.user.customId}`}
+                  onCopy={() => {
+                    toast("success", "에스크 링크가 복사되었습니다!");
+                  }}
+                >
+                  <button>
+                    <Image
+                      src="/icons/Share.svg"
+                      alt="share"
+                      width={13}
+                      height={13}
+                      className="ml-3"
+                    />
+                  </button>
+                </CopyToClipboard>
               </div>
               <AskedEditStatusMessage
                 statusMessage={askedme.user.statusMessage}
-                auth={auth}
               />
             </div>
-            <AskedMore />
+            <AskedMore userId={askedme.user.customId} />
           </div>
         </div>
-        <AskedList
-          askeds={askedme.askeds}
-          totalPage={askedme.pages}
-          auth={auth}
-        />
+        <AskedList />
       </div>
     </>
   );
@@ -96,4 +109,3 @@ const AskedMeSkeleton = () => {
 };
 
 export default AskedMe;
-export { AskedMeSkeleton };
