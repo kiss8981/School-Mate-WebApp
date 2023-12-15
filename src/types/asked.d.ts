@@ -22,6 +22,7 @@ export type AskedUserDetail = {
   statusMessage?: string;
   userId: string;
   customId: string;
+  receiveOtherSchool: boolean;
 };
 
 export type AskedDetailWithUser = Asked & {

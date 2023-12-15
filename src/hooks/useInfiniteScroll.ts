@@ -49,10 +49,11 @@ export const useInfiniteScroll = <T>(
       }
       setPage(numberPage + 1);
       setNextPage(totalPage > numberPage);
-      setFetching(false);
       onSuccess?.();
     } catch (err) {
       onError?.(err);
+    } finally {
+      setFetching(false);
     }
   }, [page]);
 

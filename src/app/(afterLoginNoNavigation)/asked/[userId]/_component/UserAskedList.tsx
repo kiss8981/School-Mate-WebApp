@@ -97,36 +97,46 @@ const UserAksedList = ({
 
   return (
     <>
-      {askeds.length === 0 ? (
+      {askeds.length === 0 && isFetching ? (
         <>
-          <div className="flex flex-col items-center justify-center h-[88vh] text-[#B6B6B6]">
-            <span>아직 에스크 질문이 없어요</span>
-            <span>질문을 가장 먼저 남겨보세요.</span>
+          <div className="flex justify-center items-center my-auto">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500"></div>
           </div>
         </>
       ) : (
         <>
-          <div ref={viewRef} />
-          {loadingMessage && <LoadingFullPage />}
-          {isFetching && (
-            <div className="flex justify-center items-center my-10 pt-10">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500"></div>
-            </div>
+          {askeds.length === 0 ? (
+            <>
+              <div className="flex flex-col items-center justify-center h-[88vh] text-[#B6B6B6]">
+                <span>아직 에스크 질문이 없어요</span>
+                <span>질문을 가장 먼저 남겨보세요.</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div ref={viewRef} />
+              {loadingMessage && <LoadingFullPage />}
+              {isFetching && (
+                <div className="flex justify-center items-center my-10 pt-10">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500"></div>
+                </div>
+              )}
+              {askeds
+                .sort(
+                  (a, b) =>
+                    new Date(a.createdAt).getTime() -
+                    new Date(b.createdAt).getTime()
+                )
+                .map((askedItem, key) => (
+                  <UserAskedItem
+                    key={key}
+                    asked={askedItem}
+                    askedUser={defaultAsked.user}
+                  />
+                ))}
+              <div ref={messageEndRef} />
+            </>
           )}
-          {askeds
-            .sort(
-              (a, b) =>
-                new Date(a.createdAt).getTime() -
-                new Date(b.createdAt).getTime()
-            )
-            .map((askedItem, key) => (
-              <UserAskedItem
-                key={key}
-                asked={askedItem}
-                askedUser={defaultAsked.user}
-              />
-            ))}
-          <div ref={messageEndRef} />
         </>
       )}
     </>

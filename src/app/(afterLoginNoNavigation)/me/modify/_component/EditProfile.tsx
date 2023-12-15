@@ -11,6 +11,7 @@ import { stackRouterPush } from "@/lib/stackRouter";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { inter } from "@/lib/fonts";
 
 const EditProfile = ({ auth }: { auth: Session }) => {
   const router = useRouter();
@@ -95,7 +96,7 @@ const EditProfile = ({ auth }: { auth: Session }) => {
   return (
     <>
       {loading && <LoadingFullPage />}
-      <div className="px-5 pt-5">
+      <div className={classNames(inter.className, "px-5 pt-5")}>
         <div className="flex flex-col mx-auto items-center justify-center border-b pb-7">
           <div
             onClick={() => {

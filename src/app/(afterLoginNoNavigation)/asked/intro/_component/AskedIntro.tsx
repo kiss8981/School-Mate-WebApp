@@ -1,5 +1,6 @@
 "use client";
 
+import Checkbox from "@/app/_component/Checkbox";
 import Input from "@/app/_component/Input";
 import { LoadingFullPage } from "@/app/_component/Loading";
 import fetcher from "@/lib/fetch";
@@ -21,6 +22,7 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
   const [name, setName] = useState("");
   const [tag1, setTag1] = useState("");
   const [tag2, setTag2] = useState("");
+  const [otherSchoolQuestion, setOtherSchoolQuestion] = useState(false);
 
   const uploadImage = async (profile: File) => {
     setLoading(true);
@@ -73,6 +75,7 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
           id: name,
           tag1,
           tag2,
+          receiveOtherSchool: otherSchoolQuestion,
         },
       });
       toast("success", "프로필이 생성되었습니다.");
@@ -155,7 +158,7 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
               에스크 내에서만 사용하는 아이디에요 (영문, 숫자만 가능)
             </span>
           </div>
-          <div className="w-full flex flex-col mt-5 pb-32">
+          <div className="w-full flex flex-col mt-5">
             <div className="w-full flex flex-row space-x-3">
               <div className="flex w-full flex-col">
                 <span className="text-lg font-bold">소개 태그 1</span>
@@ -188,6 +191,33 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
               태그는 2~3자 이내로 작성하는게 좋아요
             </span>
           </div>
+          <div className="flex w-full flex-row mt-5">
+            <button
+              className="flex items-center justify-center"
+              onClick={() => {
+                setOtherSchoolQuestion(!otherSchoolQuestion);
+              }}
+            >
+              <Checkbox
+                className="h-5 w-5 mr-3"
+                checked={otherSchoolQuestion}
+                onChange={e => {
+                  setOtherSchoolQuestion(e.target.checked);
+                }}
+              />
+              <span
+                style={{
+                  lineHeight: "normal",
+                }}
+                className="font-bold text-lg leading-2"
+              >
+                다른 학교 학생의 에스크 질문받기
+              </span>
+            </button>
+          </div>
+          <span className=" text-[#b6b6b6] text-sm mr-auto mt-4">
+            ※ 프로필을 만들면 같은 학교 친구들에게 바로 보여요
+          </span>
         </div>
       </div>
       {name && tag1 && tag2 && (

@@ -22,6 +22,7 @@ const getUserAsked = cache(async (userId: string) => {
         Authorization: `Bearer ${authorizationToken?.value}`,
       },
     });
+
     return {
       ...asked.data.data,
       auth,
@@ -57,7 +58,22 @@ export const generateMetadata = async ({
 const AskedUser = async ({ params }: Props) => {
   const asked = await getUserAsked(params.userId);
 
-  if (!asked) return <></>;
+  if (!asked)
+    return (
+      <>
+        <LeftHeaderContainer
+          title="이런..."
+          className="pb-20"
+          seachIcon={false}
+        >
+          <div className="flex flex-col items-center justify-center h-[88vh] text-[#B6B6B6]">
+            <span className="text-lg mb-5">학생 정보를 찾을 수 없어요!</span>
+            <span>상대방 학생이 다른 학교 학생의 질문을</span>
+            <span>받지 않도록 설정했을 수도 있어요</span>
+          </div>
+        </LeftHeaderContainer>
+      </>
+    );
   return (
     <>
       <LeftHeaderContainer

@@ -137,7 +137,7 @@ const MyInfo = ({ auth }: { auth: Session }) => {
             <button
               className="w-full text-left"
               onClick={() => {
-                stackRouterPush(router, "/faq");
+                stackRouterPush(router, "/guide");
               }}
             >
               문의하기

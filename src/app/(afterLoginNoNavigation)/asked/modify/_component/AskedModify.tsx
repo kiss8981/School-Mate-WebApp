@@ -1,5 +1,6 @@
 "use client";
 
+import Checkbox from "@/app/_component/Checkbox";
 import Input from "@/app/_component/Input";
 import { LoadingFullPage } from "@/app/_component/Loading";
 import fetcher from "@/lib/fetch";
@@ -8,6 +9,7 @@ import { stackRouterPush } from "@/lib/stackRouter";
 import { classNames } from "@/lib/uitls";
 import { toast } from "@/lib/webviewHandler";
 import { AskedListWithUser } from "@/types/asked";
+import { isEmpty } from "lodash";
 import { Session } from "next-auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -27,6 +29,9 @@ const AskedModify = ({
     asked.user.user.profile
   );
   const [loading, setLoading] = useState(false);
+  const [otherSchoolQuestion, setOtherSchoolQuestion] = useState(
+    asked.user.receiveOtherSchool
+  );
   const [name, setName] = useState(asked.user.customId);
   const [tag1, setTag1] = useState(asked.user.tags[0]);
   const [tag2, setTag2] = useState(asked.user.tags[1]);
@@ -82,6 +87,9 @@ const AskedModify = ({
           ...(name === asked.user.customId ? {} : { id: name }),
           ...(tag1 === asked.user.tags[0] ? {} : { tag1, tag2 }),
           ...(tag2 === asked.user.tags[1] ? {} : { tag1, tag2 }),
+          ...(otherSchoolQuestion === asked.user.receiveOtherSchool
+            ? {}
+            : { receiveOtherSchool: otherSchoolQuestion }),
         },
       });
       toast("success", "변경사항이 저장되었습니다");
@@ -168,7 +176,7 @@ const AskedModify = ({
               한번만 변경 가능)
             </span>
           </div>
-          <div className="w-full flex flex-col mt-5 pb-32">
+          <div className="w-full flex flex-col mt-5">
             <div className="w-full flex flex-row space-x-3">
               <div className="flex w-full flex-col">
                 <span className="text-lg font-bold">소개 태그 1</span>
@@ -200,6 +208,30 @@ const AskedModify = ({
             <span className="ml-2 mt-1 text-[#b6b6b6] text-sm">
               태그는 2~3자 이내로 작성하는게 좋아요
             </span>
+          </div>
+          <div className="flex w-full flex-row pb-32 mt-5">
+            <button
+              className="flex items-center justify-center"
+              onClick={() => {
+                setOtherSchoolQuestion(!otherSchoolQuestion);
+              }}
+            >
+              <Checkbox
+                className="h-5 w-5 mr-3"
+                checked={otherSchoolQuestion}
+                onChange={e => {
+                  setOtherSchoolQuestion(e.target.checked);
+                }}
+              />
+              <span
+                style={{
+                  lineHeight: "normal",
+                }}
+                className="font-bold text-lg leading-2"
+              >
+                다른 학교 학생의 에스크 질문받기
+              </span>
+            </button>
           </div>
         </div>
       </div>
