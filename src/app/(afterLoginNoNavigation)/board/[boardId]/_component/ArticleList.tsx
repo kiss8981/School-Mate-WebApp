@@ -46,8 +46,8 @@ const ArticleList = ({ boardId }: { boardId: string }) => {
                 <ArticleCard article={article} className="border-none" />
               </div>
             ))}
+            <div ref={viewRef} />
           </div>
-          <div ref={viewRef} />
           {isFetching && <LoadingFullPage />}
         </>
       )}

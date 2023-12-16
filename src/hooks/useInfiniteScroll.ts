@@ -25,37 +25,46 @@ export const useInfiniteScroll = <T>(
 
   const resetPage = () => {
     setPage(1);
-    executeFetch();
+    executeFetch(1);
   };
 
   useEffect(() => {
     fetchNextPage();
   }, []);
 
-  const executeFetch = useCallback(async () => {
-    try {
-      setFetching(true);
-      const {
-        data: {
-          data: { contents, totalPage, numberPage },
-        },
-      } = await fetcher({
-        page,
-      });
-      if (numberPage === 1) {
-        setData(contents);
-      } else {
-        setData(prev => prev.concat(contents));
+  const executeFetch = useCallback(
+    async (initPage?: number) => {
+      try {
+        setFetching(true);
+        const {
+          data: {
+            data: { contents, totalPage, numberPage },
+          },
+        } = await fetcher({
+          ...(initPage
+            ? {
+                page: initPage,
+              }
+            : {
+                page,
+              }),
+        });
+        if (numberPage === 1) {
+          setData(contents);
+        } else {
+          setData(prev => prev.concat(contents));
+        }
+        setPage(numberPage + 1);
+        setNextPage(totalPage > numberPage);
+        onSuccess?.();
+      } catch (err) {
+        onError?.(err);
+      } finally {
+        setFetching(false);
       }
-      setPage(numberPage + 1);
-      setNextPage(totalPage > numberPage);
-      onSuccess?.();
-    } catch (err) {
-      onError?.(err);
-    } finally {
-      setFetching(false);
-    }
-  }, [page]);
+    },
+    [page]
+  );
 
   const fetchNextPage = () => {
     if (hasNextPage) executeFetch();
