@@ -151,9 +151,8 @@ const CommentList = ({
                     }
                     toast(
                       "success",
-                      comment.isAnonymous
-                        ? "익명"
-                        : comment.user.name + "님에게 답글을 남깁니다."
+                      (comment.isAnonymous ? "익명" : comment.user.name) +
+                        "님에게 답글을 남깁니다."
                     );
                     setSelectRecommentId(comment.id.toString());
                   }}
