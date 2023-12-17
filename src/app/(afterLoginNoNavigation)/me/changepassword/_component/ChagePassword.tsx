@@ -121,7 +121,12 @@ const ChangePassword = () => {
         </div>
       </div>
 
-      <div className="px-5 w-full justify-center fixed bottom-3">
+      <div
+        className={classNames(
+          inter.className,
+          "px-5 w-full justify-center fixed bottom-3"
+        )}
+      >
         <button
           className={classNames(
             "mt-5 w-full font-bold flex flex-row items-center justify-center py-2 rounded-full h-14",
