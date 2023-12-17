@@ -74,7 +74,7 @@ const AskedMore = ({ userId }: { userId: string }) => {
                 프로필 수정
               </button>
               <CopyToClipboard
-                text={`https://app.schoolmate.kr/view?url=/asked/${userId}`}
+                text={`https://schoolmate.kr/asked/${userId}`}
                 onCopy={() => {
                   setModal(false);
                   toast("success", "복사되었습니다!");

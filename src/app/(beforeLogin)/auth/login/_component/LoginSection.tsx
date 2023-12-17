@@ -105,7 +105,13 @@ const LoginSection = () => {
           </div>
         </div>
 
-        <button className="mt-4 text-[#B6B6B6] text-sm w-full text-right flex flex-row items-center justify-end">
+        <button
+          type="button"
+          onClick={() => {
+            stackRouterPush(router, "/auth/findpassword");
+          }}
+          className="mt-4 text-[#B6B6B6] text-sm w-full text-right flex flex-row items-center justify-end"
+        >
           비밀번호 찾기{" "}
           <Image
             src="/icons/Back.svg"

@@ -58,7 +58,7 @@ const AskedMe = () => {
                   ))}
                 </div>
                 <CopyToClipboard
-                  text={`https://app.schoolmate.kr/view?url=/asked/${askedme.user.customId}`}
+                  text={`https://schoolmate.kr/asked/${askedme.user.customId}`}
                   onCopy={() => {
                     toast("success", "에스크 링크가 복사되었습니다!");
                   }}
