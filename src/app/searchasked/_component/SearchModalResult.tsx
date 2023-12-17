@@ -23,7 +23,7 @@ const SearchModalResult = ({
   const [page, setPage] = useState(1);
   const { data, error, isLoading } = useSWR<{
     totalPage: number;
-    askeds: AskedUserDetail[];
+    contents: AskedUserDetail[];
   }>(`/asked/search?keyword=${keyword}&page=${page}`, swrFetcher);
 
   const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent`;
@@ -53,7 +53,7 @@ const SearchModalResult = ({
       </>
     );
 
-  if (data && data.askeds.length === 0)
+  if (data && data.contents.length === 0)
     return (
       <>
         <div
@@ -83,7 +83,7 @@ const SearchModalResult = ({
   return (
     <>
       <div className={classNames("px-5 space-y-3", inter.className)}>
-        {data?.askeds.map((asked, index) => (
+        {data?.contents.map((asked, index) => (
           <AskedCard key={index} asked={asked} />
         ))}
       </div>
