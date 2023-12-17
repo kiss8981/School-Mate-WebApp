@@ -4,17 +4,30 @@ import { ArticleWithImage } from "@/types/article";
 import NoRecommendArticle from "./NoRecommendArticle";
 import { ArticleCard, RecommentButton } from "./RecommnedArticleCard";
 import useSWR from "swr";
-import { swrFetcher } from "@/lib/fetch";
+import fetcher, { swrFetcher } from "@/lib/fetch";
+import { useEffect, useState } from "react";
 
 const RecommentArticle = () => {
-  const { data: articles, isLoading } = useSWR<{
-    contents: ArticleWithImage[];
-  }>("/board/hot", swrFetcher);
-  if (isLoading || !articles) return <RecommnedArticleSkeleton />;
+  const [articles, setArticles] = useState<ArticleWithImage[]>();
+  const [loadingArticles, setLoadingArticles] = useState(false);
+  useEffect(() => {
+    fetcher
+      .get<{
+        data: { contents: ArticleWithImage[] };
+      }>("/board/hot")
+      .then(res => {
+        setArticles(res.data.data.contents);
+      })
+      .finally(() => {
+        setLoadingArticles(false);
+      });
+  }, []);
+
+  if (loadingArticles || !articles) return <RecommnedArticleSkeleton />;
 
   return (
     <>
-      {articles.contents.length === 0 ? (
+      {articles.length === 0 ? (
         <NoRecommendArticle />
       ) : (
         <>
@@ -24,7 +37,7 @@ const RecommentArticle = () => {
               columnGap: "0.75rem",
             }}
           >
-            {articles.contents.splice(0, 6).map((article, index) => (
+            {articles.splice(0, 6).map((article, index) => (
               <ArticleCard key={index} article={article} />
             ))}
           </div>
