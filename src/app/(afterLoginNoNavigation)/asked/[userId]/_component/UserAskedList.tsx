@@ -1,5 +1,6 @@
 "use client";
 
+import Advertisement from "@/app/_component/Advisement";
 import { Hyperlink } from "@/app/_component/Hyperlink";
 import { LoadingFullPage } from "@/app/_component/Loading";
 import useFetch from "@/hooks/useFetch";
@@ -128,11 +129,19 @@ const UserAksedList = ({
                     new Date(b.createdAt).getTime()
                 )
                 .map((askedItem, key) => (
-                  <UserAskedItem
-                    key={key}
-                    asked={askedItem}
-                    askedUser={defaultAsked.user}
-                  />
+                  <>
+                    <UserAskedItem
+                      key={key}
+                      asked={askedItem}
+                      askedUser={defaultAsked.user}
+                    />
+                    {key === 5 && (
+                      <Advertisement
+                        unit="DAN-JIpVKY9LRZGb864w"
+                        className="pt-3"
+                      />
+                    )}
+                  </>
                 ))}
               <div ref={messageEndRef} />
             </>

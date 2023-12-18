@@ -17,7 +17,7 @@ const HeaderBadage: React.FC<{
     <>
       <button
         onClick={() => {
-          stackRouterPush(router, link, "stack");
+          router.push(link);
         }}
         className="w-full rounded-[14px] bg-[#f3f4f8] justify-between items-center pl-4 pr-5 flex flex-row py-4 z-50"
       >

@@ -12,6 +12,7 @@ import { stackRouterPush } from "@/lib/stackRouter";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { PaginationParams } from "@/types/fetcher";
 import { useInView } from "react-intersection-observer";
+import Advertisement from "@/app/_component/Advisement";
 
 const ArticleList = ({ boardId }: { boardId: string }) => {
   const articlesfetcher = (params: PaginationParams) =>
@@ -42,9 +43,16 @@ const ArticleList = ({ boardId }: { boardId: string }) => {
         <>
           <div className="flex flex-col pb-4 items-center w-full">
             {articles.map((article, index) => (
-              <div key={index} className="w-full px-4 border-b">
-                <ArticleCard article={article} className="border-none" />
-              </div>
+              <>
+                <div key={index} className="w-full px-4 border-b">
+                  <ArticleCard article={article} className="border-none" />
+                </div>
+                {index === 5 && (
+                  <div className="w-full border-b">
+                    <Advertisement unit="DAN-UH5UMSZXUPi9zCtA" />
+                  </div>
+                )}
+              </>
             ))}
             <div ref={viewRef} />
           </div>

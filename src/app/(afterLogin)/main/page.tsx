@@ -10,6 +10,7 @@ import AdvertisementAds from "@/app/_component/Advisement";
 import Advertisement from "./_component/Advertisement";
 import RecommentArticle from "./_component/RecommnedArticle";
 import Asked from "./_component/Asked";
+import HeaderBadage from "./_component/HeaderBadage";
 
 const getAuth = cache(async () => {
   const auth = await getServerSession(authOptions);
@@ -51,7 +52,6 @@ const Main: NextPage = async () => {
         //   />
         // }
       >
-        <Advertisement />
         <SectionContainer
           title="인기 게시물"
           subTitle="즐겨찾는 게시판"
@@ -65,7 +65,7 @@ const Main: NextPage = async () => {
           description="스쿨메이트가 처음이세요?"
           link="/guide"
         />
-        <AdvertisementAds className="px-5 pt-5" />
+        <AdvertisementAds unit="DAN-3yaEXlo6qBdb5YXL" className="px-5 pt-5" />
         <SectionContainer
           title="교내 친구들 찾기"
           subTitle="에스크 기능을 통해"

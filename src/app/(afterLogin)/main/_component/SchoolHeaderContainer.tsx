@@ -40,7 +40,7 @@ const SchoolHeaderContainer = ({
         <SchoolHeader badge={badage} title={title} />
         <div
           style={{
-            paddingTop: badage ? "85.5px + 64px" : "64px",
+            paddingTop: badage ? "calc(85.5px + 64px)" : "64px",
             paddingBottom: `6rem`,
           }}
         >

@@ -199,7 +199,7 @@ const Article = ({
             </div>
           )}
         </div>
-        <Advertisement className="px-4 pt-5" />
+        <Advertisement unit="DAN-dNmES5mBqOzN5HN3" className="pt-5" />
         <Comment article={article} board={article.board} auth={auth} />
       </div>
     </>

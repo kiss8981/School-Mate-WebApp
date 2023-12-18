@@ -19,6 +19,7 @@ import { AxiosError } from "axios";
 import { stackRouterPush } from "@/lib/stackRouter";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { PaginationParams } from "@/types/fetcher";
+import Advertisement from "@/app/_component/Advisement";
 
 const AskedList = () => {
   const askedFetch = (params: PaginationParams) =>
@@ -44,7 +45,14 @@ const AskedList = () => {
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         )
         .map((asked, index) => (
-          <AskedCard asked={asked} key={index} />
+          <>
+            <AskedCard asked={asked} key={index} />
+            {index == 5 && (
+              <div className="w-full border-b">
+                <Advertisement unit="DAN-ks59KP1dNxSw0XX1" />
+              </div>
+            )}
+          </>
         ))}
 
       {isFetching && (
