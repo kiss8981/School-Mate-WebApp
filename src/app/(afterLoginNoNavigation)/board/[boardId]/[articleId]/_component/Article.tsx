@@ -16,6 +16,7 @@ import { stackRouterPush } from "@/lib/stackRouter";
 import { Hyperlink } from "@/app/_component/Hyperlink";
 import Advertisement from "@/app/_component/Advisement";
 import ArticleMore from "./ArticleMore";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 const Article = ({
   article,
@@ -157,6 +158,25 @@ const Article = ({
             <Image src="/icons/View.svg" alt="View" width={23} height={23} />
             <span className="text-[#8c8c8c] ml-1">{article.views}</span>
           </div>
+          <CopyToClipboard
+            text={`https://schoolmate.kr/board/${article.boardId}/${article.id}`}
+            onCopy={() => {
+              toast("success", "게시글 링크가 복사되었습니다!");
+            }}
+          >
+            <button className="w-full items-center flex justify-end">
+              <Image
+                src="/icons/Share.svg"
+                alt="share"
+                width={14}
+                height={14}
+                style={{
+                  filter:
+                    "invert(78%) sepia(2%) saturate(6%) hue-rotate(317deg) brightness(94%) contrast(88%)",
+                }}
+              />
+            </button>
+          </CopyToClipboard>
         </div>
         <div className="flex flex-row px-4">
           <button
