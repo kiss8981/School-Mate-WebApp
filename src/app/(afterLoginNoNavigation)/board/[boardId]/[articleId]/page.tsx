@@ -10,7 +10,10 @@ import SerachButton from "@/app/_component/SearchButton";
 import { Session } from "next-auth";
 import { cache } from "react";
 import { cookies } from "next/headers";
-import { Axios, AxiosError } from "axios";
+import { AxiosError } from "axios";
+import LeftHeaderContainer from "@/app/_component/LeftHeaderContainer";
+import { classNames } from "@/lib/uitls";
+import { inter } from "@/lib/fonts";
 
 const getArticle = cache(async (boardId: string, articleId: string) => {
   const auth = await getServerSession(authOptions);
@@ -81,7 +84,27 @@ interface Props {
 
 const ArticlePage: NextPage<Props> = async ({ params }) => {
   const article = await getArticle(params.boardId, params.articleId);
-  if (!article) return <></>;
+  if (!article)
+    return (
+      <>
+        <LeftHeaderContainer
+          title="이런..."
+          className="pb-20"
+          seachIcon={false}
+        >
+          <div
+            className={classNames(
+              "flex flex-col items-center justify-center h-[88vh] text-[#B6B6B6]",
+              inter.className
+            )}
+          >
+            <span className="text-lg mb-5">게시글 정보를 찾을 수 없어요!</span>
+            <span>게시글이 삭제되었거나</span>
+            <span>다른 학교의 게시글일 수 있어요</span>
+          </div>
+        </LeftHeaderContainer>
+      </>
+    );
   return (
     <HeaderContainer title={article.board.name} rightIcon={<SerachButton />}>
       <Article article={article} auth={article.auth} />

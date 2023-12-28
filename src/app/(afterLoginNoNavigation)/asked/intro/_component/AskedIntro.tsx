@@ -219,26 +219,26 @@ const AskedIntro = ({ auth }: { auth: Session }) => {
             ※ 프로필을 만들면 같은 학교 친구들에게 바로 보여요
           </span>
         </div>
+        {name && tag1 && tag2 && (
+          <div className="w-full justify-center mt-20">
+            <button
+              onClick={handleCreateUser}
+              disabled={!(name && tag1 && tag2)}
+              className={classNames(
+                "mt-5 w-full font-bold flex flex-row items-center justify-center py-2 rounded-full h-14",
+                name && tag1 && tag2
+                  ? "bg-primary-500 text-white"
+                  : "bg-[#f0f0f0] text-[#b6b6b6]"
+              )}
+              style={{
+                boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.04)",
+              }}
+            >
+              완료
+            </button>
+          </div>
+        )}
       </div>
-      {name && tag1 && tag2 && (
-        <div className="px-5 w-full justify-center fixed bottom-3">
-          <button
-            onClick={handleCreateUser}
-            disabled={!(name && tag1 && tag2)}
-            className={classNames(
-              "mt-5 w-full font-bold flex flex-row items-center justify-center py-2 rounded-full h-14",
-              name && tag1 && tag2
-                ? "bg-primary-500 text-white"
-                : "bg-[#f0f0f0] text-[#b6b6b6]"
-            )}
-            style={{
-              boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.04)",
-            }}
-          >
-            완료
-          </button>
-        </div>
-      )}
     </>
   );
 };

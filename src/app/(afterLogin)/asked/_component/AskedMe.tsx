@@ -43,7 +43,9 @@ const AskedMe = () => {
             </div>
             <div className="flex flex-col ml-3">
               <div className="flex flex-row items-center w-full">
-                <span className="font-bold">@{askedme.user.customId}</span>
+                <span className="font-bold truncate w-28">
+                  @{askedme.user.customId}
+                </span>
                 <div className="flex flex-row ml-2 items-center space-x-1">
                   {askedme.user.tags.slice(0, 2).map((item, key) => (
                     <span
@@ -81,7 +83,7 @@ const AskedMe = () => {
             <AskedMore userId={askedme.user.customId} />
           </div>
         </div>
-        <AskedList />
+        <AskedList askedId={askedme.user.customId} />
       </div>
     </>
   );

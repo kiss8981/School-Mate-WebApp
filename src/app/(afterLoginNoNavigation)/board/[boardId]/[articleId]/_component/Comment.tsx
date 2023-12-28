@@ -387,7 +387,7 @@ const Recomment = ({
 
   return (
     <>
-      <div className="pr-5 pl-9 pt-2">
+      <div className="pl-9 pt-2">
         <div className="flex flex-col">
           <div className="flex flex-row items-center mb-1">
             <div className="relative h-[34px] w-[34px] rounded-full overflow-hidden">
@@ -405,7 +405,7 @@ const Recomment = ({
               />
             </div>
             <div className="flex flex-col ml-2">
-              <span className="text-[#66738C] text-[0.7rem] font-bold items-center flex justify-center">
+              <span className="text-[#66738C] text-[0.7rem] font-bold items-center flex justify-start">
                 {comment.isAnonymous ? "익명" : comment.user.name}
                 {comment.isMe && (
                   <span className="font-light border border-primary-500 rounded-full text-primary-500 px-1 ml-1 text-[0.75rem] leading-[1rem]">
