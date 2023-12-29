@@ -43,7 +43,7 @@ const AskedMe = () => {
             </div>
             <div className="flex flex-col ml-3">
               <div className="flex flex-row items-center w-full">
-                <span className="font-bold truncate w-28">
+                <span className="font-bold truncate max-w-[7rem]">
                   @{askedme.user.customId}
                 </span>
                 <div className="flex flex-row ml-2 items-center space-x-1">
