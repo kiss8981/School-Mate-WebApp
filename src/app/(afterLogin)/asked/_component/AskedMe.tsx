@@ -12,8 +12,12 @@ import useSWR from "swr";
 import { swrFetcher } from "@/lib/fetch";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { toast } from "@/lib/webviewHandler";
+import { inter } from "@/lib/fonts";
+import { stackRouterPush } from "@/lib/stackRouter";
+import { useRouter } from "next/navigation";
 
 const AskedMe = () => {
+  const router = useRouter();
   const {
     isLoading,
     error,
@@ -85,6 +89,18 @@ const AskedMe = () => {
         </div>
         <AskedList askedId={askedme.user.customId} />
       </div>
+
+      <button
+        onClick={() => {
+          stackRouterPush(router, `/askedquestions`);
+        }}
+        className={classNames(
+          inter.className,
+          "fixed bottom-20 right-4 z-50 flex items-center justify-center rounded-full bg-primary-500 text-white h-12 shadow-lg px-4"
+        )}
+      >
+        내가 한 질문 보기
+      </button>
     </>
   );
 };

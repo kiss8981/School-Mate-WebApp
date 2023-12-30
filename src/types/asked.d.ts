@@ -37,3 +37,12 @@ export type AskedDetailWithUser = Asked & {
   isMyAsked: boolean;
   isOtherSchool: boolean;
 };
+
+export type AskedDetailWithAskedUser = Asked & {
+  askedUser: AskedUser & {
+    user: {
+      name: string;
+      profile?: string;
+    };
+  };
+};

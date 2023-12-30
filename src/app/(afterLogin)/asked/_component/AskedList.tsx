@@ -186,18 +186,18 @@ const AskedCard = ({ asked: defaultAsked }: { asked: AskedDetailWithUser }) => {
                 denyAsked({});
               }}
             />
-            <span
+            <div
               className={classNames(
-                "text-[0.7rem] font-bold text-[#b6b6b6] ml-auto"
+                "text-[0.7rem] font-bold text-[#b6b6b6] ml-auto flex flex-row w-full"
               )}
             >
               {asked.isOtherSchool && (
-                <span className="text-[#b6b6b6] text-[0.7rem] w-fit border rounded-full px-2 mr-2">
+                <span className="text-[#b6b6b6] text-[0.7rem] min-w-fit border rounded-full px-2 mr-2">
                   다른학교
                 </span>
               )}
-              {timeForToday(asked.createdAt)}
-            </span>
+              <p className="min-w-fit">{timeForToday(asked.createdAt)}</p>
+            </div>
           </div>
         </div>
       </div>
