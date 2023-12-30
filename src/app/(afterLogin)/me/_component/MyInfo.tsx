@@ -142,6 +142,14 @@ const MyInfo = ({ auth }: { auth: Session }) => {
             >
               문의하기
             </button>
+            <button
+              className="w-full text-left"
+              onClick={() => {
+                stackRouterPush(router, "/opensource");
+              }}
+            >
+              오픈소스 라이선스
+            </button>
           </div>
         </div>
         <Button

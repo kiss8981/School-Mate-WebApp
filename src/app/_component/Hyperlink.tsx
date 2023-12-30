@@ -1,3 +1,5 @@
+"use client";
+
 import { inter } from "@/lib/fonts";
 import { stackRouterPush } from "@/lib/stackRouter";
 import { classNames } from "@/lib/uitls";
@@ -11,7 +13,7 @@ export const Hyperlink = ({
   className,
 }: {
   text: string;
-  className: string;
+  className?: string;
 }) => {
   const linkify = LinkifyIt();
   const links = linkify.match(text);
@@ -40,7 +42,6 @@ export const Hyperlink = ({
       // Add the clickable link
       result.push(
         <>
-          {link.index === 0 ? "" : " "}
           <button
             className="text-blue-500 hover:underline break-all text-start"
             onClick={() => {
@@ -48,7 +49,8 @@ export const Hyperlink = ({
             }}
           >
             {link.text}
-          </button>{" "}
+          </button>
+          {"\n"}
         </>
       );
 

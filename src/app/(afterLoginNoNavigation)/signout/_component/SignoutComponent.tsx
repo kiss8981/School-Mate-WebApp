@@ -4,6 +4,8 @@ import { useState } from "react";
 import SignoutAlert from "./SignoutAlert";
 import SignoutConfirm from "./SignoutConfirm";
 import { Session } from "next-auth";
+import { classNames } from "@/lib/uitls";
+import { inter } from "@/lib/fonts";
 
 type Process = "alert" | "request";
 
@@ -19,7 +21,9 @@ const SignoutComponent = ({ auth }: { auth: Session }) => {
 
   return (
     <>
-      <main className="pt-3">{ProcessOfComponent[process]}</main>
+      <main className={classNames("pt-3", inter.className)}>
+        {ProcessOfComponent[process]}
+      </main>
     </>
   );
 };

@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const Modal = ({
@@ -25,7 +26,31 @@ const Modal = ({
           top: "calc(20px + 50%)",
         }}
       >
-        <div className="w-full bg-white rounded-[20px]">{children}</div>
+        <motion.div
+          className="w-full bg-white rounded-[20px]"
+          initial={{
+            opacity: 0,
+            scale: 0.75,
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.15,
+            },
+          }}
+          exit={{
+            opacity: 0,
+            scale: 0.75,
+            transition: {
+              ease: "easeIn",
+              duration: 0.15,
+            },
+          }}
+        >
+          {children}
+        </motion.div>
       </div>
     </>
   );

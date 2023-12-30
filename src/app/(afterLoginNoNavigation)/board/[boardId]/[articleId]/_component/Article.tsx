@@ -17,6 +17,7 @@ import { Hyperlink } from "@/app/_component/Hyperlink";
 import Advertisement from "@/app/_component/Advisement";
 import ArticleMore from "./ArticleMore";
 import CopyToClipboard from "react-copy-to-clipboard";
+import Modal from "@/app/_component/Modal";
 
 const Article = ({
   article,
@@ -31,6 +32,7 @@ const Article = ({
   auth: Session;
 }) => {
   const router = useRouter();
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const { triggerFetch: requestDelete } = useFetch(
@@ -72,6 +74,49 @@ const Article = ({
     <>
       {likeLoading && <LoadingFullPage />}
       {deleteLoading && <LoadingFullPage />}
+      <Modal
+        open={showDeleteAlert}
+        onClose={() => {
+          setShowDeleteAlert(false);
+        }}
+      >
+        <div className={classNames(inter.className, "px-5 py-4")}>
+          <div className="w-full">
+            <span className="text-xl font-bold">게시글 삭제하기</span>
+            <span className="text-sm text-gray-500 block mt-2">
+              게시글을 삭제하시겠습니까?
+            </span>
+            <div className="flex flex-row mt-5">
+              <button
+                onClick={() => setShowDeleteAlert(false)}
+                className="flex-1 text-center py-2 text-gray-500 border border-gray-300 rounded-[10px] text-sm"
+              >
+                취소
+              </button>
+              <button
+                onClick={async () => {
+                  requestDelete({});
+                  setShowDeleteAlert(false);
+                }}
+                disabled={deleteLoading}
+                className="flex-1 text-center py-2 text-white bg-red-500 rounded-[10px] text-sm ml-3"
+              >
+                {deleteLoading ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  </>
+                ) : (
+                  <>확인</>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </Modal>
       <div
         className={classNames(
           "flex flex-col min-h-[100vh] pb-20",
@@ -197,7 +242,7 @@ const Article = ({
           {article.isMe ? (
             <div className="ml-auto mt-auto">
               <button
-                onClick={() => requestDelete({})}
+                onClick={() => setShowDeleteAlert(true)}
                 className="underline underline-offset-1 text-sm text-[#66738C]"
               >
                 삭제하기
