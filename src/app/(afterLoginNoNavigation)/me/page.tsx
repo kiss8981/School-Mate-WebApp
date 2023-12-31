@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { Metadata, NextPage } from "next";
 import HeaderContainer from "@/app/_component/HeaderContainer";
 import MyInfo from "./_component/MyInfo";
+import LeftHeaderContainer from "@/app/_component/LeftHeaderContainer";
 
 export const metadata: Metadata = {
   title: `내 정보`,
@@ -16,9 +17,9 @@ const Home: NextPage = async () => {
   if (!auth.user.user.userSchool) return redirect("/verify");
 
   return (
-    <HeaderContainer title="내 정보" backIcon={false}>
+    <LeftHeaderContainer title="내 정보" searchIcon={false}>
       <MyInfo auth={auth} />
-    </HeaderContainer>
+    </LeftHeaderContainer>
   );
 };
 

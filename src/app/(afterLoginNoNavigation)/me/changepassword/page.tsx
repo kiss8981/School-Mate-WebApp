@@ -10,7 +10,7 @@ const changePasswordPage = async () => {
   if (!auth.user.user.userSchool) return redirect("/verify");
 
   return (
-    <LeftHeaderContainer title="비밀번호 재설정" seachIcon={false}>
+    <LeftHeaderContainer title="비밀번호 재설정" searchIcon={false}>
       <ChangePassword />
     </LeftHeaderContainer>
   );

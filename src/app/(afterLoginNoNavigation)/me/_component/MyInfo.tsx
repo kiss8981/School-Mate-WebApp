@@ -99,6 +99,14 @@ const MyInfo = ({ auth }: { auth: Session }) => {
             </button>
             <button
               onClick={() => {
+                stackRouterPush(router, "/me/connectaccount");
+              }}
+              className="w-full text-left"
+            >
+              계정연동
+            </button>
+            <button
+              onClick={() => {
                 stackRouterPush(router, "/me/changepassword");
               }}
               className="w-full text-left"

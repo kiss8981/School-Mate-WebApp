@@ -16,7 +16,7 @@ const MeModifyPage = async () => {
 
   return (
     <>
-      <LeftHeaderContainer title="프로필 수정" seachIcon={false}>
+      <LeftHeaderContainer title="프로필 수정" searchIcon={false}>
         <EditProfile auth={auth} />
       </LeftHeaderContainer>
     </>

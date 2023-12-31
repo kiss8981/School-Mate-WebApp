@@ -68,7 +68,7 @@ const AskedReplyPage = async ({ params }: Props) => {
           ? "익명님의 질문"
           : asked.questionUser.name + "님의 질문"
       }
-      seachIcon={false}
+      searchIcon={false}
     >
       <AskedReply asked={asked} auth={asked.auth} />
     </LeftHeaderContainer>

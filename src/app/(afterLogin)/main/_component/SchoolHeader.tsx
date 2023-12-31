@@ -1,23 +1,25 @@
 "use client";
 
-import SerachButton from "@/app/_component/SearchButton";
+import SearchButton from "@/app/_component/SearchButton";
 import { inter } from "@/lib/fonts";
 import { classNames } from "@/lib/uitls";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import MyPageButton from "./MyPageButton";
+import { Session } from "next-auth";
 
 const Header = ({
   title = "",
   className = "",
   backIcon = true,
   badge,
+  auth,
   ...props
 }: {
   title?: string;
   className?: string;
   backIcon?: boolean;
   badge?: React.ReactNode;
+  auth: Session;
 } & React.ComponentPropsWithRef<"header">) => {
   const router = useRouter();
 
@@ -44,7 +46,10 @@ const Header = ({
         >
           {title}
         </span>
-        <SerachButton />
+        <div className="flex flex-row space-x-3 items-center">
+          <SearchButton />
+          <MyPageButton auth={auth} />
+        </div>
       </div>
       {badge && <div className="w-full px-5 pb-4">{badge}</div>}
     </header>

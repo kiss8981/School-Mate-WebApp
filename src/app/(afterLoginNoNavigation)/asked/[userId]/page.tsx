@@ -66,7 +66,7 @@ const AskedUser = async ({ params }: Props) => {
         <LeftHeaderContainer
           title="이런..."
           className="pb-20"
-          seachIcon={false}
+          searchIcon={false}
         >
           <div
             className={classNames(
@@ -86,7 +86,7 @@ const AskedUser = async ({ params }: Props) => {
       <LeftHeaderContainer
         title={asked.user.user.name + "의 에스크"}
         className="pb-20"
-        seachIcon={false}
+        searchIcon={false}
       >
         <UserAksedList asked={asked} />
       </LeftHeaderContainer>

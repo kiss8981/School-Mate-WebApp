@@ -90,7 +90,7 @@ const ArticlePage: NextPage<Props> = async ({ params }) => {
         <LeftHeaderContainer
           title="이런..."
           className="pb-20"
-          seachIcon={false}
+          searchIcon={false}
         >
           <div
             className={classNames(

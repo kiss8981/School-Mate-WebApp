@@ -11,14 +11,14 @@ import SerachButton from "./SearchButton";
 const LeftHeaderContainer = ({
   title = "",
   backIcon = true,
-  seachIcon = true,
+  searchIcon = true,
   children,
   className = "",
   searchPath = "/search",
 }: {
   title?: string;
   backIcon?: boolean;
-  seachIcon?: boolean;
+  searchIcon?: boolean;
   children?: React.ReactNode;
   className?: string;
   searchPath?: string;
@@ -49,7 +49,7 @@ const LeftHeaderContainer = ({
           title={title}
           backIcon={backIcon}
           searchPath={searchPath}
-          seachIcon={seachIcon}
+          seachIcon={searchIcon}
         />
         <div
           style={{

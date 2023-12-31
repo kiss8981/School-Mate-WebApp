@@ -16,7 +16,7 @@ const AskedPage = async () => {
   if (!auth.user.user.userSchool) return redirect("/verify");
 
   return (
-    <LeftHeaderContainer title="에스크 프로필 만들기" seachIcon={false}>
+    <LeftHeaderContainer title="에스크 프로필 만들기" searchIcon={false}>
       <AskedIntro auth={auth} />
     </LeftHeaderContainer>
   );

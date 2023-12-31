@@ -16,7 +16,7 @@ const SignOut = async () => {
 
   return (
     <>
-      <LeftHeaderContainer title="회원탈퇴" seachIcon={false}>
+      <LeftHeaderContainer title="회원탈퇴" searchIcon={false}>
         <SignoutComponent auth={auth} />
       </LeftHeaderContainer>
     </>

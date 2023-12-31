@@ -30,18 +30,18 @@ const BottomNavbarList = [
     pattern: /^\/timetable/,
   },
   {
+    name: "대결",
+    activeIcon: "/icons/Lightning.svg",
+    inactiveIcon: "/icons/LightningLight.svg",
+    link: "/fight",
+    pattern: /^\/fight/,
+  },
+  {
     name: "에스크",
     activeIcon: "/icons/Message.svg",
     inactiveIcon: "/icons/MessageLight.svg",
     link: "/asked",
     pattern: /^\/asked/,
-  },
-  {
-    name: "내 정보",
-    activeIcon: "/icons/User.svg",
-    inactiveIcon: "/icons/UserLight.svg",
-    link: "/me",
-    pattern: /^\/me/,
   },
 ];
 

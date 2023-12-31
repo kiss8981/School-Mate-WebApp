@@ -44,6 +44,7 @@ const Main: NextPage = async () => {
             ? auth.user.user.userSchool.school.name
             : auth.user.user.userSchool?.school.defaultName
         }
+        auth={auth}
         // badage={
         //   <HeaderBadage
         //     title="👀 스쿨메이트를 잘 사용하고 계신가요?"

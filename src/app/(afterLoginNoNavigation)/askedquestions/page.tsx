@@ -4,7 +4,7 @@ import MyAskedQuestions from "./_component/MyAskedQuestions";
 const AskedQuestionsPage = () => {
   return (
     <>
-      <LeftHeaderContainer title="내가 한 질문" seachIcon={false}>
+      <LeftHeaderContainer title="내가 한 질문" searchIcon={false}>
         <MyAskedQuestions />
       </LeftHeaderContainer>
     </>

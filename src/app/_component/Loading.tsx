@@ -1,5 +1,6 @@
 import Lottie from "lottie-react";
 import LoadingLogo from "../../assets/lottie/loadingLogo.json";
+import { classNames } from "@/lib/uitls";
 
 const LoadingFullPage = () => {
   return (
@@ -19,11 +20,20 @@ const LoadingFullPage = () => {
   );
 };
 
-const Loading = () => {
+const Loading = ({
+  color = "white",
+}: {
+  color?: "white" | "black" | "primary";
+}) => {
   return (
     <>
       <svg
-        className="animate-spin h-5 w-5 text-white"
+        className={classNames(
+          "animate-spin h-5 w-5 ",
+          color === "white" ? "text-white" : "",
+          color === "black" ? "text-black" : "",
+          color === "primary" ? "text-primary-500" : ""
+        )}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
@@ -33,12 +43,24 @@ const Loading = () => {
           cx="12"
           cy="12"
           r="10"
-          stroke="#ffffff"
+          stroke={
+            color === "white"
+              ? "white"
+              : color === "black"
+              ? "black"
+              : "rgb(37 69 237)"
+          }
           strokeWidth="4"
         />
         <path
           className="opacity-75"
-          fill="#ffffff"
+          fill={
+            color === "white"
+              ? "white"
+              : color === "black"
+              ? "black"
+              : "rgb(37 69 237)"
+          }
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
         />
       </svg>

@@ -4,7 +4,7 @@ import FindPasswordComponent from "./_component/FindPasswordComponent";
 const FindpasswordPage = () => {
   return (
     <>
-      <LeftHeaderContainer seachIcon={false} title="비밀번호 찾기">
+      <LeftHeaderContainer searchIcon={false} title="비밀번호 찾기">
         <FindPasswordComponent />
       </LeftHeaderContainer>
     </>

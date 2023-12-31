@@ -3,17 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 import SchoolHeader from "./SchoolHeader";
 import BottomNavbar from "../../_component/BottomNavbar";
+import { Session } from "next-auth";
 
 const SchoolHeaderContainer = ({
   title = "",
   badage,
   children,
   className = "",
+  auth,
 }: {
   title?: string;
   badage?: React.ReactNode;
   children?: React.ReactNode;
   className?: string;
+  auth: Session;
 }) => {
   useEffect(() => {
     function handleVerticalResize() {
@@ -37,7 +40,7 @@ const SchoolHeaderContainer = ({
   return (
     <>
       <div className={className}>
-        <SchoolHeader badge={badage} title={title} />
+        <SchoolHeader badge={badage} title={title} auth={auth} />
         <div
           style={{
             paddingTop: badage ? "calc(85.5px + 64px)" : "64px",
