@@ -27,6 +27,7 @@ const DisconnectAccountTemplate = ({ provider, providerName }: IProps) => {
       onSuccess: () => {
         stackRouterBack(router);
         setDisconnectLoading(false);
+        toast("success", `${providerName} 계정 연동이 해제되었습니다.`);
       },
       onError: (status, message) => {
         toast("error", message);

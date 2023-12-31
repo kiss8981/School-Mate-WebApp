@@ -32,7 +32,7 @@ const ConnectAccountPage = ({ token }: { token: string }) => {
         <div className="flex flex-row">
           <div className="flex flex-row items-center">
             <Image
-              src="/icons/instagram.svg"
+              src="/icons/Instagram.svg"
               alt="instagram"
               width={30}
               height={30}
