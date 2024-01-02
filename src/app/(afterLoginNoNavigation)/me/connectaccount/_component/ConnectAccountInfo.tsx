@@ -9,11 +9,12 @@ import { classNames } from "@/lib/uitls";
 import { sendWebviewEvent } from "@/lib/webviewHandler";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { ConnectionAccount } from "schoolmate-types";
 import useSWR from "swr";
 
 const ConnectAccountPage = ({ token }: { token: string }) => {
   const router = useRouter();
-  const { data: connectAccount, isLoading } = useSWR<any[]>(
+  const { data: connectAccount, isLoading } = useSWR<ConnectionAccount[]>(
     "/auth/me/connectaccount",
     swrFetcher,
     {
@@ -37,17 +38,22 @@ const ConnectAccountPage = ({ token }: { token: string }) => {
               width={30}
               height={30}
             />
-            <span className="ml-2">인스타그램</span>
+            <span className="ml-2">
+              {connectAccount?.find((item) => item.provider === "instagram")
+                ? connectAccount?.find((item) => item.provider === "instagram")
+                    ?.name
+                : "인스타그램"}
+            </span>
           </div>
           <Button
             className="ml-auto rounded-2xl px-4 py-1"
             variant={
-              connectAccount?.find(item => item.provider === "instagram")
+              connectAccount?.find((item) => item.provider === "instagram")
                 ? "outline"
                 : "primary"
             }
             onClick={
-              connectAccount?.find(item => item.provider === "instagram")
+              connectAccount?.find((item) => item.provider === "instagram")
                 ? async () => {
                     stackRouterPush(
                       router,
@@ -65,7 +71,7 @@ const ConnectAccountPage = ({ token }: { token: string }) => {
                   }
             }
           >
-            {connectAccount?.find(item => item.provider === "instagram")
+            {connectAccount?.find((item) => item.provider === "instagram")
               ? "연동해제"
               : "연동하기"}
           </Button>
