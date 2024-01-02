@@ -36,19 +36,20 @@ const BoardList = () => {
             noticeId: [],
             description: "",
             icon: "🔥",
+            defaultBoardId: null,
           },
         ]}
       />
-      {boards.filter(board => board.default).length !== 0 && (
+      {boards.filter((board) => board.default).length !== 0 && (
         <BoardListSection
           title="즐겨찾는 게시판"
-          boards={boards.filter(board => board.default)}
+          boards={boards.filter((board) => board.default)}
         />
       )}
-      {boards.filter(board => !board.default).length !== 0 && (
+      {boards.filter((board) => !board.default).length !== 0 && (
         <BoardListSection
           title="학교 게시판"
-          boards={boards.filter(board => !board.default)}
+          boards={boards.filter((board) => !board.default)}
         />
       )}
     </>
