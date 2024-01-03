@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import { Fight, School } from "schoolmate-types";
 import Image from "next/image";
 import RegisterFight from "./_component/RegisterFight";
+import Advisement from "@/app/_component/Advisement";
 
 const getFight = async (fightId: string) => {
   const auth = await getServerSession(authOptions);
@@ -111,6 +112,7 @@ const FightPage = async ({
                     />
                   </div>
                 </div>
+                {index === 2 && <Advisement className="my-2" unit="DAN-nWFYoUxwD11CzhGS" />}
               </>
             ) : (
               <>
@@ -126,7 +128,11 @@ const FightPage = async ({
             )
           )}
         </div>
-        <RegisterFight fight={fight} isRegistration={fight.isRegistration} ourRanking={fight.ourRanking} />
+        <RegisterFight
+          fight={fight}
+          isRegistration={fight.isRegistration}
+          ourRanking={fight.ourRanking}
+        />
       </LeftHeaderContainer>
     </>
   );

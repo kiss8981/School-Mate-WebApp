@@ -10,8 +10,10 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Fight } from "schoolmate-types";
+import Advisement from "@/app/_component/Advisement";
 
 const FightList = () => {
+  const router = useRouter();
   const fightFetcher = (params: PaginationParams) =>
     fetcher.get(`/fight`, { params });
   const {
@@ -28,10 +30,34 @@ const FightList = () => {
           inter.className
         )}
       >
-        {fights.map((fight, index) => (
-          <FightComponent key={index} fight={fight} />
-        ))}
-        {isFetching && <FightListSkeleton />}
+        {fights.length === 0 && !isFetching ? (
+          <>
+            <div
+              className={classNames(
+                "flex flex-col h-[88vh] items-center justify-center",
+                inter.className
+              )}
+            >
+              <Image
+                src="/images/schoolmate/logo.svg"
+                alt="message"
+                width={150}
+                height={150}
+              />
+              <span className="font-bold mt-7">
+                아직 진행중인 대결이 없어요!
+              </span>
+            </div>
+          </>
+        ) : (
+          <>
+            {fights.map((fight, index) => (
+              <FightComponent key={index} fight={fight} />
+            ))}
+            {isFetching && <FightListSkeleton />}
+            <Advisement className="my-2" unit="DAN-OrP8Xa0B8jI2qojd" />
+          </>
+        )}
       </div>
     </>
   );
