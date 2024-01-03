@@ -15,6 +15,7 @@ const FightPage = async () => {
         title="진행중인 대결"
         searchPath="/searchfight"
         backIcon={false}
+        searchIcon={false}
       >
         <FightList />
       </LeftHeaderContainer>

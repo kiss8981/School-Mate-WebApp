@@ -13,6 +13,10 @@ export const passwordCheck = (password: string): boolean => {
   return passwordRegex.test(password);
 };
 
+export const numberWithCommas = (x: number | string) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 export const timeForToday = (value: Date) => {
   const today = new Date();
   const timeValue = new Date(value);
@@ -48,6 +52,8 @@ export const semesterHandler = () => {
     return "1";
   } else if (today.isAfter(semester2Start) && today.isBefore(semester2End)) {
     return "2";
+  } else {
+    return "1";
   }
 };
 
