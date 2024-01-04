@@ -137,7 +137,7 @@ const RegisterFight = ({
                   setOpenRegisterModal(false);
                 }}
                 disabled={registerFightFetching}
-                className="flex-1 text-center py-2 text-white bg-red-500 rounded-[10px] text-sm ml-3"
+                className="flex-1 text-center py-2 text-white bg-primary-500 rounded-[10px] text-sm ml-3"
               >
                 {registerFightFetching ? (
                   <>
