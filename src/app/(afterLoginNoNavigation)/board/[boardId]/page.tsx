@@ -92,12 +92,14 @@ const BoardPage = async ({ params }: Props) => {
             <div className="px-4 flex flex-row justify-between pb-5">
               <div className="flex flex-col">
                 <div className="px-3 py-1 bg-[#F9F9F9] text-[#7C7C7C] w-fit rounded-[13px] text-[0.8rem]">
-                  {board.default
+                  {board.boardType === "school"
                     ? "학교 게시판"
                     : params.boardId === "hot"
                     ? "인기 게시판"
                     : params.boardId === "all"
                     ? "전체 게시판"
+                    : board.boardType === "share"
+                    ? "공유 게시판"
                     : "학교 게시판"}
                 </div>
                 <div className="mt-1 text-xl font-bold">
