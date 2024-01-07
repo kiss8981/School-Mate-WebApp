@@ -17,7 +17,11 @@ import Advertisement from "@/app/_component/Advisement";
 const ArticleList = ({ boardId }: { boardId: string }) => {
   const articlesfetcher = (params: PaginationParams) =>
     fetcher.get(
-      boardId === "hot" ? `/board/hot` : `/board/${boardId}/articles`,
+      boardId === "hot"
+        ? `/board/hot`
+        : boardId === "all"
+        ? `/board/all`
+        : `/board/${boardId}/articles`,
       {
         params,
       }
@@ -36,7 +40,9 @@ const ArticleList = ({ boardId }: { boardId: string }) => {
 
   return (
     <>
-      {boardId !== "hot" && <WriteButton boardId={Number(boardId)} />}
+      {boardId !== "hot" && boardId !== "all" && (
+        <WriteButton boardId={Number(boardId)} />
+      )}
       {articles.length === 0 && isFetching ? (
         <ArticleListSkeleton />
       ) : (

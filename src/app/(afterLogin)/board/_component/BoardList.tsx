@@ -29,6 +29,17 @@ const BoardList = () => {
         title="인기 게시판"
         boards={[
           {
+            id: "/all" as any,
+            name: "전체 게시판",
+            default: true,
+            schoolId: "1",
+            noticeId: [],
+            description: "",
+            icon: "📰",
+            defaultBoardId: null,
+            boardType: "share",
+          },
+          {
             id: "/hot" as any,
             name: "HOT 게시판",
             default: true,
@@ -37,19 +48,20 @@ const BoardList = () => {
             description: "",
             icon: "🔥",
             defaultBoardId: null,
+            boardType: "school",
           },
         ]}
       />
-      {boards.filter((board) => board.default).length !== 0 && (
+      {boards.filter(board => board.boardType === "share").length !== 0 && (
         <BoardListSection
-          title="즐겨찾는 게시판"
-          boards={boards.filter((board) => board.default)}
+          title="공유 게시판"
+          boards={boards.filter(board => board.boardType === "share")}
         />
       )}
-      {boards.filter((board) => !board.default).length !== 0 && (
+      {boards.filter(board => board.boardType === "school").length !== 0 && (
         <BoardListSection
-          title="학교 게시판"
-          boards={boards.filter((board) => !board.default)}
+          title="교내 게시판"
+          boards={boards.filter(board => board.boardType === "school")}
         />
       )}
     </>

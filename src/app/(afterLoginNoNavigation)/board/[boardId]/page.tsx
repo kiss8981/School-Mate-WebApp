@@ -81,6 +81,8 @@ const BoardPage = async ({ params }: Props) => {
             ? "📌 " + board.name
             : params.boardId === "hot"
             ? "🔥 HOT 게시판"
+            : params.boardId === "all"
+            ? "📰 전체 게시판"
             : board.name
         }
         rightIcon={<SerachButton />}
@@ -91,9 +93,11 @@ const BoardPage = async ({ params }: Props) => {
               <div className="flex flex-col">
                 <div className="px-3 py-1 bg-[#F9F9F9] text-[#7C7C7C] w-fit rounded-[13px] text-[0.8rem]">
                   {board.default
-                    ? "즐겨찾는 게시판"
+                    ? "학교 게시판"
                     : params.boardId === "hot"
                     ? "인기 게시판"
+                    : params.boardId === "all"
+                    ? "전체 게시판"
                     : "학교 게시판"}
                 </div>
                 <div className="mt-1 text-xl font-bold">
@@ -103,6 +107,8 @@ const BoardPage = async ({ params }: Props) => {
                     ? "📌 " + board.name
                     : params.boardId === "hot"
                     ? "🔥 HOT 게시판"
+                    : params.boardId === "all"
+                    ? "📰 전체 게시판"
                     : board.name}
                 </div>
               </div>
