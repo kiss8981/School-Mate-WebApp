@@ -40,8 +40,9 @@ const ArticleList = ({ boardId }: { boardId: string }) => {
 
   return (
     <>
-      {boardId === "hot" ||
-        (boardId === "all" && <WriteButton boardId={Number(boardId)} />)}
+      {boardId !== "hot" && boardId !== "all" && (
+        <WriteButton boardId={Number(boardId)} />
+      )}
       {articles.length === 0 && isFetching ? (
         <ArticleListSkeleton />
       ) : (
