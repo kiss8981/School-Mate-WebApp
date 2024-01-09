@@ -42,7 +42,7 @@ const RegisterFight = ({
       onSuccess: () => {
         toast(
           "success",
-          "대결 참가가 완료되었어요! 순위가 반영되기까지 시간이 걸릴 수 있어요."
+          "대결 참가가 완료되었어요"
         );
       },
       onError: (status, message) => {
@@ -84,7 +84,7 @@ const RegisterFight = ({
                       {shardFight ? (
                         <span>
                           지금 우리학교는 {numberWithCommas(ourRanking)}점
-                          이에요!
+                          이에요
                         </span>
                       ) : (
                         <CopyToClipboard
@@ -103,7 +103,7 @@ const RegisterFight = ({
                   )}
                 </>
               ) : (
-                <>인스타그램 연동 후 참가가 가능해요!</>
+                <>인스타그램 연동 후 참가가 가능해요</>
               )}
             </>
           )}

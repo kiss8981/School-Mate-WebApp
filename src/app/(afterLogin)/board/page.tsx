@@ -19,7 +19,7 @@ const BoardPage: NextPage = async () => {
     <>
       <LeftHeaderContainer
         title="게시판 목록"
-        className="bg-[#f9f9f9] min-h-[100vh] pb-10"
+        className="bg-[#f9f9f9] min-h-[100vh] pb-24"
         backIcon={false}
       >
         <BoardList />
