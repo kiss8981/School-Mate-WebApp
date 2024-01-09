@@ -4,10 +4,11 @@ import { Loading } from "@/app/_component/Loading";
 import Modal from "@/app/_component/Modal";
 import useFetch from "@/hooks/useFetch";
 import { swrFetcher } from "@/lib/fetch";
-import { NanumGothic, inter } from "@/lib/fonts";
+import { inter } from "@/lib/fonts";
 import { stackRouterPush } from "@/lib/stackRouter";
 import { classNames, numberWithCommas } from "@/lib/uitls";
 import { toast } from "@/lib/webviewHandler";
+import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -18,10 +19,12 @@ const RegisterFight = ({
   fight,
   isRegistration,
   ourRanking,
+  auth,
 }: {
   fight: Fight;
   isRegistration: boolean;
   ourRanking: number;
+  auth: Session;
 }) => {
   const router = useRouter();
   const { data: connectAccount, isLoading } = useSWR<ConnectionAccount[]>(
@@ -40,10 +43,7 @@ const RegisterFight = ({
     {
       onPending: () => setRegisterFightFetching(true),
       onSuccess: () => {
-        toast(
-          "success",
-          "대결 참가가 완료되었어요"
-        );
+        toast("success", "대결 참가가 완료되었어요");
         toast(
           "success",
           "순위정보가 업데이트 되는데 시간이 조금 걸릴 수 있어요"
@@ -88,10 +88,16 @@ const RegisterFight = ({
                   {isRegistration ? (
                     <>
                       {shardFight ? (
-                        <span>
-                          지금 우리학교는 {numberWithCommas(ourRanking)}점
-                          이에요
-                        </span>
+                        <button
+                          onClick={() => {
+                            stackRouterPush(
+                              router,
+                              `/fight/${fight.id}/${auth.user.user.userSchoolId}`
+                            );
+                          }}
+                        >
+                          우리학교는 {numberWithCommas(ourRanking)}점 (상세보기)
+                        </button>
                       ) : (
                         <CopyToClipboard
                           text={`https://schoolmate.kr/fight/${fight.id}`}
@@ -100,7 +106,7 @@ const RegisterFight = ({
                             toast("success", "링크가 복사되었어요!");
                           }}
                         >
-                          <span>공유하고 우리학교 점수보기</span>
+                          <span>공유하고 우리학교 확인하기</span>
                         </CopyToClipboard>
                       )}
                     </>

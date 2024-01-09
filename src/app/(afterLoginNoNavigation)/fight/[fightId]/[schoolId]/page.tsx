@@ -10,18 +10,17 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Fight, School } from "schoolmate-types";
 import Image from "next/image";
-import RegisterFight from "./_component/RegisterFight";
 import Advisement from "@/app/_component/Advisement";
-import { SchoolDetail, SchoolDetailWithImage } from "./_component/SchoolDetail";
+import SchoolUser from "./_component/SchoolUser";
 
-const getFight = async (fightId: string) => {
+const getFightDetail = async (schoolId: string) => {
   const auth = await getServerSession(authOptions);
   if (!auth || !auth.user.registered) return redirect("/intro");
   if (!auth.user.user.userSchool) return redirect("/verify");
   const authorizationToken = cookies().get("Authorization");
 
   try {
-    const fight = await fetcher(`/fight/${fightId}`, {
+    const fight = await fetcher(`/school/${schoolId}`, {
       headers: {
         Authorization: `Bearer ${authorizationToken?.value}`,
       },
@@ -30,15 +29,7 @@ const getFight = async (fightId: string) => {
     return {
       ...fight.data.data,
       auth,
-    } as Fight & {
-      ranking: {
-        schoolId: string;
-        school: School;
-        totalScore: number;
-      }[];
-      isRegistration: boolean;
-      ourRanking: number;
-    } & {
+    } as School & {
       auth: Session;
     };
   } catch (e) {
@@ -56,11 +47,12 @@ const FightPage = async ({
 }: {
   params: {
     fightId: string;
+    schoolId: string;
   };
 }) => {
-  const fight = await getFight(params.fightId);
+  const schoolDetail = await getFightDetail(params.schoolId);
 
-  if (!fight)
+  if (!schoolDetail)
     return (
       <>
         <LeftHeaderContainer
@@ -83,39 +75,8 @@ const FightPage = async ({
 
   return (
     <>
-      <LeftHeaderContainer title={fight.title} searchIcon={false}>
-        <div className="mt-3 px-4 space-y-3">
-          {fight.ranking.map((rank, index) =>
-            index < 3 ? (
-              <>
-                <SchoolDetailWithImage
-                  fightId={fight.id}
-                  rank={rank}
-                  index={index}
-                  key={index}
-                />
-                {index === 2 && (
-                  <Advisement className="my-2" unit="DAN-nWFYoUxwD11CzhGS" />
-                )}
-              </>
-            ) : (
-              <>
-                <SchoolDetail
-                  fightId={fight.id}
-                  index={index}
-                  rank={rank}
-                  key={index}
-                />
-              </>
-            )
-          )}
-        </div>
-        <RegisterFight
-          fight={fight}
-          isRegistration={fight.isRegistration}
-          ourRanking={fight.ourRanking}
-          auth={fight.auth}
-        />
+      <LeftHeaderContainer title={schoolDetail.name ? schoolDetail.name : schoolDetail.defaultName} searchIcon={false}>
+        <SchoolUser schoolId={schoolDetail.schoolId} fightId={params.fightId} />
       </LeftHeaderContainer>
     </>
   );

@@ -3,7 +3,6 @@ import BottomNavbar from "./_component/BottomNavbar";
 
 interface Props {
   children: React.ReactNode;
-  modal: React.ReactNode;
 }
 
 export const metadata: Metadata = {
