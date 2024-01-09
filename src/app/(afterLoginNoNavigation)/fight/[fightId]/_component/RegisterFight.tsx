@@ -44,9 +44,15 @@ const RegisterFight = ({
           "success",
           "대결 참가가 완료되었어요"
         );
+        toast(
+          "success",
+          "순위정보가 업데이트 되는데 시간이 조금 걸릴 수 있어요"
+        );
+        setRegisterFightFetching(false);
       },
       onError: (status, message) => {
         toast("error", message);
+        setRegisterFightFetching(false);
       },
     }
   );
@@ -137,7 +143,7 @@ const RegisterFight = ({
                   setOpenRegisterModal(false);
                 }}
                 disabled={registerFightFetching}
-                className="flex-1 text-center py-2 text-white bg-primary-500 rounded-[10px] text-sm ml-3"
+                className="flex-1 text-center py-2 text-white bg-primary-500 rounded-[10px] text-sm ml-3 flex items-center justify-center"
               >
                 {registerFightFetching ? (
                   <>
