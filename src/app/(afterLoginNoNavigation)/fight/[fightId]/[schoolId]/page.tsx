@@ -75,7 +75,7 @@ const FightPage = async ({
 
   return (
     <>
-      <LeftHeaderContainer title={schoolDetail.name ? schoolDetail.name : schoolDetail.defaultName} searchIcon={false}>
+      <LeftHeaderContainer title={schoolDetail.name ? schoolDetail.name : schoolDetail.defaultName} searchIcon={false} className="pb-5">
         <SchoolUser schoolId={schoolDetail.schoolId} fightId={params.fightId} />
       </LeftHeaderContainer>
     </>

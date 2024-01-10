@@ -60,7 +60,7 @@ const RegisterFight = ({
   return (
     <>
       <div
-        className={classNames(inter.className, "absolute px-4 bottom-4 w-full")}
+        className={classNames(inter.className, "px-4 bottom-4 w-full fixed")}
       >
         <Button
           className="w-full h-14 rounded-full flex items-center justify-center"

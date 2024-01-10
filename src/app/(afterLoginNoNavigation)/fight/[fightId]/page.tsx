@@ -83,7 +83,7 @@ const FightPage = async ({
 
   return (
     <>
-      <LeftHeaderContainer title={fight.title} searchIcon={false}>
+      <LeftHeaderContainer title={fight.title} searchIcon={false} className="pb-24">
         <div className="mt-3 px-4 space-y-3">
           {fight.ranking.map((rank, index) =>
             index < 3 ? (

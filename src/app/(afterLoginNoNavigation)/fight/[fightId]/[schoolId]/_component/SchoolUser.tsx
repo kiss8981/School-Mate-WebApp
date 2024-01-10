@@ -46,7 +46,7 @@ const SchoolUser = ({
             <div
               key={index}
               className={classNames(
-                "w-full border rounded-[20px] flex flex-row py-3 min-h-[95px] cursor-pointer px-4 bg-white relative overflow-hidden",
+                "w-full border rounded-[20px] flex flex-row py-3 min-h-[95px] cursor-pointer px-4 bg-white relative overflow-hidden z-0",
                 NanumGothic.className
               )}
             >
