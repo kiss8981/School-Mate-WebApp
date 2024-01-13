@@ -407,7 +407,9 @@ const VerifyRequest: React.FC<{
             <span className="font-bold text-xl">학생증을 등록해주세요</span>
           </div>
           <span className="mt-2">
-            학교 커뮤니티 이용을 위해 학생 확인 인증절차가 필요합니다.
+            학교 커뮤니티 이용을 위해 학생 확인 인증절차가 필요합니다. (학생증,
+            생활기록부, 교복 이미지 등 학생임을 확인할 수 있는 서류 또는 사진을
+            첨부해주세요.)
           </span>
 
           <input
