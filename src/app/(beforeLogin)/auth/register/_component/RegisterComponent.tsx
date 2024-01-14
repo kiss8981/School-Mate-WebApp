@@ -105,7 +105,7 @@ const RegisterComponent = () => {
       <HeaderContainer title="회원가입">
         <div
           className={classNames(
-            "flex flex-col text-[#7C7C7C] px-4",
+            "flex flex-col text-[#7C7C7C] px-4 min-h-[88vh]",
             inter.className
           )}
         >
@@ -271,31 +271,28 @@ const RegisterComponent = () => {
               수정]에서 이메일 인증을 진행해주세요.
             </span>
           </div> */}
+
+          <Button
+            disabled={
+              !(
+                (
+                  phone.length > 3 &&
+                  name.length > 0 &&
+                  passwordCheckr(password) &&
+                  password === passwordCheck
+                )
+                // && email.length > 0 &&
+                // emailDomain.length > 0
+              )
+            }
+            onClick={requestRegister}
+            className="w-full h-14 rounded-full flex items-center justify-center mt-auto"
+            variant="primary"
+          >
+            가입하기
+          </Button>
         </div>
       </HeaderContainer>
-      <div
-        className={classNames(inter.className, "px-4 bottom-4 w-full fixed")}
-      >
-        <Button
-          disabled={
-            !(
-              (
-                phone.length > 3 &&
-                name.length > 0 &&
-                passwordCheckr(password) &&
-                password === passwordCheck
-              )
-              // && email.length > 0 &&
-              // emailDomain.length > 0
-            )
-          }
-          onClick={requestRegister}
-          className="w-full h-14 rounded-full flex items-center justify-center"
-          variant="primary"
-        >
-          가입하기
-        </Button>
-      </div>
 
       <Modal onClose={() => {}} open={isVerifyModalOpen}>
         <div
