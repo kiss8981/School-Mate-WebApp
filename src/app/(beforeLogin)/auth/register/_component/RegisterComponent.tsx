@@ -167,7 +167,7 @@ const RegisterComponent = () => {
               }}
             />
           </div>
-          <div className="flex flex-col mt-9 relative">
+          <div className="flex flex-col mt-9 relative mb-5">
             <span className="font-bold">
               비밀번호<span className="text-red-500">*</span>
             </span>
