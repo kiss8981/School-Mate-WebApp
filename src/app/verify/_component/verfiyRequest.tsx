@@ -10,16 +10,18 @@ import useFetch from "@/hooks/useFetch";
 import { ClassInfoRow, SchoolInfoRow } from "@/types/school";
 import { Session } from "next-auth";
 import { Collapse } from "react-collapse";
-import { toast } from "@/lib/webviewHandler";
+import { sendWebviewEvent, toast } from "@/lib/webviewHandler";
 import Button from "@/app/_component/Button";
-import { LoadingFullPage } from "@/app/_component/Loading";
+import { Loading, LoadingFullPage } from "@/app/_component/Loading";
 import { useRouter } from "next/navigation";
-import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
+import { stackRouterPush } from "@/lib/stackRouter";
 
 const VerifyRequest: React.FC<{
   verifys: UserSchoolVerify[];
   auth: Session;
 }> = ({ verifys, auth }) => {
+  const { update } = useSession();
   const [requestVerify, setRequestVerify] = useState<boolean>(
     verifys.length === 0
   );
@@ -36,6 +38,7 @@ const VerifyRequest: React.FC<{
   const [grade, setGrade] = useState<string>();
   const [classNum, setClassNum] = useState<string>();
   const [department, setDepartment] = useState<string>();
+  const [useVerify, setUseVerify] = useState<boolean>(false);
   const { triggerFetch: findSchools } = useFetch("/school/search", "GET", {
     onSuccess: (res, stautsMessage, body: SchoolInfoRow[]) => {
       setSchoolList(body);
@@ -99,11 +102,10 @@ const VerifyRequest: React.FC<{
     "POST",
     {
       onSuccess: (res, statusMessage) => {
-        setLoadingSchool(false);
-        toast(
-          "success",
-          "인증 요청이 완료되었습니다. 인증까지 최대 3일이 소요됩니다."
-        );
+        toast("success", "학교 설정이 완료되었습니다.");
+        if (verifyImage) {
+          toast("success", "인증까지는 최대 3일이 소요될 수 있습니다.");
+        }
 
         setClassNum(undefined);
         setDepartment(undefined);
@@ -115,7 +117,13 @@ const VerifyRequest: React.FC<{
         setSelectSchool(undefined);
         setVerifyImage(undefined);
 
-        router.refresh();
+        update()
+          .then(() => {
+            stackRouterPush(router, "/", "reset");
+          })
+          .finally(() => {
+            setLoadingSchool(false);
+          });
       },
       onError: (code, message) => {
         setLoadingSchool(false);
@@ -144,7 +152,7 @@ const VerifyRequest: React.FC<{
           <span className="font-bold mt-1 text-xl">학교를 찾아보세요!</span>
           <form
             className="w-full relative mt-2"
-            onSubmit={e => {
+            onSubmit={(e) => {
               e.preventDefault();
 
               findSchools({
@@ -159,7 +167,7 @@ const VerifyRequest: React.FC<{
             <Input
               placeholder="학교명을 입력해주세요."
               className="w-full px-4 pr-12 h-12"
-              onChange={e => setSchoolName(e.target.value)}
+              onChange={(e) => setSchoolName(e.target.value)}
               disabled={loadingSchoolList}
             />
             <button className="absolute right-3 top-3.5">
@@ -197,7 +205,7 @@ const VerifyRequest: React.FC<{
           <Collapse isOpened={schoolList ? true : false}>
             <div className="mt-2 relative">
               <select
-                onChange={e => {
+                onChange={(e) => {
                   findSchool({
                     fetchInit: {
                       url: `/school/${e.target.value}/class`,
@@ -205,7 +213,7 @@ const VerifyRequest: React.FC<{
                   });
                   setSchool(
                     schoolList?.find(
-                      school => school.SD_SCHUL_CODE === e.target.value
+                      (school) => school.SD_SCHUL_CODE === e.target.value
                     )
                   );
                 }}
@@ -214,7 +222,7 @@ const VerifyRequest: React.FC<{
                 <option value="">학교를 선택해주세요.</option>
                 {schoolList && (
                   <>
-                    {schoolList.map(school => (
+                    {schoolList.map((school) => (
                       <option
                         key={school.SD_SCHUL_CODE}
                         value={school.SD_SCHUL_CODE}
@@ -288,7 +296,7 @@ const VerifyRequest: React.FC<{
               반과 학과를 선택해주세요
             </span>
             <select
-              onChange={e => {
+              onChange={(e) => {
                 setClassNum(e.target.value);
               }}
               value={classNum}
@@ -296,7 +304,7 @@ const VerifyRequest: React.FC<{
             >
               <option value="choose">반을 선택해주세요</option>
               {selectSchool
-                ?.filter(school => school.GRADE === grade)
+                ?.filter((school) => school.GRADE === grade)
                 .reduce(function (acc: ClassInfoRow[], current) {
                   if (
                     acc.findIndex(
@@ -318,14 +326,14 @@ const VerifyRequest: React.FC<{
             </select>
             {selectSchool &&
             !selectSchool
-              .filter(school => school.GRADE === grade)
-              .filter(school => school.CLASS_NM === classNum)[0]?.DDDEP_NM ? (
+              .filter((school) => school.GRADE === grade)
+              .filter((school) => school.CLASS_NM === classNum)[0]?.DDDEP_NM ? (
               <></>
             ) : (
               <>
                 <Collapse isOpened={classNum ? true : false}>
                   <select
-                    onChange={e => {
+                    onChange={(e) => {
                       setDepartment(e.target.value);
                     }}
                     value={department}
@@ -333,8 +341,8 @@ const VerifyRequest: React.FC<{
                   >
                     <option value="choose">학과를 선택해주세요</option>
                     {selectSchool
-                      ?.filter(school => school.GRADE === grade)
-                      .filter(school => school.CLASS_NM === classNum)
+                      ?.filter((school) => school.GRADE === grade)
+                      .filter((school) => school.CLASS_NM === classNum)
                       .map((school, index) => (
                         <option key={index} value={school.DDDEP_NM}>
                           {school.DDDEP_NM}
@@ -348,8 +356,8 @@ const VerifyRequest: React.FC<{
         </Collapse>
         {(selectSchool &&
           !selectSchool
-            .filter(school => school.GRADE === grade)
-            .filter(school => school.CLASS_NM === classNum)[0]?.DDDEP_NM &&
+            .filter((school) => school.GRADE === grade)
+            .filter((school) => school.CLASS_NM === classNum)[0]?.DDDEP_NM &&
           classNum) ||
         classNum ? (
           <div className="fixed bottom-8 px-5 w-full">
@@ -363,8 +371,8 @@ const VerifyRequest: React.FC<{
                 }
                 if (
                   (selectSchool
-                    ?.filter(school => school.GRADE === grade)
-                    .filter(school => school.CLASS_NM === classNum)[0]
+                    ?.filter((school) => school.GRADE === grade)
+                    .filter((school) => school.CLASS_NM === classNum)[0]
                     ?.DDDEP_NM &&
                     department === "choose") ||
                   !department
@@ -398,105 +406,158 @@ const VerifyRequest: React.FC<{
     ),
     1: (
       <>
-        <div className="flex flex-col px-5">
-          <span className="rounded-full bg-primary-500 flex items-center justify-center text-white w-5 h-5 text-sm font-bold">
-            4
-          </span>
-          <div className="flex flex-col mt-1">
-            <span className="font-bold text-xl">생활기록부 혹은</span>
-            <span className="font-bold text-xl">학생증을 등록해주세요</span>
-          </div>
-          <span className="mt-2">
-            학교 커뮤니티 이용을 위해 학생 확인 인증절차가 필요합니다. (학생증,
-            생활기록부, 교복 이미지 등 학생임을 확인할 수 있는 서류 또는 사진을
-            첨부해주세요.)
-          </span>
+        {useVerify ? (
+          <>
+            <div className="flex flex-col px-5">
+              <span className="rounded-full bg-primary-500 flex items-center justify-center text-white w-5 h-5 text-sm font-bold">
+                4
+              </span>
+              <div className="flex flex-col mt-1">
+                <span className="font-bold text-xl">생활기록부 혹은</span>
+                <span className="font-bold text-xl">학생증을 등록해주세요</span>
+              </div>
+              <span className="mt-2">
+                학교 커뮤니티 이용을 위해 학생 확인 인증절차가 필요합니다.
+                (학생증, 생활기록부, 교복 이미지 등 학생임을 확인할 수 있는 서류
+                또는 사진을 첨부해주세요.)
+              </span>
 
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            ref={imageRef}
-            onChange={e => {
-              if (e.target.files) {
-                const file = e.target.files[0];
-                setVerifyImage(file);
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                ref={imageRef}
+                onChange={(e) => {
+                  if (e.target.files) {
+                    const file = e.target.files[0];
+                    setVerifyImage(file);
 
-                if (imageRef.current) {
-                  imageRef.current.value = "";
-                }
-              }
-            }}
-          />
+                    if (imageRef.current) {
+                      imageRef.current.value = "";
+                    }
+                  }
+                }}
+              />
 
-          <div
-            className="flex flex-col items-center justify-center h-52 w-full rounded-[10px] border-2 border-primary-500 mt-10 overflow-hidden"
-            onClick={() => {
-              imageRef.current?.click();
-            }}
-          >
-            {verifyImage ? (
-              <>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={URL.createObjectURL(verifyImage)}
-                  alt="verifyImage"
-                  className="object-cover h-full w-full"
-                />
-              </>
-            ) : (
-              <>
-                <Image
-                  src="/icons/Image.svg"
-                  alt="upload"
-                  width={40}
-                  height={40}
-                />
-                <span className="mt-2 text-sm font-bold text-[#7c7c7c]">
-                  이미지 가져오기
+              <div
+                className="flex flex-col items-center justify-center h-52 w-full rounded-[10px] border-2 border-primary-500 mt-10 overflow-hidden"
+                onClick={() => {
+                  imageRef.current?.click();
+                }}
+              >
+                {verifyImage ? (
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={URL.createObjectURL(verifyImage)}
+                      alt="verifyImage"
+                      className="object-cover h-full w-full"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Image
+                      src="/icons/Image.svg"
+                      alt="upload"
+                      width={40}
+                      height={40}
+                    />
+                    <span className="mt-2 text-sm font-bold text-[#7c7c7c]">
+                      이미지 가져오기
+                    </span>
+                  </>
+                )}
+              </div>
+
+              <div className="flex flex-col mt-10 text-[#7c7c7c] text-sm pb-32">
+                <div className="flex flex-row">
+                  <span className="mr-2">1.</span>
+                  <span>
+                    첨부 이미지는 정보 확인 후 즉시 폐기하며, 주민등록번호 등과
+                    같은 개인정보는 마스킹 처리 후 첨부 부탁드립니다.
+                  </span>
+                </div>
+                <div className="flex flex-row mt-2">
+                  <span className="mr-2">2.</span>
+                  <span>
+                    타인을 사칭, 서류 위조, 해킹 등의 여부는 관련 법에 따라 법적
+                    책임이 따를 수 있습니다.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="fixed bottom-8 w-full px-5">
+              <Button
+                className="rounded-full mt-auto w-full h-14 backdrop-blur-md drop-shadow-xl"
+                onClick={() => {
+                  if (!verifyImage) {
+                    setUseVerify(false);
+                    return;
+                  }
+                  const formData = new FormData();
+                  formData.append("img", verifyImage);
+
+                  requestUploadImage({
+                    fetchInit: {
+                      data: formData,
+                    },
+                  });
+                }}
+              >
+                {!verifyImage ? <>인증취소</> : <>인증 요청하기</>}
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex flex-col px-5">
+              <button
+                className="w-full flex flex-col bg-[#f9f9f9] p-3 rounded-xl text-start "
+                onClick={() => {
+                  setUseVerify(true);
+                }}
+                disabled={loadingSchool}
+              >
+                <span className="text-base font-bold">
+                  재학생 인증하고 시작하기
                 </span>
-              </>
-            )}
-          </div>
-
-          <div className="flex flex-col mt-10 text-[#7c7c7c] text-sm pb-32">
-            <div className="flex flex-row">
-              <span className="mr-2">1.</span>
-              <span>
-                첨부 이미지는 정보 확인 후 즉시 폐기하며, 주민등록번호 등과 같은
-                개인정보는 마스킹 처리 후 첨부 부탁드립니다.
-              </span>
+                <p className="text-sm text-[#7c7c7c]">
+                  모든 기능을 사용하실 수 있으며 인증을 위한 학생증또는
+                  생활기록부 이미지가 필요합니다.
+                </p>
+              </button>
+              <button
+                className="w-full flex flex-row mt-3 bg-[#f9f9f9] p-3 rounded-xl text-start"
+                onClick={() => {
+                  requestVerifySchool({
+                    fetchInit: {
+                      data: {
+                        schoolId: school?.SD_SCHUL_CODE,
+                        grade: grade,
+                        class: classNum,
+                        dept: department !== "choose" ? department : undefined,
+                      },
+                    },
+                  });
+                }}
+                disabled={loadingSchool}
+              >
+                <div className="w-full mr-2">
+                  <span className="text-base font-bold">인증없이 시작하기</span>
+                  <p className="text-sm text-[#7c7c7c]">
+                    인증없이 사용하실 경우, 모든 열람은 가능하지만 쓰기 및 일부
+                    기능은 제한됩니다.
+                  </p>
+                </div>
+                {loadingSchool && (
+                  <div className="my-auto ml-auto w-1/6 items-center flex justify-center">
+                    <Loading color="black" />
+                  </div>
+                )}
+              </button>
             </div>
-            <div className="flex flex-row mt-2">
-              <span className="mr-2">2.</span>
-              <span>
-                타인을 사칭, 서류 위조, 해킹 등의 여부는 관련 법에 따라 법적
-                책임이 따를 수 있습니다.
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="fixed bottom-8 px-5 w-full">
-          <Button
-            className="rounded-full mt-auto w-full h-14 backdrop-blur-md drop-shadow-xl"
-            onClick={() => {
-              if (!verifyImage) {
-                toast("error", "이미지를 등록해주세요.");
-                return;
-              }
-              const formData = new FormData();
-              formData.append("img", verifyImage);
-
-              requestUploadImage({
-                fetchInit: {
-                  data: formData,
-                },
-              });
-            }}
-          >
-            완료
-          </Button>
-        </div>
+          </>
+        )}
       </>
     ),
   };
@@ -561,7 +622,7 @@ const VerifyRequest: React.FC<{
             setRequestVerify(true);
           }}
         >
-          새로운 인증 요청
+          새로운 학교 설정하기
         </Button>
       </div>
     </>

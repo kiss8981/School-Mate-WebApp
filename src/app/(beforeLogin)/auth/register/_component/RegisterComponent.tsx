@@ -24,8 +24,8 @@ const RegisterComponent = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailDomain, setEmailDomain] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [emailDomain, setEmailDomain] = useState("");
   const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
   const [loadingPhoneVerify, setLoadingPhoneVerify] = useState(false);
   const [phoneVerifyToken, setPhoneVerifyToken] = useState("");
@@ -79,7 +79,7 @@ const RegisterComponent = () => {
   const requestRegister = async () => {
     try {
       await fetcher.post("/auth/signup", {
-        email: email + "@" + emailDomain,
+        // email: email + "@" + emailDomain,
         phone: phone.replace(/[^0-9]/g, ""),
         provider: "id",
         password,
@@ -123,7 +123,7 @@ const RegisterComponent = () => {
                 value={phone}
                 disabled={phoneVerifyed}
                 autoFocus
-                onChange={e => {
+                onChange={(e) => {
                   setPhone(
                     e.target.value
                       ?.replace(/[^0-9]/g, "")
@@ -162,7 +162,7 @@ const RegisterComponent = () => {
               placeholder="이름을 입력하세요"
               className="w-full py-3.5 h-[50px] mt-1"
               value={name}
-              onChange={e => {
+              onChange={(e) => {
                 setName(e.target.value);
               }}
             />
@@ -180,7 +180,7 @@ const RegisterComponent = () => {
                 className="w-full py-3.5 h-full pr-24"
                 value={password}
                 type="password"
-                onChange={e => {
+                onChange={(e) => {
                   setPassword(e.target.value);
                 }}
               />
@@ -203,7 +203,7 @@ const RegisterComponent = () => {
                 className="w-full py-3.5 h-full pr-36"
                 type="password"
                 value={passwordCheck}
-                onChange={e => {
+                onChange={(e) => {
                   setPasswordCheck(e.target.value);
                 }}
               />
@@ -221,7 +221,7 @@ const RegisterComponent = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-col mt-9">
+          {/* <div className="flex flex-col mt-9">
             <span className="font-bold">
               이메일<span className="text-red-500">*</span>
             </span>
@@ -270,25 +270,32 @@ const RegisterComponent = () => {
               더 안전하게 계정을 보호하려면 가입 후 [내정보 {">"} 회원정보
               수정]에서 이메일 인증을 진행해주세요.
             </span>
-          </div>
-          <Button
-            disabled={
-              !(
+          </div> */}
+        </div>
+      </HeaderContainer>
+      <div
+        className={classNames(inter.className, "px-4 bottom-4 w-full fixed")}
+      >
+        <Button
+          disabled={
+            !(
+              (
                 phone.length > 3 &&
                 name.length > 0 &&
                 passwordCheckr(password) &&
-                password === passwordCheck &&
-                email.length > 0 &&
-                emailDomain.length > 0
+                password === passwordCheck
               )
-            }
-            onClick={requestRegister}
-            className="w-full py-4 font-semibold text-lg mt-12 mb-5 rounded-full"
-          >
-            가입하기
-          </Button>
-        </div>
-      </HeaderContainer>
+              // && email.length > 0 &&
+              // emailDomain.length > 0
+            )
+          }
+          onClick={requestRegister}
+          className="w-full h-14 rounded-full flex items-center justify-center"
+          variant="primary"
+        >
+          가입하기
+        </Button>
+      </div>
 
       <Modal onClose={() => {}} open={isVerifyModalOpen}>
         <div
@@ -329,7 +336,7 @@ const RegisterComponent = () => {
               type="number"
               placeholder="인증번호 입력"
               className="w-full bg-white border-b-2 pr-2 pl-9 rounded-none py-3"
-              onChange={e => {
+              onChange={(e) => {
                 setPhoneVerifyNumber(e.target.value);
               }}
               autoFocus
@@ -379,7 +386,7 @@ const RegisterComponent = () => {
             "py-6 font-bold w-full px-4 flex flex-col",
             inter.className
           )}
-          onDragEnd={e => {}}
+          onDragEnd={(e) => {}}
         >
           <Image
             src="/icons/Check.svg"
@@ -478,7 +485,7 @@ const RegisterComponent = () => {
             <Checkbox
               className="h-5 w-5 mr-3"
               checked={agreementPrivacy}
-              onChange={e => {
+              onChange={(e) => {
                 setAgreementPrivacy(e.target.checked);
               }}
             />
@@ -517,7 +524,7 @@ const RegisterComponent = () => {
             <Checkbox
               className="h-5 w-5 mr-3"
               checked={agreementAge}
-              onChange={e => {
+              onChange={(e) => {
                 setAgreementAge(e.target.checked);
               }}
             />
@@ -539,7 +546,7 @@ const RegisterComponent = () => {
             <Checkbox
               className="h-5 w-5 mr-3"
               checked={agreementMarketing}
-              onChange={e => {
+              onChange={(e) => {
                 setAgreementMarketing(e.target.checked);
               }}
             />

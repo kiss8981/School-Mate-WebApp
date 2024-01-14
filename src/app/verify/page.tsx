@@ -40,8 +40,8 @@ const VerifyPage = async () => {
   return (
     <>
       <HeaderContainer
-        backIcon={false}
-        title="학교인증"
+        backIcon={auth.user.user.userSchool ? true : false}
+        title="학교설정"
         className="relative h-[100vh]"
       >
         <VerifyRequest verifys={verifyList} auth={auth} />
