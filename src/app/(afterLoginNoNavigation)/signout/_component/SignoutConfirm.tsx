@@ -52,7 +52,13 @@ const SignoutConfirm = ({ auth }: { auth: Session }) => {
         token: verfiyToken,
       });
 
-      await fetcher.delete("/auth/me");
+      await fetcher.delete("/auth/me", {
+        data: {
+          phone: auth.user.user.phone,
+          code: verifyCode,
+          token: verfiyToken,
+        },
+      });
       requestLogout();
       toast("success", "계정이 삭제되었습니다.");
     } catch (error: any) {
