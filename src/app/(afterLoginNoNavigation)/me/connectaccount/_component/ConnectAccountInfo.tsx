@@ -29,7 +29,12 @@ const ConnectAccountPage = ({ token }: { token: string }) => {
     );
   return (
     <>
-      <div className={classNames("flex flex-col px-5 pt-3", inter.className)}>
+      <div
+        className={classNames(
+          "flex flex-col px-5 pt-3 space-y-3",
+          inter.className
+        )}
+      >
         <div className="flex flex-row">
           <div className="flex flex-row items-center">
             <Image
@@ -39,8 +44,8 @@ const ConnectAccountPage = ({ token }: { token: string }) => {
               height={30}
             />
             <span className="ml-2">
-              {connectAccount?.find((item) => item.provider === "instagram")
-                ? connectAccount?.find((item) => item.provider === "instagram")
+              {connectAccount?.find(item => item.provider === "instagram")
+                ? connectAccount?.find(item => item.provider === "instagram")
                     ?.name
                 : "인스타그램"}
             </span>
@@ -48,12 +53,12 @@ const ConnectAccountPage = ({ token }: { token: string }) => {
           <Button
             className="ml-auto rounded-2xl px-4 py-1"
             variant={
-              connectAccount?.find((item) => item.provider === "instagram")
+              connectAccount?.find(item => item.provider === "instagram")
                 ? "outline"
                 : "primary"
             }
             onClick={
-              connectAccount?.find((item) => item.provider === "instagram")
+              connectAccount?.find(item => item.provider === "instagram")
                 ? async () => {
                     stackRouterPush(
                       router,
@@ -71,7 +76,56 @@ const ConnectAccountPage = ({ token }: { token: string }) => {
                   }
             }
           >
-            {connectAccount?.find((item) => item.provider === "instagram")
+            {connectAccount?.find(item => item.provider === "instagram")
+              ? "연동해제"
+              : "연동하기"}
+          </Button>
+        </div>
+        <div className="flex flex-row">
+          <div className="flex flex-row items-center">
+            <Image
+              src={
+                process.env.NEXT_PUBLIC_S3_URL + "static/league-of-legends.png"
+              }
+              alt="league-of-legends"
+              width={30}
+              height={30}
+            />
+            <span className="ml-2">
+              {connectAccount?.find(item => item.provider === "leagueoflegends")
+                ? connectAccount?.find(
+                    item => item.provider === "leagueoflegends"
+                  )?.name
+                : "리그 오브 레전드"}
+            </span>
+          </div>
+          <Button
+            className="ml-auto rounded-2xl px-4 py-1"
+            variant={
+              connectAccount?.find(item => item.provider === "leagueoflegends")
+                ? "outline"
+                : "primary"
+            }
+            onClick={
+              connectAccount?.find(item => item.provider === "leagueoflegends")
+                ? async () => {
+                    stackRouterPush(
+                      router,
+                      "/me/connectaccount/disconnect/leagueoflegends",
+                      "stack",
+                      false
+                    );
+                  }
+                : async () => {
+                    sendWebviewEvent("OPEN_BROWSER_EVENT", {
+                      url:
+                        process.env.NEXT_PUBLIC_API_URL +
+                        `/auth/connect/leagueoflegends?token=${token}`,
+                    });
+                  }
+            }
+          >
+            {connectAccount?.find(item => item.provider === "leagueoflegends")
               ? "연동해제"
               : "연동하기"}
           </Button>

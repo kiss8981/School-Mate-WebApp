@@ -53,7 +53,8 @@ const SchoolUser = ({
               <div className="flex flex-col z-10 items-start">
                 <span>#{index + 1}</span>
                 <span className="leading-none mt-0.5 font-bold">
-                  {rank.user.name}
+                  {rank.user.name}{" "}
+                  {rank.additonalInfo ? `(${rank.additonalInfo})` : ""}
                 </span>
               </div>
               <span className="mt-auto ml-auto text-lg font-bold">

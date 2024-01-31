@@ -3,6 +3,7 @@ import Button from "@/app/_component/Button";
 import { Loading } from "@/app/_component/Loading";
 import Modal from "@/app/_component/Modal";
 import useFetch from "@/hooks/useFetch";
+import { ConnecttionAccount } from "@/lib/contents";
 import { swrFetcher } from "@/lib/fetch";
 import { inter } from "@/lib/fonts";
 import { stackRouterPush } from "@/lib/stackRouter";
@@ -67,8 +68,8 @@ const RegisterFight = ({
           color="primary"
           onClick={() => {
             if (
-              !fight.needTo.some((item) =>
-                connectAccount?.map((item) => item.provider).includes(item)
+              !fight.needTo.some(item =>
+                connectAccount?.map(item => item.provider).includes(item)
               )
             ) {
               stackRouterPush(router, `/me/connectaccount`);
@@ -81,8 +82,8 @@ const RegisterFight = ({
             <Loading />
           ) : (
             <>
-              {fight.needTo.some((item) =>
-                connectAccount.map((item) => item.provider).includes(item)
+              {fight.needTo.some(item =>
+                connectAccount.map(item => item.provider).includes(item)
               ) ? (
                 <>
                   {isRegistration ? (
@@ -115,7 +116,12 @@ const RegisterFight = ({
                   )}
                 </>
               ) : (
-                <>인스타그램 연동 후 참가가 가능해요</>
+                <>
+                  {fight.needTo
+                    .map(item => ConnecttionAccount[item])
+                    .join(", ")}{" "}
+                  계정 연동이 필요해요
+                </>
               )}
             </>
           )}

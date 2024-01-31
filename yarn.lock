@@ -3778,10 +3778,10 @@ schema-utils@^3.0.0:
     ajv "^6.12.5"
     ajv-keywords "^3.5.2"
 
-schoolmate-types@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/schoolmate-types/-/schoolmate-types-1.0.23.tgz#828afbf822423bdea1122a9016d1ae55dba68dfd"
-  integrity sha512-jg9IGTMdt3/C7pofN/umIBh/D/sB/bQoExDNJe6YpTBsF1MPVXLix0aqy3AWG4v1t+O8j007ZEqYjdzXWosZ0Q==
+schoolmate-types@1.0.25:
+  version "1.0.25"
+  resolved "https://registry.yarnpkg.com/schoolmate-types/-/schoolmate-types-1.0.25.tgz#e8cfb0a3537b8400c6370417106cd6126b6fdf03"
+  integrity sha512-xTJl7GPzcVrHFzi6ed1eq8qk0oxTg2a0gMyYOeZ2qcBDsHUaizNUk7N2lqh5Z9zYUPnEmR3ygYqTfO67T0bD1Q==
 
 screenfull@^5.1.0:
   version "5.2.0"

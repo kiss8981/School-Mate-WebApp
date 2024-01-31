@@ -9,8 +9,6 @@ import { getServerSession } from "next-auth/next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Fight, School } from "schoolmate-types";
-import Image from "next/image";
-import Advisement from "@/app/_component/Advisement";
 import SchoolUser from "./_component/SchoolUser";
 
 const getFightDetail = async (schoolId: string) => {
@@ -75,7 +73,11 @@ const FightPage = async ({
 
   return (
     <>
-      <LeftHeaderContainer title={schoolDetail.name ? schoolDetail.name : schoolDetail.defaultName} searchIcon={false} className="pb-5">
+      <LeftHeaderContainer
+        title={schoolDetail.name ? schoolDetail.name : schoolDetail.defaultName}
+        searchIcon={false}
+        className="pb-5"
+      >
         <SchoolUser schoolId={schoolDetail.schoolId} fightId={params.fightId} />
       </LeftHeaderContainer>
     </>
