@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/auth";
 import { Metadata, NextPage } from "next";
 import BoardList from "./_component/BoardList";
-
+export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "게시판 목록",
 };

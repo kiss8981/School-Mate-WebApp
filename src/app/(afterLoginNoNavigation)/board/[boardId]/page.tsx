@@ -16,6 +16,8 @@ import { Metadata } from "next";
 import { cookies } from "next/headers";
 import { AxiosError } from "axios";
 
+export const revalidate = 3600;
+
 const getBoard = cache(async (boardId: string) => {
   const auth = await getServerSession(authOptions);
   if (!auth || !auth.user.registered) return redirect("/intro");
