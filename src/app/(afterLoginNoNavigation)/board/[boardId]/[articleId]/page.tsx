@@ -15,6 +15,8 @@ import LeftHeaderContainer from "@/app/_component/LeftHeaderContainer";
 import { classNames } from "@/lib/uitls";
 import { inter } from "@/lib/fonts";
 
+export const revalidate = 3600;
+
 const getArticle = cache(async (boardId: string, articleId: string) => {
   const auth = await getServerSession(authOptions);
 
