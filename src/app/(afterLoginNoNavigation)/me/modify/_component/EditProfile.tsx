@@ -7,7 +7,7 @@ import Image from "next/image";
 import useFetch from "@/hooks/useFetch";
 import { toast } from "@/lib/webviewHandler";
 import { LoadingFullPage } from "@/app/_component/Loading";
-import { stackRouterPush } from "@/lib/stackRouter";
+import { stackRouterBack, stackRouterPush } from "@/lib/stackRouter";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
@@ -37,7 +37,7 @@ const EditProfile = ({ auth }: { auth: Session }) => {
     onPending: () => setLoading(true),
     onSuccess: async (status, message, data) => {
       await updateSession();
-      stackRouterPush(router, "/me", "reset");
+      stackRouterBack(router);
     },
     onError: (status, message) => {
       setLoading(false);
@@ -55,7 +55,7 @@ const EditProfile = ({ auth }: { auth: Session }) => {
       onPending: () => setLoading(true),
       onSuccess: async (status, message, data) => {
         await updateSession();
-        stackRouterPush(router, "/me", "reset");
+        stackRouterBack(router);
       },
       onError: (status, message) => {
         setLoading(false);
@@ -81,7 +81,7 @@ const EditProfile = ({ auth }: { auth: Session }) => {
         await updateSession();
         setLoading(false);
         setProfile(data);
-        stackRouterPush(router, "/me", "reset");
+        stackRouterBack(router);
       },
       onError: (status, message) => {
         setLoading(false);
