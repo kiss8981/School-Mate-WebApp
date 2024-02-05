@@ -179,7 +179,7 @@ const AskedCard = ({ asked: defaultAsked }: { asked: AskedDetailWithUser }) => {
               </span>
             </div>
           </div>
-          <div className="flex flex-col ml-auto h-full w-32">
+          <div className="flex flex-col ml-auto h-full w-40">
             <AskedDeny
               asked={asked}
               callbackDeny={() => {
@@ -192,7 +192,7 @@ const AskedCard = ({ asked: defaultAsked }: { asked: AskedDetailWithUser }) => {
               )}
             >
               {asked.isOtherSchool && (
-                <span className="text-[#b6b6b6] text-[0.7rem] min-w-fit border rounded-full px-2 mr-2">
+                <span className="text-[#b6b6b6] text-[0.7rem] min-w-fit border rounded-full px-2 mr-2 ml-auto">
                   다른학교
                 </span>
               )}
