@@ -54,15 +54,23 @@ const SchoolUser = ({
                 <span>#{index + 1}</span>
                 <span className="leading-none mt-0.5 font-bold">
                   {rank.user.name}{" "}
-                  {rank.additonalInfo ? `(${rank.additonalInfo})` : ""}
                 </span>
+                {rank.additonalInfo && (
+                  <span className="text-sm text-gray-500 font-bold">
+                    {rank.additonalInfo}
+                  </span>
+                )}
               </div>
               <span className="mt-auto ml-auto text-lg font-bold">
                 {numberWithCommas(rank.score)}점
               </span>
-              <div className="absolute opacity-50 -left-12 z-0 top-1/2 transform -translate-y-1/2">
+              <div className="absolute opacity-40 -left-12 z-0 top-1/2 transform -translate-y-1/2">
                 <Image
-                  src={`/icons/Tropy${index + 1}.svg`}
+                  src={
+                    fightId === "lol"
+                      ? `/icons/lol/${rank.additonalInfo!.split(" ")[0]}.webp`
+                      : `/icons/Tropy${index + 1}.svg`
+                  }
                   alt="logo"
                   width={160}
                   height={160}
@@ -80,7 +88,8 @@ const SchoolUser = ({
               className="w-full border rounded-[20px] flex flex-row items-center py-3 px-4 bg-white"
             >
               <span className="font-bold">
-                #{index + 1} {rank.user.name}
+                #{index + 1} {rank.user.name}{" "}
+                {rank.additonalInfo ? `(${rank.additonalInfo})` : ""}
               </span>
               <span className="mt-auto ml-auto font-bold">
                 {numberWithCommas(rank.score)}점
