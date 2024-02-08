@@ -118,8 +118,12 @@ const VerifyRequest: React.FC<{
         setVerifyImage(undefined);
 
         update()
-          .then(() => {
-            stackRouterPush(router, "/main", "reset");
+          .then(session => {
+            stackRouterPush(
+              router,
+              "/auth/login/app?token=" + session?.user.token.accessToken,
+              "reset"
+            );
           })
           .finally(() => {
             setLoadingSchool(false);

@@ -59,8 +59,10 @@ const VerifyComponent = ({ auth }: { auth: Session }) => {
 
       setTimeout(() => {
         update().then(session => {
-          router.replace(
-            "/auth/login/app?token=" + session?.user.token.accessToken
+          stackRouterPush(
+            router,
+            "/auth/login/app?token=" + session?.user.token.accessToken,
+            "reset"
           );
         });
       }, 3000);
