@@ -80,6 +80,7 @@ export const authOptions: AuthOptions = {
             user: user.data,
             registered: user.data.isVerified,
           };
+          session.user = user.data;
         } catch (e) {
           console.log(e);
         }
