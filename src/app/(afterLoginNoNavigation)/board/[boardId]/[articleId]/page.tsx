@@ -17,7 +17,7 @@ import { inter } from "@/lib/fonts";
 
 export const revalidate = 3600;
 
-const getArticle = cache(async (boardId: string, articleId: string) => {
+const getArticle = async (boardId: string, articleId: string) => {
   const auth = await getServerSession(authOptions);
 
   if (!auth || !auth.user.registered) return redirect("/intro");
@@ -50,7 +50,7 @@ const getArticle = cache(async (boardId: string, articleId: string) => {
     }
     return null;
   }
-});
+};
 
 export const generateMetadata = async ({
   params,

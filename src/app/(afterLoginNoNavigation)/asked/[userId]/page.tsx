@@ -12,7 +12,7 @@ import { cookies } from "next/headers";
 import { inter } from "@/lib/fonts";
 import { classNames } from "@/lib/uitls";
 
-const getUserAsked = cache(async (userId: string) => {
+const getUserAsked = async (userId: string) => {
   const auth = await getServerSession(authOptions);
   if (!auth || !auth.user.registered) return redirect("/intro");
   if (!auth.user.user.userSchool) return redirect("/verify");
@@ -34,7 +34,7 @@ const getUserAsked = cache(async (userId: string) => {
   } catch (e) {
     return null;
   }
-});
+};
 
 interface Props {
   params: {

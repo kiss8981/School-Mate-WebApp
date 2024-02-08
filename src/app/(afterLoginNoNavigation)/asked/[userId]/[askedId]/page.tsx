@@ -10,7 +10,7 @@ import { cache } from "react";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 
-const getAskedDetail = cache(async (userId: string, askedId: string) => {
+const getAskedDetail = async (userId: string, askedId: string) => {
   const auth = await getServerSession(authOptions);
   if (!auth || !auth.user.registered) return redirect("/intro");
   if (!auth.user.user.userSchool) return redirect("/verify");
@@ -31,7 +31,7 @@ const getAskedDetail = cache(async (userId: string, askedId: string) => {
   } catch (e) {
     return null;
   }
-});
+};
 
 export const generateMetadata = async ({
   params,

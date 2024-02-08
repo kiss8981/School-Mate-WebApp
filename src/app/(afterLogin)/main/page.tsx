@@ -12,7 +12,7 @@ import RecommentArticle from "./_component/RecommnedArticle";
 import Asked from "./_component/Asked";
 import HeaderBadage from "./_component/HeaderBadage";
 
-const getAuth = cache(async () => {
+const getAuth = async () => {
   const auth = await getServerSession(authOptions);
 
   if (!auth) return redirect("/intro");
@@ -20,7 +20,7 @@ const getAuth = cache(async () => {
   if (!auth.user.user.userSchool) return redirect("/verify");
 
   return auth;
-});
+};
 
 export const generateMetadata = async (): Promise<Metadata> => {
   const auth = await getAuth();
