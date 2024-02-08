@@ -31,8 +31,6 @@ const LoginProcess: React.FC<{
           return;
         }
 
-        alert(JSON.stringify(session.user));
-
         setCookie("Authorization", session?.user.token.accessToken, {
           path: "/",
           maxAge: 60 * 60 * 24 * 7,
