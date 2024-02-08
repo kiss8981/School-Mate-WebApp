@@ -57,9 +57,11 @@ const VerifyComponent = ({ auth }: { auth: Session }) => {
       });
       setSuccessRegisterModalOpen(true);
 
-      update().then(() => {
-        stackRouterPush(router, "/main", "reset");
-      });
+      setTimeout(() => {
+        update().then(() => {
+          stackRouterPush(router, "/main", "reset");
+        });
+      }, 3000);
     } catch (e: any | AxiosError) {
       toast("error", e.response?.data?.message || "회원가입에 실패했습니다.");
       return;
