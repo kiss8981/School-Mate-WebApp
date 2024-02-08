@@ -35,7 +35,7 @@ const SignoutConfirm = ({ auth }: { auth: Session }) => {
       // @ts-ignore
       document.removeEventListener("message", handleSignout);
     };
-  }, []);
+  }, [verifyCode, verfiyToken]);
 
   const requestLogout = async () => {
     if (window.ReactNativeWebView) {
