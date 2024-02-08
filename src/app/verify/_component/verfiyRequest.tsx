@@ -119,9 +119,7 @@ const VerifyRequest: React.FC<{
 
         update()
           .then(() => {
-            setTimeout(() => {
-              stackRouterPush(router, "/main", "reset");
-            }, 700);
+            stackRouterPush(router, "/main", "reset");
           })
           .finally(() => {
             setLoadingSchool(false);

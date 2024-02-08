@@ -58,10 +58,10 @@ const VerifyComponent = ({ auth }: { auth: Session }) => {
       setSuccessRegisterModalOpen(true);
 
       setTimeout(() => {
-        update().then(() => {
-          setTimeout(() => {
-            stackRouterPush(router, "/main", "reset");
-          }, 700);
+        update().then(session => {
+          router.replace(
+            "/auth/login/app?token=" + session?.user.token.accessToken
+          );
         });
       }, 3000);
     } catch (e: any | AxiosError) {
