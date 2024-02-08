@@ -17,6 +17,7 @@ const LoginProcess: React.FC<{
   useEffect(() => {
     (async () => {
       await signOut({ redirect: false }).finally(() => {
+        router.refresh();
         signIn("credentials", {
           redirect: false,
           code: token,
