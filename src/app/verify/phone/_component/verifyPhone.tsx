@@ -59,7 +59,9 @@ const VerifyComponent = ({ auth }: { auth: Session }) => {
 
       setTimeout(() => {
         update().then(() => {
-          stackRouterPush(router, "/main", "reset");
+          setTimeout(() => {
+            stackRouterPush(router, "/main", "reset");
+          }, 700);
         });
       }, 3000);
     } catch (e: any | AxiosError) {
