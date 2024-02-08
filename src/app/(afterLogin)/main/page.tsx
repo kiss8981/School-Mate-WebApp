@@ -15,7 +15,8 @@ import HeaderBadage from "./_component/HeaderBadage";
 const getAuth = cache(async () => {
   const auth = await getServerSession(authOptions);
 
-  if (!auth || !auth.user.registered) return redirect("/intro");
+  if (!auth) return redirect("/intro");
+  if (!auth.user.user.isVerified) return redirect("/verify/phone");
   if (!auth.user.user.userSchool) return redirect("/verify");
 
   return auth;

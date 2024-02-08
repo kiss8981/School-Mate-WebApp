@@ -1,3 +1,5 @@
+import { inter } from "@/lib/fonts";
+import { classNames } from "@/lib/uitls";
 import { Metadata, NextPage } from "next";
 
 interface Props {
@@ -12,7 +14,14 @@ export const metadata: Metadata = {
 const Layout: NextPage<Props> = async ({ children }) => {
   return (
     <>
-      <div className="min-w-[280px] max-w-[540px] m-auto">{children}</div>
+      <div
+        className={classNames(
+          "min-w-[280px] max-w-[540px] m-auto",
+          inter.className
+        )}
+      >
+        {children}
+      </div>
     </>
   );
 };

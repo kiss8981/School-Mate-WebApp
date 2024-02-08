@@ -8,7 +8,7 @@ import client from "@/lib/fetch";
 interface Credentials {
   phone?: string;
   password?: string;
-  provider: "id" | "kakao" | "google" | "app";
+  provider: "id" | "kakao" | "google" | "app" | "apple";
   code?: string;
 }
 

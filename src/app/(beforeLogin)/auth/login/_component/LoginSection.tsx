@@ -1,14 +1,15 @@
 "use client";
 
 import { classNames } from "@/lib/uitls";
-import { getSession, signIn } from "next-auth/react";
-import { FormEvent, FormEventHandler, useState } from "react";
+import { getSession, signIn, signOut } from "next-auth/react";
+import { FormEvent, FormEventHandler, useEffect, useState } from "react";
 import Image from "next/image";
 import Button from "@/app/_component/Button";
 import { sendWebviewEvent, toast } from "@/lib/webviewHandler";
 import { useRouter } from "next/navigation";
 import { stackRouterPush } from "@/lib/stackRouter";
 import { setCookie } from "@/lib/csrUtils";
+import { Loading } from "@/app/_component/Loading";
 
 const LoginSection = () => {
   const router = useRouter();
@@ -16,6 +17,67 @@ const LoginSection = () => {
   const [password, setPassword] = useState("");
   const [loginfLoading, setLoginLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [loadingKakao, setLoadingKakao] = useState(false);
+  const [loadingApple, setLoadingApple] = useState(false);
+
+  useEffect(() => {
+    const handleLogin = async (event: MessageEvent) => {
+      try {
+        const { type: eventType, data } = JSON.parse(event.data);
+        if (eventType === "LOGIN_EVENT") {
+          if (data.type === "callback") {
+            const res = await signIn("credentials", {
+              redirect: false,
+              provider: data.provider,
+              code: data.code,
+            });
+
+            if (!res?.ok) {
+              setLoadingKakao(false);
+              setLoadingApple(false);
+            } else {
+              setLoadingKakao(false);
+              setLoadingApple(false);
+              const session = await getSession();
+
+              if (!session?.user) {
+                toast("error", "로그인에 실패하였습니다.");
+                return;
+              }
+
+              if (window.ReactNativeWebView) {
+                sendWebviewEvent("LOGIN_EVENT", {
+                  type: "callback",
+                  token: {
+                    accessToken: session?.user.token.accessToken,
+                    refreshToken: session?.user.token.refreshToken,
+                  },
+                });
+              }
+              stackRouterPush(
+                router,
+                `/auth/login/app?token=${session?.user.token.accessToken}`,
+                "reset"
+              );
+            }
+          } else if (data.type === "cancel") {
+            setLoadingKakao(false);
+            setLoadingApple(false);
+          }
+        }
+      } catch (err) {}
+    };
+
+    // @ts-ignore
+    document.addEventListener("message", handleLogin);
+    window.addEventListener("message", handleLogin);
+
+    return () => {
+      window.removeEventListener("message", handleLogin);
+      // @ts-ignore
+      document.removeEventListener("message", handleLogin);
+    };
+  }, []);
 
   const requestLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,6 +121,22 @@ const LoginSection = () => {
     }
   };
 
+  const requestKakaoLogin = async () => {
+    setLoadingKakao(true);
+    sendWebviewEvent("LOGIN_EVENT", {
+      type: "request",
+      loginType: "kakao",
+    });
+  };
+
+  const requestAppleLogin = async () => {
+    setLoadingApple(true);
+    sendWebviewEvent("LOGIN_EVENT", {
+      type: "request",
+      loginType: "apple",
+    });
+  };
+
   return (
     <>
       <form
@@ -67,7 +145,7 @@ const LoginSection = () => {
       >
         <div className="space-y-14 flex flex-col">
           <input
-            type="text"
+            inputMode="numeric"
             placeholder="휴대폰 번호"
             className={classNames(
               "border-b rounded-none pb-2 w-full px-1 hover:border-primary-500 focus:border-primary-500 ring-0 outline-none",
@@ -134,14 +212,22 @@ const LoginSection = () => {
         </Button>
       </form>
 
-      {/* <div className="flex flex-row items-center justify-center font-semibold text-[10px] my-6">
-            <hr className="w-full h-1 border-[#B6B6B6]" />
-            <span className="w-40 text-[#B6B6B6] mx-4">SNS LOGIN</span>
-            <hr className="w-full h-1 border-[#B6B6B6]" />
-          </div>
+      <div className="flex flex-row items-center justify-center font-semibold text-[10px] my-6">
+        <hr className="w-full h-1 border-[#B6B6B6]" />
+        <span className="w-40 text-[#B6B6B6] mx-4">SNS LOGIN</span>
+        <hr className="w-full h-1 border-[#B6B6B6]" />
+      </div>
 
-          <div className="flex flex-col items-center justify-center mb-10">
-            <Button className="w-full font-bold text-[14px] py-4 flex flex-row items-center justify-center rounded-full bg-[#FEE500] text-[#191919] border-none hover:bg-[#FEE500] active:bg-[#FEE500]">
+      <div className="flex flex-col items-center justify-center mb-10 mt-auto">
+        <Button
+          onClick={requestKakaoLogin}
+          className="w-full font-bold text-[14px] py-4 flex flex-row items-center justify-center rounded-full bg-[#FEE500] text-[#191919] border-none hover:bg-[#FEE500] active:bg-[#FEE500]"
+          isLoading={loadingKakao}
+        >
+          {loadingKakao ? (
+            <Loading color="white" />
+          ) : (
+            <>
               <Image
                 src="/icons/KakaoLogoSm.svg"
                 alt="kakao"
@@ -149,22 +235,34 @@ const LoginSection = () => {
                 height={20}
                 className="mr-2"
               />
-              카카오로 계속하기
-            </Button>
+              카카오로 계속하기 (준비중)
+            </>
+          )}
+        </Button>
+        {typeof window !== "undefined" &&
+          navigator?.userAgent.includes("ios") && (
             <Button
               onClick={requestAppleLogin}
               className="w-full font-bold text-[14px] py-4 flex flex-row items-center justify-center rounded-full mt-4 bg-black text-white border-none hover:bg-black active:bg-black"
+              isLoading={loadingApple}
             >
-              <Image
-                src="/icons/AppleLogoSm.svg"
-                alt="apple  "
-                width={20}
-                height={20}
-                className="mr-2"
-              />
-              Apple로 계속하기
+              {loadingApple ? (
+                <Loading color="white" />
+              ) : (
+                <>
+                  <Image
+                    src="/icons/AppleLogoSm.svg"
+                    alt="apple  "
+                    width={20}
+                    height={20}
+                    className="mr-2"
+                  />
+                  Apple로 계속하기 (준비중)
+                </>
+              )}
             </Button>
-          </div> */}
+          )}
+      </div>
     </>
   );
 };

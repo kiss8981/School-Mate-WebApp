@@ -21,6 +21,7 @@ type RouterEvent = {
   ASKED_REPLAY_EVENT: {
     replyed: boolean;
   };
+  APPLE_SIGNOUT_EVENT: any;
 };
 
 export const sendWebviewEvent = <T extends keyof RouterEvent>(

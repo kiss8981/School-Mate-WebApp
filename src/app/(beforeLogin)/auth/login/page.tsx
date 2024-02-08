@@ -21,7 +21,7 @@ const LoginPage = async () => {
             alt="register"
             width={100}
             height={50}
-            className="mb-2 mt-10"
+            className="mb-2 mt-5"
           />
           <LoginSection />
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/app/_component/Button";
+import fetcher from "@/lib/fetch";
 import { inter } from "@/lib/fonts";
 import { stackRouterPush } from "@/lib/stackRouter";
 import { classNames } from "@/lib/uitls";
@@ -15,7 +16,7 @@ const MyInfo = ({ auth }: { auth: Session }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const handleComment = async (event: MessageEvent) => {
+    const handleMessage = async (event: MessageEvent) => {
       try {
         const { type: eventType } = JSON.parse(event.data);
         if (eventType === "LOGOUT_EVENT") {
@@ -25,13 +26,13 @@ const MyInfo = ({ auth }: { auth: Session }) => {
     };
 
     // @ts-ignore
-    document.addEventListener("message", handleComment);
-    window.addEventListener("message", handleComment);
+    document.addEventListener("message", handleMessage);
+    window.addEventListener("message", handleMessage);
 
     return () => {
-      window.removeEventListener("message", handleComment);
+      window.removeEventListener("message", handleMessage);
       // @ts-ignore
-      document.removeEventListener("message", handleComment);
+      document.removeEventListener("message", handleMessage);
     };
   }, []);
 

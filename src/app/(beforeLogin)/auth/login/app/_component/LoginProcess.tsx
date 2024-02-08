@@ -19,7 +19,7 @@ const LoginProcess: React.FC<{
       redirect: false,
       code: token,
       provider: "app",
-    }).then(async (res) => {
+    }).then(async res => {
       if (!res?.ok) {
         toast("error", "로그인 세션이 만료되었습니다.");
         router.replace("/auth/login");
@@ -30,6 +30,8 @@ const LoginProcess: React.FC<{
           router.replace("/auth/login");
           return;
         }
+
+        alert(JSON.stringify(session.user));
 
         setCookie("Authorization", session?.user.token.accessToken, {
           path: "/",

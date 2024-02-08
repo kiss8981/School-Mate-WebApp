@@ -123,7 +123,7 @@ const RegisterComponent = () => {
                 value={phone}
                 disabled={phoneVerifyed}
                 autoFocus
-                onChange={(e) => {
+                onChange={e => {
                   setPhone(
                     e.target.value
                       ?.replace(/[^0-9]/g, "")
@@ -162,7 +162,7 @@ const RegisterComponent = () => {
               placeholder="이름을 입력하세요"
               className="w-full py-3.5 h-[50px] mt-1"
               value={name}
-              onChange={(e) => {
+              onChange={e => {
                 setName(e.target.value);
               }}
             />
@@ -180,7 +180,7 @@ const RegisterComponent = () => {
                 className="w-full py-3.5 h-full pr-24"
                 value={password}
                 type="password"
-                onChange={(e) => {
+                onChange={e => {
                   setPassword(e.target.value);
                 }}
               />
@@ -203,7 +203,7 @@ const RegisterComponent = () => {
                 className="w-full py-3.5 h-full pr-36"
                 type="password"
                 value={passwordCheck}
-                onChange={(e) => {
+                onChange={e => {
                   setPasswordCheck(e.target.value);
                 }}
               />
@@ -333,7 +333,7 @@ const RegisterComponent = () => {
               type="number"
               placeholder="인증번호 입력"
               className="w-full bg-white border-b-2 pr-2 pl-9 rounded-none py-3"
-              onChange={(e) => {
+              onChange={e => {
                 setPhoneVerifyNumber(e.target.value);
               }}
               autoFocus
@@ -383,7 +383,7 @@ const RegisterComponent = () => {
             "py-6 font-bold w-full px-4 flex flex-col",
             inter.className
           )}
-          onDragEnd={(e) => {}}
+          onDragEnd={e => {}}
         >
           <Image
             src="/icons/Check.svg"
@@ -482,7 +482,7 @@ const RegisterComponent = () => {
             <Checkbox
               className="h-5 w-5 mr-3"
               checked={agreementPrivacy}
-              onChange={(e) => {
+              onChange={e => {
                 setAgreementPrivacy(e.target.checked);
               }}
             />
@@ -521,7 +521,7 @@ const RegisterComponent = () => {
             <Checkbox
               className="h-5 w-5 mr-3"
               checked={agreementAge}
-              onChange={(e) => {
+              onChange={e => {
                 setAgreementAge(e.target.checked);
               }}
             />
@@ -543,7 +543,7 @@ const RegisterComponent = () => {
             <Checkbox
               className="h-5 w-5 mr-3"
               checked={agreementMarketing}
-              onChange={(e) => {
+              onChange={e => {
                 setAgreementMarketing(e.target.checked);
               }}
             />

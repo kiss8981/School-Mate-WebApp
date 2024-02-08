@@ -15,23 +15,25 @@ const SignoutConfirm = ({ auth }: { auth: Session }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const handleComment = async (event: MessageEvent) => {
+    const handleSignout = async (event: MessageEvent) => {
       try {
-        const { type: eventType } = JSON.parse(event.data);
+        const { type: eventType, data } = JSON.parse(event.data);
         if (eventType === "LOGOUT_EVENT") {
           await signOut({ redirect: true, callbackUrl: "/intro" });
+        } else if (eventType === "APPLE_SIGNOUT_EVENT") {
+          await requestSignout(data.code);
         }
       } catch (err) {}
     };
 
     // @ts-ignore
-    document.addEventListener("message", handleComment);
-    window.addEventListener("message", handleComment);
+    document.addEventListener("message", handleSignout);
+    window.addEventListener("message", handleSignout);
 
     return () => {
-      window.removeEventListener("message", handleComment);
+      window.removeEventListener("message", handleSignout);
       // @ts-ignore
-      document.removeEventListener("message", handleComment);
+      document.removeEventListener("message", handleSignout);
     };
   }, []);
 
@@ -43,7 +45,28 @@ const SignoutConfirm = ({ auth }: { auth: Session }) => {
     }
   };
 
-  const requestSignout = async () => {
+  const requestSignout = async (applelogoutcode?: string) => {
+    try {
+      await fetcher.delete("/auth/me", {
+        data: {
+          phone: auth.user.user.phone,
+          code: verifyCode,
+          token: verfiyToken,
+          ...(applelogoutcode && { applelogoutcode: applelogoutcode }),
+        },
+      });
+      requestLogout();
+      toast("success", "계정이 삭제되었습니다.");
+    } catch (error: any) {
+      toast(
+        "error",
+        error.response?.data?.message ||
+          "계정 삭제에 실패했습니다. 문제가 지속될 경우 고객센터로 문의해주세요."
+      );
+    }
+  };
+
+  const requestSignoutPhoneVerify = async () => {
     try {
       setLoading(true);
       await fetcher.post("/auth/verify/phone", {
@@ -52,15 +75,11 @@ const SignoutConfirm = ({ auth }: { auth: Session }) => {
         token: verfiyToken,
       });
 
-      await fetcher.delete("/auth/me", {
-        data: {
-          phone: auth.user.user.phone,
-          code: verifyCode,
-          token: verfiyToken,
-        },
-      });
-      requestLogout();
-      toast("success", "계정이 삭제되었습니다.");
+      if (auth.user.user.socialLogin?.provider == "apple") {
+        sendWebviewEvent("APPLE_SIGNOUT_EVENT", {});
+      } else {
+        await requestSignout();
+      }
     } catch (error: any) {
       toast(
         "error",
@@ -110,7 +129,7 @@ const SignoutConfirm = ({ auth }: { auth: Session }) => {
         </div>
         <Button
           className="mt-auto rounded-full h-14 w-full mb-5"
-          onClick={verfiyToken ? requestSignout : requestPhoneVerify}
+          onClick={verfiyToken ? requestSignoutPhoneVerify : requestPhoneVerify}
         >
           {verfiyToken ? "계정 삭제" : "인증번호 전송"}
         </Button>
