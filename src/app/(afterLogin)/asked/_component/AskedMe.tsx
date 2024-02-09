@@ -25,7 +25,7 @@ const AskedMe = () => {
   } = useSWR<AskedListWithUser>("/auth/me/asked", swrFetcher);
 
   if (isLoading) return <AskedMeSkeleton />;
-  if (!askedme) return <AskedCreate />;
+  if (!askedme || error) return <AskedCreate />;
 
   return (
     <>
