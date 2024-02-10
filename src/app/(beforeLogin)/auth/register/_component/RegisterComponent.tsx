@@ -123,6 +123,7 @@ const RegisterComponent = () => {
                 value={phone}
                 disabled={phoneVerifyed}
                 autoFocus
+                inputMode="numeric"
                 onChange={e => {
                   setPhone(
                     e.target.value
@@ -330,7 +331,7 @@ const RegisterComponent = () => {
               className="absolute left-1 top-3"
             />
             <Input
-              type="number"
+              inputMode="numeric"
               placeholder="인증번호 입력"
               className="w-full bg-white border-b-2 pr-2 pl-9 rounded-none py-3"
               onChange={e => {

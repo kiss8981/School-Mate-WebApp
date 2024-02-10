@@ -40,7 +40,9 @@ const LoginLandingComponent = () => {
             "w-full py-4 font-semibold text-lg rounded-full mt-auto",
             robotoMono.className
           )}
-          onClick={() => stackRouterPush(router, "/auth/register", "stack")}
+          onClick={() =>
+            stackRouterPush(router, "/auth/register", "stack", false)
+          }
         >
           회원가입
         </Button>
@@ -49,7 +51,9 @@ const LoginLandingComponent = () => {
             "w-full font-bold text-base mt-4 text-primary-500",
             roboto.className
           )}
-          onClick={() => stackRouterPush(router, "/auth/register", "stack")}
+          onClick={() =>
+            stackRouterPush(router, "/auth/register", "stack", false)
+          }
         >
           15초 간편 가입하기
         </button>
