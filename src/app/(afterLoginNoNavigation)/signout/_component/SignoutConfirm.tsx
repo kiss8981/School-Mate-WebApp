@@ -75,7 +75,10 @@ const SignoutConfirm = ({ auth }: { auth: Session }) => {
         token: verfiyToken,
       });
 
-      if (auth.user.user.socialLogin?.provider == "apple") {
+      if (
+        auth.user.user.socialLogin &&
+        auth.user.user.socialLogin.provider == "apple"
+      ) {
         sendWebviewEvent("APPLE_SIGNOUT_EVENT", {});
       } else {
         await requestSignout();
