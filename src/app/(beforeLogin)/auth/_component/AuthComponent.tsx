@@ -40,11 +40,9 @@ const LoginLandingComponent = () => {
             "w-full py-4 font-semibold text-lg rounded-full mt-auto",
             robotoMono.className
           )}
-          onClick={() =>
-            stackRouterPush(router, "/auth/register", "stack", false)
-          }
+          onClick={() => stackRouterPush(router, "/auth/login", "stack", false)}
         >
-          회원가입
+          시작하기
         </Button>
         <button
           className={classNames(
@@ -55,7 +53,7 @@ const LoginLandingComponent = () => {
             stackRouterPush(router, "/auth/register", "stack", false)
           }
         >
-          15초 간편 가입하기
+          전화번호로 시작하기
         </button>
         <button
           className={classNames(
