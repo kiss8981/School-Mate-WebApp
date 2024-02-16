@@ -211,36 +211,35 @@ const LoginSection = () => {
           로그인
         </Button>
       </form>
-      {typeof window !== "undefined" && navigator?.userAgent.includes("ios") ? (
-        <>
-          <div className="flex flex-row items-center justify-center font-semibold text-[10px] my-6">
-            <hr className="w-full h-1 border-[#B6B6B6]" />
-            <span className="w-40 text-[#B6B6B6] mx-4 text-center">
-              간편 로그인
-            </span>
-            <hr className="w-full h-1 border-[#B6B6B6]" />
-          </div>
-          <div className="flex flex-col items-center justify-center mb-10 mt-auto">
-            <Button
-              onClick={requestKakaoLogin}
-              className="w-full font-bold text-[14px] py-4 flex flex-row items-center justify-center rounded-full bg-[#FEE500] text-[#191919] border-none hover:bg-[#FEE500] active:bg-[#FEE500]"
-              isLoading={loadingKakao}
-            >
-              {loadingKakao ? (
-                <Loading color="white" />
-              ) : (
-                <>
-                  <Image
-                    src="/icons/KakaoLogoSm.svg"
-                    alt="kakao"
-                    width={20}
-                    height={20}
-                    className="mr-2"
-                  />
-                  카카오로 계속하기
-                </>
-              )}
-            </Button>
+      <div className="flex flex-row items-center justify-center font-semibold text-[10px] my-6">
+        <hr className="w-full h-1 border-[#B6B6B6]" />
+        <span className="w-40 text-[#B6B6B6] mx-4">SNS LOGIN</span>
+        <hr className="w-full h-1 border-[#B6B6B6]" />
+      </div>
+
+      <div className="flex flex-col items-center justify-center mb-10 mt-auto">
+        <Button
+          onClick={requestKakaoLogin}
+          className="w-full font-bold text-[14px] py-4 flex flex-row items-center justify-center rounded-full bg-[#FEE500] text-[#191919] border-none hover:bg-[#FEE500] active:bg-[#FEE500]"
+          isLoading={loadingKakao}
+        >
+          {loadingKakao ? (
+            <Loading color="white" />
+          ) : (
+            <>
+              <Image
+                src="/icons/KakaoLogoSm.svg"
+                alt="kakao"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              카카오로 계속하기
+            </>
+          )}
+        </Button>
+        {typeof window !== "undefined" &&
+          navigator?.userAgent.includes("ios") && (
             <Button
               onClick={requestAppleLogin}
               className="w-full font-bold text-[14px] py-4 flex flex-row items-center justify-center rounded-full mt-4 bg-black text-white border-none hover:bg-black active:bg-black"
@@ -261,20 +260,8 @@ const LoginSection = () => {
                 </>
               )}
             </Button>
-          </div>
-        </>
-      ) : (
-        <>
-          <Button
-            onClick={() => {
-              stackRouterPush(router, "/auth/register");
-            }}
-            className="w-full py-4 font-semibold text-[14px] rounded-full mt-4"
-          >
-            회원가입
-          </Button>
-        </>
-      )}
+          )}
+      </div>
     </>
   );
 };
