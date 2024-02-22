@@ -2,17 +2,17 @@
 
 import Lottie from "lottie-react";
 import LoadingLogo from "@/assets/lottie/loadingLogo.json";
-import { setCookie } from "@/lib/csrUtils";
 import { sendWebviewEvent, toast } from "@/lib/webviewHandler";
 
 import { useRouter } from "next/navigation";
 import React, { useEffect, useLayoutEffect } from "react";
 import { getSession, signIn, signOut, useSession } from "next-auth/react";
-import { authOptions } from "@/app/auth";
+import { useCookies } from "next-client-cookies";
 
 const LoginProcess: React.FC<{
   token: string;
 }> = ({ token }) => {
+  const cookies = useCookies();
   const router = useRouter();
   useEffect(() => {
     (async () => {
@@ -34,9 +34,9 @@ const LoginProcess: React.FC<{
               return;
             }
 
-            setCookie("Authorization", session?.user.token.accessToken, {
+            cookies.set("Authorization", session?.user.token.accessToken, {
               path: "/",
-              maxAge: 60 * 60 * 24 * 7,
+              expires: 60 * 60 * 24 * 7,
               domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
             });
 

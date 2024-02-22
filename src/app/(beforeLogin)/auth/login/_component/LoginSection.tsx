@@ -8,11 +8,12 @@ import Button from "@/app/_component/Button";
 import { sendWebviewEvent, toast } from "@/lib/webviewHandler";
 import { useRouter } from "next/navigation";
 import { stackRouterPush } from "@/lib/stackRouter";
-import { setCookie } from "@/lib/csrUtils";
+import { useCookies } from "next-client-cookies";
 import { Loading } from "@/app/_component/Loading";
 
 const LoginSection = () => {
   const router = useRouter();
+  const cookies = useCookies();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [loginfLoading, setLoginLoading] = useState(false);
@@ -103,9 +104,9 @@ const LoginSection = () => {
         return;
       }
 
-      setCookie("Authorization", session?.user.token.accessToken, {
+      cookies.set("Authorization", session?.user.token.accessToken, {
         path: "/",
-        maxAge: 60 * 60 * 24 * 7,
+        expires: 60 * 60 * 24 * 7,
         domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
       });
 

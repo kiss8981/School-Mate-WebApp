@@ -3,6 +3,7 @@ import AuthSession from "./_component/AuthSession";
 import { classNames } from "@/lib/uitls";
 import { NanumGothic } from "@/lib/fonts";
 import { ToastContainer } from "react-toastify";
+import { CookiesProvider } from "next-client-cookies/server";
 
 import "dayjs/locale/ko";
 
@@ -91,11 +92,13 @@ export default function RootLayout({
         />
       </head>
       <body className={classNames(NanumGothic.className)}>
-        <AuthSession>
-          {children}
-          {modal}
-        </AuthSession>
-        <ToastContainer />
+        <CookiesProvider>
+          <AuthSession>
+            {children}
+            {modal}
+          </AuthSession>
+          <ToastContainer />
+        </CookiesProvider>
       </body>
     </html>
   );
