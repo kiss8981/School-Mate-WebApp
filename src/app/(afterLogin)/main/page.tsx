@@ -16,7 +16,7 @@ const getAuth = async () => {
   const auth = await getServerSession(authOptions);
 
   if (!auth) return redirect("/intro");
-  if (!auth.user.user.isVerified) return redirect("/intro");
+  if (!auth.user.user.isVerified) return redirect("/verify/phone");
   if (!auth.user.user.userSchool) return redirect("/verify");
 
   return auth;

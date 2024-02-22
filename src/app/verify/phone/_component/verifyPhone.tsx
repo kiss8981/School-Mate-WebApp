@@ -55,12 +55,21 @@ const VerifyComponent = ({ auth }: { auth: Session }) => {
 
   const requestRegister = async () => {
     try {
-      await fetcher.post("/auth/oauth/verify/phone", {
-        phone: phone.replace(/[^0-9]/g, ""),
-        code: phoneVerifyNumber,
-        token: phoneVerifyToken,
-        marketingAgree: agreementMarketing,
-      });
+      const sessionData = await update();
+      await fetcher.post(
+        "/auth/oauth/verify/phone",
+        {
+          phone: phone.replace(/[^0-9]/g, ""),
+          code: phoneVerifyNumber,
+          token: phoneVerifyToken,
+          marketingAgree: agreementMarketing,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionData?.user.token.accessToken}`,
+          },
+        }
+      );
       setSuccessRegisterModalOpen(true);
 
       setTimeout(() => {

@@ -36,8 +36,6 @@ const LoginSection = () => {
               setLoadingKakao(false);
               setLoadingApple(false);
             } else {
-              setLoadingKakao(false);
-              setLoadingApple(false);
               const session = await getSession();
 
               if (!session?.user) {
@@ -54,11 +52,15 @@ const LoginSection = () => {
                   },
                 });
               }
-              stackRouterPush(
-                router,
-                `/auth/login/app?token=${session?.user.token.accessToken}`,
-                "reset"
-              );
+              setTimeout(() => {
+                setLoadingKakao(false);
+                setLoadingApple(false);
+                stackRouterPush(
+                  router,
+                  `/auth/login/app?token=${session?.user.token.accessToken}`,
+                  "reset"
+                );
+              }, 1000);
             }
           } else if (data.type === "cancel") {
             setLoadingKakao(false);
