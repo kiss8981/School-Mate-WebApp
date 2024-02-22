@@ -45,9 +45,6 @@ export default function useFetch(
       oOnPending ? oOnPending() : onPending && onPending();
       const successToastObject = oSuccessToast ?? successToast;
       const requestEndpoint = oFetchInit?.url ? oFetchInit.url : url;
-      client.defaults.headers.common["Authorization"] = `Bearer ${getCookie(
-        "accessToken"
-      )}`;
       return client(requestEndpoint, {
         method: type,
         ...oFetchInit,
