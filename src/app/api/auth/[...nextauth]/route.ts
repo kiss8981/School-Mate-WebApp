@@ -1,6 +1,13 @@
 import { authOptions } from "@/app/auth";
 import NextAuth from "next-auth";
+import { NextRequest } from "next/server";
 
-const auth = NextAuth(authOptions);
+interface RouteHandlerContext {
+  params: { nextauth: string[] };
+}
 
-export { auth as GET, auth as POST };
+const handler = async (req: NextRequest, context: RouteHandlerContext) => {
+  return NextAuth(req, context, authOptions);
+};
+
+export { handler as GET, handler as POST };

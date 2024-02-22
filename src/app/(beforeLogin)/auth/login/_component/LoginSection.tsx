@@ -104,12 +104,6 @@ const LoginSection = () => {
         return;
       }
 
-      cookies.set("Authorization", session?.user.token.accessToken, {
-        path: "/",
-        expires: 60 * 60 * 24 * 7,
-        domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
-      });
-
       if (window.ReactNativeWebView) {
         sendWebviewEvent("LOGIN_EVENT", {
           type: "callback",

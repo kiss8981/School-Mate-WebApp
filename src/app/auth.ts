@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { Response } from "@/types/fetcher";
 
 import client from "@/lib/fetch";
+import { cookies } from "next/headers";
 
 interface Credentials {
   phone?: string;
@@ -26,7 +27,7 @@ export const authOptions: AuthOptions = {
         code: { label: "code", type: "text" },
         provider: { label: "provider", type: "text" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         const { phone, password, provider, code } = credentials as Credentials;
         // @ts-ignore
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
@@ -36,6 +37,17 @@ export const authOptions: AuthOptions = {
               phone: phone?.replace(/-/g, ""),
               password,
             });
+
+            cookies().set({
+              name: "Authorization",
+              value: loginData.data.token.accessToken,
+              httpOnly: true,
+              path: "/",
+              maxAge: 60 * 60 * 24 * 7,
+              secure: true,
+              domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+            });
+
             return loginData.data;
           } catch (e) {
             return null;
@@ -45,6 +57,17 @@ export const authOptions: AuthOptions = {
             const { data: loginData } = await client.post<Response<any>>(
               `/auth/applogin?code=${code}`
             );
+
+            cookies().set({
+              name: "Authorization",
+              value: loginData.data.token.accessToken,
+              httpOnly: true,
+              path: "/",
+              maxAge: 60 * 60 * 24 * 7,
+              secure: true,
+              domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+            });
+
             return loginData.data;
           } catch (e) {
             return null;
@@ -54,6 +77,17 @@ export const authOptions: AuthOptions = {
             const { data: loginData } = await client.get<Response<any>>(
               `/auth/${provider}/callback?code=${code}`
             );
+
+            cookies().set({
+              name: "Authorization",
+              value: loginData.data.token.accessToken,
+              httpOnly: true,
+              path: "/",
+              maxAge: 60 * 60 * 24 * 7,
+              secure: true,
+              domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+            });
+
             return loginData.data;
           } catch (e) {
             return null;
