@@ -1,7 +1,6 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from "axios";
 import client from "@/lib/fetch";
 import { toast } from "@/lib/webviewHandler";
-import { getCookie } from "@/lib/csrUtils";
 
 type UseFetchParams = {
   fetchInit?: AxiosRequestConfig;
