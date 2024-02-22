@@ -53,15 +53,14 @@ const LoginSection = () => {
                   },
                 });
               }
-              setTimeout(() => {
-                setLoadingKakao(false);
-                setLoadingApple(false);
-                stackRouterPush(
-                  router,
-                  `/auth/login/app?token=${session?.user.token.accessToken}`,
-                  "reset"
-                );
-              }, 1000);
+
+              setLoadingKakao(false);
+              setLoadingApple(false);
+              stackRouterPush(
+                router,
+                `/auth/login/app?token=${session?.user.token.accessToken}`,
+                "reset"
+              );
             }
           } else if (data.type === "cancel") {
             setLoadingKakao(false);

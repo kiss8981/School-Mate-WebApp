@@ -20,9 +20,10 @@ const VerifyPhonePage = async () => {
   return (
     <>
       <HeaderContainer
-        backIcon={false}
+        backIcon={true}
         title="전화번호 인증"
         className="relative h-[100vh]"
+        backPath="/intro"
       >
         <VerifyPhone auth={auth} />
       </HeaderContainer>

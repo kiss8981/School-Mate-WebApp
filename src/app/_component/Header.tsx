@@ -9,12 +9,14 @@ const Header = ({
   className = "",
   backIcon = true,
   rightIcon = null,
+  backPath = "",
   ...props
 }: {
   title?: string;
   className?: string;
   backIcon?: boolean;
   rightIcon?: React.ReactNode;
+  backPath?: string;
 } & React.ComponentPropsWithRef<"header">) => {
   const router = useRouter();
 
@@ -31,6 +33,10 @@ const Header = ({
           <button
             className="absolute left-4"
             onClick={() => {
+              if (backPath) {
+                router.replace(backPath);
+                return;
+              }
               stackRouterBack(router);
             }}
           >
