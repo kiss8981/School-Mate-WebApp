@@ -11,6 +11,7 @@ import Advertisement from "./_component/Advertisement";
 import RecommentArticle from "./_component/RecommnedArticle";
 import Asked from "./_component/Asked";
 import HeaderBadage from "./_component/HeaderBadage";
+import MealList from "./_component/MealList";
 
 const getAuth = async () => {
   const auth = await getServerSession(authOptions);
@@ -61,6 +62,9 @@ const Main: NextPage = async () => {
           pathType="replace"
         >
           <RecommentArticle />
+        </SectionContainer>
+        <SectionContainer title="오늘의 급식" subTitle="먹고 싶은게 있나요?">
+          <MealList auth={auth} />
         </SectionContainer>
         <TipsSection
           title="가이드 보러가기"
